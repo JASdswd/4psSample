@@ -1,0 +1,147 @@
+table.display,table.display3 {
+	border-collapse: collapse;
+	background-color: white;
+	font-size: 12px;
+	border: 1px #e7e7e7 solid;
+}
+
+table.display2 {
+	border-collapse: collapse;
+	background-color: white;
+	font-size: 12px;
+	border: 1px white solid;
+}
+
+/*HEADER*/
+#display thead,#display3 thead {
+	height: 24px;
+	background-color: #C0C0C0;
+}
+
+#display2 thead {
+	height: 24px;
+	background-color: #C0C0C0;
+}
+
+#display tbody td, #display2 tbody div,#display3 tbody td {
+	height: 18px !important;
+}
+
+#display2 tbody td, #display2 tbody div {
+	height: 18px !important;
+}
+
+/* 
+#display tbody tr {
+	counter-increment : rownum ; 
+}
+
+#display2 tbody tr {
+	counter-increment : rownum ; 
+}
+
+
+#display tbody { 
+	counter-reset: rownum; 
+}
+
+#display2 tbody { 
+	counter-reset: rownum; 
+}
+
+#display td:first-child:before { 
+	content: counter(rownum); 
+}
+#display2 td:first-child:before { 
+	content: counter(rownum); 
+} */
+
+#display thead .clickable ,#display3 thead.clickable{
+	font-weight: bold;
+}
+
+#display2 thead .clickable {
+	font-weight: bold;
+}
+
+#display th , #display3 th{
+	padding: 5px;
+}
+
+#display2 th {
+	padding: 5px;
+}
+.index, .radio, .index div, .radio div {
+	width: 50px !important;
+	text-align: center;
+	overflow: hidden;
+}
+
+#display a.edit,#display3 a.edit {
+	color: black;
+	text-decoration: none;
+}
+
+#display2 a.edit {
+	color: black;
+	text-decoration: none;
+}
+
+#display a.edit:HOVER,#display3 a.edit:HOVER {
+	font-weight: bold;
+}
+
+#display2 a.edit:HOVER {
+	font-weight: bold;
+}
+
+.clickable {
+	font-weight: normal;
+}
+
+.click {
+	background-color: #ececec;
+}
+
+.active {
+	font-weight: bold;
+}
+
+.clickable:HOVER {
+	cursor: pointer;
+}
+
+table.sortable div {
+	overflow: hidden;	
+}
+
+table.sortable thead th.sorted-desc span {
+    background: url('../image/arrowDown.gif') no-repeat;
+}
+
+table.sortable thead th span {
+    background: url('../image/arrowUpDown.gif') no-repeat;
+}
+
+table.sortable thead th.sorted-asc span {
+	background: url('../image/arrowUp.gif') no-repeat;
+}
+
+/*HOVER in td records*/
+table.sortable tbody tr:hover {
+	background-color: white;
+	color:black;
+}
+
+select.pager option {
+	text-align:right;
+	margin-right: 10px;
+}
+
+select.pager {
+	border-collapse: collapse;
+	background-color: white;
+	font-size: 13px;
+	font-family: Arial, Helvetica, sans-serif;
+	border: 1px #e7e7e7 solid;
+}

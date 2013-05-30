@@ -1,0 +1,192 @@
+@CHARSET "UTF-8";
+
+thead{
+	font-size: x-small;
+}
+
+table{
+	border:1px thin;
+}
+
+body{
+	font-size: x-small;
+	width: inherit;
+}
+#mainDiv{
+	font-size: x-small;
+}
+.ques{
+	width:190px;
+}
+
+.one,.two{
+	width:110px;
+}
+
+.three{
+	width:15px;
+}
+
+.fifth{
+	width:35px;
+}
+
+.insert{
+	width:200px;
+	text-align: right;
+	font-family: sans-serif;
+}
+
+#headTBL{
+	width:750px;
+}
+#topTBL{
+	width:750px;
+}
+
+.td2{
+	text-align: right;
+}
+.td1{
+	width:270px;
+}
+.cv{
+	font-size: large;
+	
+}
+.f2{
+	font-size: x-large;
+}
+
+.midTBL{
+	width:750px;
+	border:1px ;
+	border-style: dotted; 
+	font-size: xx-small;
+	border-collapse:collapse; 
+}
+
+.btmTBL{
+	width:750px;
+}
+
+.mm,.dd,.yyyy{
+	width:15px;;
+	height: 10px;
+	border-left: 1px solid black;
+	text-indent: 2px;
+}
+
+#mainDiv{
+	font-size: small;
+}
+
+.col1{
+	width:340px;
+	text-align: justify;
+}
+.hr{
+	width:250px;
+}
+.lfm{
+	height: 5%;
+}
+.col2{
+	width:42%;
+}
+.tbl{
+	width:370px;
+}
+
+.name{
+	width:400px;
+}
+
+#btmTBL{
+	width:750px;
+}
+.action{
+	text-align: center;
+	font-weight: bold;
+}
+
+.clear { /* generic container (i.e. div) for floating buttons */
+    overflow: hidden;
+    width: 100%;
+}
+
+#id_cell{
+	text-indent: 7px;
+	
+}
+
+#brgy_filter{
+	width:250px;
+	text-transform: capitalize;
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+	
+}
+
+#mun_name{
+	width:250px;
+	text-transform: capitalize;	
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+	
+}
+
+#end_date,#start_date,#yy{
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+}
+
+/* #update,#delete{
+	background-color:#DBEBFF;
+	-moz-border-radius: 10px;
+	border-radius: 15px;
+	border-color:1px #DBEBFF ;
+	color:#3366FF;
+	margin-top: 10%;
+} */
+
+.rdbtn{
+	background-color: green;
+	color:red;
+}
+
+.btn{
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+}
+
+/* a.button {
+    background: transparent url('bg_button_a.gif') no-repeat scroll top right;
+    color: #444;
+    display: block;
+    float: left;
+    font: normal 12px arial, sans-serif;
+    height: 24px;
+    margin-right: 6px;
+    padding-right: 18px; sliding doors padding
+    text-decoration: none;
+}
+
+a.button span {
+    background: transparent url('bg_button_span.gif') no-repeat;
+    display: block;
+    line-height: 14px;
+    padding: 5px 0 5px 18px;
+}
+
+a.button:active {
+    background-position: bottom right;
+    color: #000;
+    outline: none; hide dotted outline in Firefox
+}
+
+a.button:active span {
+    background-position: bottom left;
+    padding: 6px 0 4px 18px; push text down 1px
+} */
+

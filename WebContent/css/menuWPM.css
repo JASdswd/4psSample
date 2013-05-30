@@ -1,0 +1,263 @@
+/*******************
+ menu
+********************/
+.glossymenu {
+	margin: 5px 0;
+	padding: 0;
+	width: 543px; /*width of menu*/
+	border: 1px solid #545;
+	/* border-bottom-width: 1px;
+	border-bottom: 1px blue; */
+}
+
+.glossymenu a.menuitem  {
+	background: url(../image/gbg2.gif);
+	font: 13px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bolder;
+	color: black;
+	display: block;
+	position: relative;
+	/*To help in the anchoring of the ".statusicon" icon image*/
+	width: auto;
+	padding: 4px 0;
+	text-decoration: none;
+	border: 1px solid black;
+	border-bottom: 1px;
+	height: 22px;
+}
+
+.glossymenu p.menuitem {
+	background-image: url(../image/gbg.gif);
+	font: 12px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bolder;
+	color: white;
+	display: block;
+	position: relative;
+	/*To help in the anchoring of the ".statusicon" icon image*/
+	width: auto;
+	padding: 4px 0;
+	text-decoration: none;
+	border: 1px solid black;
+	border-bottom: 1px;
+	font-weight: bolder;
+	height: 25px;
+}
+
+.glossymenu a.menuitem:visited,.glossymenu .menuitem:active {
+	color: black;
+	border-style: none;
+}
+
+.glossymenu a.menuitem .statusicon {
+	/*CSS for icon image that gets dynamically added to headers*/
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	border: 0px;
+}
+
+.glossymenu a.menuitem:hover {
+	background-image: url(../image/gbg.gif);
+	color: white;
+	font-weight: bolder;
+}
+
+.glossymenu a.title {
+	background:  #1b75bb url(../image/gbg2.gif) repeat bottom left;
+	color: white;
+	font-weight: bolder;
+}
+
+.glossymenu a.menuitem:focus {
+	background:  #1b75bb url(../image/gbg2.gif) repeat bottom left;
+	color: white;
+	border-color: #216796;
+	border-style: none;
+	font-weight: bolder;
+}
+
+.glossymenu div.submenu { /*DIV that contains each sub menu*/
+	background: #e8e8e8;
+	padding: 2px;
+	padding-left: 15px;
+}
+
+.glossymenu div.submenu ul { /*UL of each sub menu*/
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.glossymenu div.submenu ul li {
+	border-bottom: 0px solid blue;
+}
+
+.glossymenu div.submenu ul li a {
+	display: block;
+	font: 12px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif;
+	color: black;
+	text-decoration: none;
+	padding: 2px 0;
+	padding-left: 10px;
+	height: 20px;
+}
+
+.glossymenu div.submenu ul li a:hover {
+	background: #d4d4d4;
+	color: black;
+}
+
+.glossymenu div.submenu ul li a:focus {
+	background-image: url(../image/gbg.gif);
+	border-color: #216796;
+	border-style: none;
+	color:white;
+}
+
+body {
+	/* background-image: url(../image/bg.gif);
+	background-repeat: repeat-x;
+	 *//* background-color: #10120f;
+	 */overflow: auto;
+}
+
+/*******************
+corner
+********************/
+.image {
+	position: fixed;
+	top: 0px;
+	left: 250px;
+}
+
+#image2 {
+	position: fixed;
+	top: 17px;
+	left: 258px;
+	width: 32px;
+	height: 100%;
+}
+
+.image4 {
+	position: fixed;
+	top: 17px;
+	left: 4px;
+	width: 18px;
+	height: 5%;
+}
+
+.image4:hover {
+	position: fixed;
+	top: 17px;
+	left: 4px;
+	width: 19px;
+	height: 5%;
+	cursor: pointer;
+}
+
+.image6 {
+	position: fixed;
+	top: 48px;
+	left: 0px;
+	width: 22px;
+	height: 100%;
+}
+
+.image5 {
+	position: fixed;
+	top: 17px;
+	left: 0px;
+	width: 4px;
+	height: 5%;
+}
+
+.image7 {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 41px;
+	height: 17px;
+}
+
+/**--------------- 
+font and icon css
+------------------*/
+.icon {
+	position: fixed;
+	height: 25px;
+	width: 25px;
+	border: 0px;
+}
+
+.icons {
+	position: fixed;
+	height: 16px;
+	width: 16px;
+	border: 0px;
+}
+
+.menuFont {
+	font-family: tahoma, arial, helvetica, sans-serif;
+	font-size: 12px;
+}
+
+.favicon {
+	position: fixed;
+	height: 16px;
+	width: 16px;
+	border: 0px;
+}
+
+.submenuIcon {
+	position: fixed;
+	height: 16px;
+	width: 16px;
+	border: 0px;
+}
+
+/******************
+header
+******************/
+/* #header {
+	background-image: url("image/qwqw.png");
+	background-repeat: repeat-x;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 30px;
+} */
+
+#hide{
+	z-index: 1;
+	position:fixed;
+	left:263px;
+	top:80px;
+	width:22px;
+	background: url('../image/hideShow.jpg') no-repeat;
+}
+#hide:hover{
+	cursor:pointer;
+	border-width:2px;
+	border-style:outset;
+}
+
+/*****************
+Copyright
+******************/
+#cpy{
+	font: 10px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bold;
+	color: white;
+}
+
+.head_tbl{
+	color: red;
+}
+
+.title{
+	background-image: url(../image/gbg.gif);
+	color: white;
+	font-weight: bolder;
+}

@@ -1,0 +1,157 @@
+@CHARSET "UTF-8";
+
+thead{
+	font-size: xx-small;
+}
+
+table{
+	border:1px thin;
+}
+
+body{
+	font-size: x-small;
+}
+
+.ques{
+	width:190px;
+}
+
+.one,.two{
+	width:110px;
+}
+
+#error{
+	font-size: 23px;
+	color:red;
+}
+
+#err{
+	color:red;
+	font-size: 10px;
+}
+
+#hc{
+	width:250px;
+	text-transform: capitalize;	
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+}
+
+.three{
+	width:15px;
+}
+
+.fifth{
+	width:90px;
+}
+
+.insert{
+	width:250px;
+	text-align: right;
+	font-family: sans-serif;
+}
+
+#id_cell{
+	text-indent: 7px;
+}
+
+.pname{
+	width:200px;
+}
+
+#headTBL{
+	width:800px;
+}
+#topTBL{
+	width:800px;
+}
+
+.td2{
+	text-align: right;
+}
+.td1{
+	width:270px;
+}
+
+.btn{
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+}
+
+
+#end_date,#start_date,#yy{
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+}
+
+#mun_name{
+	width:250px;
+	text-transform: capitalize;	
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+	
+}
+
+.cv{
+	font-size: large;
+	
+}
+.f2{
+	font-size: x-large;
+}
+
+.midTBL{
+	width:800px;
+	border:1px ;
+	border-style: dotted; 
+	font-size: xx-small;
+	border-collapse: collapse;
+}
+
+.btmTBL{
+	width:800px;
+}
+
+.bname{
+	width:250px;
+	text-transform: capitalize;
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+}
+
+.mm,.dd,.yyyy{
+	width:15px;;
+	height: 10px;
+	border-left: 1px solid black;
+	text-indent: 2px;
+}
+
+#brgy_filter{
+	width:250px;
+	text-transform: capitalize;
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+	
+}
+
+
+.col1{
+	width:350px;
+	text-align: justify;
+}
+.hr{
+	width:250px;
+}
+.lfm{
+	height: 5%;
+}
+.col2{
+	width:42%;
+}
+.tbl{
+	width:400px;
+}
+.action{
+	text-align: center;
+	font-weight: bold;
+}

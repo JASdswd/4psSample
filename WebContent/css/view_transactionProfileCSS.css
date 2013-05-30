@@ -1,0 +1,171 @@
+@CHARSET "ISO-8859-1";
+
+	#dialog-confirm{
+		display: none;
+		
+	}
+	.button-dialog{
+		font-size: 16px;
+	}
+	#transactionForm{
+		width: 800px;
+	}
+	#connectToViewTrans{
+		width: 800px;
+	}
+	#change-photo{
+		margin-left: 50px;
+		display: none;
+	}
+	#success{
+		display: none;
+		
+	}
+	.hidden{
+		display: none;
+	}
+	.buttons{ font: 110% "Trebuchet MS", sans-serif;}
+	#street{
+		margin-left: 45px;
+	}
+	#monthFingerprint{
+		position: relative;
+		margin-top: 8px;
+	}
+	#month2{
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin-left: 200px;
+	}
+	#month3{
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin-left: 400px;
+	}
+	.mar-top{
+		margin-top: 8px;
+	}
+	#reasons{
+		margin-top: 10px;
+	}
+	table{
+		margin-top: 10px;
+	}
+	#action{
+		margin-left: auto;
+		margin-right: auto;
+	}
+	#photo_head{
+		margin-left: 25px;
+	}
+	select{
+		margin-left: 5px;
+		padding: 5px;
+	}
+	.data{
+		margin-left: 20px;
+		margin-right: 5px;
+		font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+		font-size: 16px;
+		color: black;
+		font-weight: normal;
+	}
+	.data123{
+		margin-left: 0px;
+		margin-right: 0px;
+		font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+		font-size: 13px;
+		color: black;
+		font-weight: normal;
+	}
+	label{
+		font-size: 16px;
+		color: black;
+		font-weight: bold;
+	}
+	.attending{
+		margin-left: 130px;
+		font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+		font-size: 16px;
+		color: black;
+		font-weight: normal;
+	}
+	.attending1{
+		margin-left: 30px;
+		font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+		font-size: 16px;
+		color: black;
+		font-weight: normal;
+	}
+	.description{
+		background-color: silver;
+		position: relative;
+		height: 30px;
+	}
+	#h_edit{
+		position: absolute;
+		top: 0;
+		right: 2px;
+	}
+	
+	#btn_changeGrantee{
+		position: absolute;
+		top: 0;
+		right: 62px;
+	}
+	#ws_edit{
+		position: absolute;
+		top: 0;
+		right: 2px;
+	}
+	#sd_delete{
+		position: absolute;
+		top: 0;
+		right: 2px;
+	}
+	#sd_edit{
+		position: absolute;
+		top: 0;
+		right: 80px;
+	}
+	#sd_add{
+		position: absolute;
+		top: 0;
+		right: 145px;
+	}
+	#gg_delete{
+		position: absolute;
+		top: 0;
+		right: 2px;
+	}
+	#gg_edit{
+		position: absolute;
+		top: 0;
+		right: 80px;
+	}
+	#gg_add{
+		position: absolute;
+		top: 0;
+		right: 145px;
+	}
+	#p_edit{
+		position: absolute;
+		top: 0;
+		right: 2px;
+	}
+	.description h2{
+		margin-left: 20px;
+		color: #1E54DC;
+	}
+	.HF_photo{
+		height: 128px;
+		width: 120px;
+	}
+	
+	#submit_btn{
+		width:80px;
+		height:35px;
+		font-size: 12px;	
+	}

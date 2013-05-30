@@ -1,0 +1,259 @@
+@CHARSET "UTF-8";
+
+
+/* #main{
+	padding: 15px 50px;
+} */
+
+.ui-autocomplete {
+		max-height: 150px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+		/* add padding to account for vertical scrollbar */
+		padding-right: 20px;
+	}
+
+html .ui-autocomplete {
+		height: auto;
+}
+
+#display,#display3{
+	margin-top:10px;
+	border:  1px solid black; ;
+	border-collapse: collapse;
+	font-size: 13px;
+	width: 890px;
+}
+
+#display2{
+	margin-top:10px;
+	border:  1px solid black; ;
+	border-collapse: collapse;
+	font-size: 13px;
+	width: 890px;
+}
+
+#display th,#display2 th,#display3 th{
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+ #tablePagination { 
+            background-color: powderblue; 
+            font-size: 10px; 
+            padding: 0px 5px; 
+            height: 40px;
+            width: 880px;
+            border:  1px solid black; ;
+            border-collapse: collapse;
+            border-top: none;
+            padding-top: 10px;
+          }
+          
+ #tablePagination_nextPage,#tablePagination_firstPage{
+ 	padding-left: 5px;
+ }
+
+img{
+	padding-right: 5px;
+	cursor: pointer;
+}
+
+#tbody td,#tbody3 td{
+	padding-left: 3px;
+}
+
+#tbody1 td{
+	padding-left: 3px;
+}
+
+#mun{
+	width:150px;
+}
+
+.trans{
+	width:200px;
+}
+
+#bname{
+	width:150px;
+}
+
+#dtp,#munp{
+	text-decoration: underline;
+	font-size: 13px;	
+}
+
+input[type="text"]{
+		margin-bottom: 5px;
+    	padding: 5px 3px 5px 10px;
+    	outline:none;
+    	font-family:Arial, Helvetica, sans-serif;
+		font-size:14px;
+		color:#404040;
+    }
+    .focusField{
+    	border:solid 2px #73A6FF;
+    	background:#EFF5FF;
+    	color:#000;
+    }
+    .idleField{
+    	background:#EEE;
+    	color: #6F6F6F;
+		border: solid 2px #DFDFDF;
+    }	
+    
+    label {
+	color:#000045;
+	cursor:pointer;
+	padding-left:2px;
+	line-height:16px;
+	font-size: 12px;
+}
+
+.prgrph{
+	color:blue;
+	margin-top:5px;
+	font-size: 15px;
+	display: inline;
+	padding-right: 10px;
+}
+
+.textField{
+	border:solid 2px #73A6FF;
+   	background:#EFF5FF;
+   	color:#000;
+   	margin-bottom: 5px;
+   	padding: 5px 3px 5px 10px;
+   	outline:none;
+   	font-family:Arial, Helvetica, sans-serif;
+	font-size:14px;
+}
+
+#tRelease{
+	text-align: right;
+	padding-right: 100px;
+	padding-top: 10px;
+}
+
+.input{
+	margin-bottom: 5px;
+	border:solid 2px #73A6FF;
+    background:#EFF5FF;
+    color:#000;
+	padding: 5px 3px 5px 10px;
+	outline: none;
+}
+
+#transaction{
+	width: 230px;
+}
+
+.amount{
+	text-align: right;
+	padding-right: 5px;
+}
+
+
+.overlay{
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	top: 0;
+	bottom: 0;
+	left:0;
+	background-color: black;
+	opacity: .85;
+	z-index: 900;
+	-moz-opacity: .85;
+	display: block;
+	position: fixed;
+	filter: alpha(opacity=1000);
+	
+}
+
+.ext{
+	text-align: left;
+	font-weight: bold;
+	padding-left: 10px;
+	margin-top: 8px;	
+}
+	
+.title{
+	
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	
+}
+	
+.load{
+	/* margin-top: -450px; */
+	z-index: 1000;
+	right: 50%;
+	position: fixed;
+	top: 30%;
+	background-position: center;
+	color: red;
+}	
+
+#filterDiv{
+	padding: 10px 50px;
+}
+#form{
+	position:  absolute; 
+	right: 0;
+	top: 0;
+	margin-right: 20px;
+}
+#startb{
+	margin-left:50px;
+	text-align: left;
+	position: relative;
+}
+#filterDiv1{
+	text-align: center;
+	padding-right:70px;
+	padding-top: 10px;
+}
+
+#id_cell9{
+	width:50px;
+	padding-left: 5px;
+	font-size: 11px;
+}
+
+hr{
+	width: 900px;
+	color: aqua;
+}
+
+#tbody,#tfoot,#tbody1,#tbody3{
+	background-color: powderblue;
+}
+#printDiv{
+display: inline;
+}
+.pform{
+	display: inline;
+	padding-left: 170px;
+	text-align: right;
+}
+
+.first, .prev, .next, .last{
+	background-color: #58aa00;
+    padding: 2px 2px;
+    display: inline;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    text-shadow: 1px 1px #666;
+    font-family: helvetica,sans-serif,arial;
+    font-size: 10px;
+    margin: 3px auto;
+	}

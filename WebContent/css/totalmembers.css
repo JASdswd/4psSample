@@ -1,0 +1,105 @@
+@CHARSET "UTF-8";
+
+#main{
+	
+	margin-top: 50px;
+	
+}
+
+#theader{
+	background-image: url(../image/gbg.gif);
+	font: 12px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bolder;
+	color: white;
+	display: block;
+	position: relative;
+	/*To help in the anchoring of the ".statusicon" icon image*/
+	width:inherit; 
+	text-decoration: none;
+	border: 1px solid black;
+	border-bottom: 1px;
+	font-weight: bolder;
+	height: 25px;
+	padding-left: 5px;
+}
+
+table{
+	border: 1px solid black;
+	border-collapse: collapse;
+	width:inherit;
+}
+
+.page_navigation{
+	width:inherit;
+	background-color: grey;
+	color: white;
+	/* font: 12px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bold; */
+	font-weight: bold;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	text-align: center;
+}
+
+.page_navigation a:HOVER{
+	color:blue !important;
+}
+
+.active_page{
+	color:red !important;
+}
+
+.accordion{
+	background: url(../image/gbg2.gif);
+	font: 13px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bolder;
+	color: black;
+	/*To help in the anchoring of the ".statusicon" icon image*/
+	width:inherit; 
+	padding: 4px 0;
+	text-decoration: none;
+	border: 1px solid black;
+	border-bottom: 1px;
+	height: 22px;
+}
+
+.acc{
+	background: #e8e8e8;
+	font: 12px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+	sans-serif;
+	color: black;
+	text-decoration: none;
+	padding: 2px 0;
+	padding-left: 10px;
+	height: 20px;
+}
+
+.acc:HOVER {
+	background: powderblue;
+	color: black;
+}
+	
+#total2,.total2{
+	color:black;
+	font: 12px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bolder;
+	font-weight: bold;
+}
+
+#total{
+	color:red;
+	font: 12px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bolder;
+	font-weight: bold;
+}
+
+.odd{
+	background-color: white;
+}
+
+#total1{
+	color:gold;
+	font: 12px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bolder;
+	font-weight: bold;
+}

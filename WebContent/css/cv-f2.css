@@ -1,0 +1,137 @@
+@CHARSET "UTF-8";
+
+
+#id_cell{
+	text-indent: 7px;
+}
+
+
+#headTBL{
+	width:800px;
+}
+#topTBL{
+	width:800px;
+}
+
+#school{
+	text-transform: capitalize;
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+	width:250px;
+}
+
+#mun_name{
+	width:250px;
+	text-transform: capitalize;	
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+	
+}
+
+.mm,.dd,.yyyy{
+	width:15px;;
+	height: 10px;
+	border-left: 1px solid black;
+	text-indent: 5px;
+}
+
+
+#end_date,#start_date,#yy{
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+}
+
+
+.midTBL{
+	width:800px;
+	border:1px ;
+	border-style: dotted; 
+	border-collapse: collapse;
+}
+
+.insert{
+	width:200px;
+	text-align: right;
+	font-family: sans-serif;
+}
+
+
+#mainDiv{
+	font-size: x-small;
+}
+
+#error{
+	font-size: 23px;
+	color:red;
+}
+
+.ques{
+	width:155px;
+}
+
+.one,.two,.four{
+	width:120px;
+}
+
+.three{
+	width:175px;
+}
+
+.sname{
+	width:850px;
+	
+}
+
+.sec{
+	text-indent: 20px;
+}
+
+.sm{
+	width:10px;
+}
+
+
+.td2{
+	text-align: right;
+}
+.td1{
+	width:270px;
+}
+.cv{
+	font-size: large;
+	
+}
+.f2{
+	font-size: x-large;
+}
+
+.footer{
+	width: 350px;
+	padding-left: 10px;
+}
+
+.hr{
+	width:250px;
+}
+.btm{
+	width:400px;
+}
+
+
+.tbl{
+	width:500px;
+}
+
+.btn{
+	border: 1px solid #1E54DC;
+	background-color: #ffffff;
+}
+
+
+#btmTBL{
+	width:800px;
+}
+.action{
+	text-align: center;
+	font-weight: bold;
+}

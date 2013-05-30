@@ -1,0 +1,81 @@
+@CHARSET "UTF-8";
+*{margin:0;
+padding: 0;
+}
+html{	
+	background: #ffffff url(bg.gif) repeat-x;
+}
+#page-wrap{
+	background-color: #ffffff;
+	width: 900px;
+	margin: auto auto 10px;
+	border: 1px solid #1E54DC;
+	box-shadow: 0px 0px 20px silver;
+	-moz-box-shadow: 0px 0px 20px silver;
+	-webkit-box-shadow: 0px 0px 20px silver;
+}
+#logo{
+	background: url('images/fingerprint4.jpg');
+}
+#aside{
+	position: relative;
+	background-color: #282828;
+}
+
+.img{
+	width: 40px;
+	height: 20px;
+}
+
+#main{
+	width: 900px;
+}
+
+
+
+#main-content{
+	
+	width:900px;
+
+}
+
+#mainbody{
+	
+	margin-top:10%;
+	background-color: transparent;
+	height: 500px;
+	
+	
+}
+
+.h3h{
+	font-family: serif;
+}
+
+.img1{
+	width:94px;
+	height: 94px;
+	margin-top: 3px;
+}
+#imgDiv{
+	background-color: #336633;
+	height: 100px;
+	width: 120px;
+	text-align: center;
+	
+}
+#dswd-image{
+	height: 94px;
+	width: 95px;
+}
+#display-login{
+	color: whitesmoke;
+	margin-top: -15px;
+	margin-left: 5px;
+	cursor: default;
+	text-align: left;
+	font-family: helvetica, sans-serif;
+	font-size: 12px;
+	letter-spacing: 2px;
+	text-shadow: 5px 5px 5px grey;
+}

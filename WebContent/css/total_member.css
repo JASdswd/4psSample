@@ -1,0 +1,52 @@
+@CHARSET "UTF-8";
+
+#accordion{
+	width:500px;
+	overflow: hidden;
+	margin-top: 10px;
+}
+
+#main{
+	padding-left: 150px;
+}
+
+.top_tbl td{
+	width:250px;
+	text-align:  left;
+}
+
+hr{
+	width: 500px;
+	color:powderblue;
+}
+
+.td2{
+	text-align: right;
+	padding-left: 10px;
+}
+
+
+#hide{
+	display: none;
+}
+
+.td3{
+	text-align: right;
+	padding-left: 30px;
+}
+.cont{
+	width:543px;
+}
+.col1{
+	float: left;
+}
+.col2{
+	float: right;
+}
+
+#total{
+	color:red;
+	font: 12px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica,
+		sans-serif bolder;
+	font-weight: bold;
+}
