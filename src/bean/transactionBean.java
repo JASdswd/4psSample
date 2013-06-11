@@ -62,7 +62,8 @@ public class transactionBean {
 	private int serverId = 0;
 	private String serverName = "";
 	private String serverDescription = "";
-	
+	private int count = 0;
+	private String date_recorded = "";
 	private int id = 0;
 	private int user_role = 0;
 	//------- updating the household set --------------------
@@ -81,6 +82,11 @@ public class transactionBean {
 	
 	public transactionBean(String pl_fname, String pl_lname) {
 		super();
+		this.pl_fname = pl_fname;
+		this.pl_lname = pl_lname;
+	}
+	public transactionBean(String pl_fname, String pl_lname,int user_id) {
+		this.id = user_id;
 		this.pl_fname = pl_fname;
 		this.pl_lname = pl_lname;
 	}
@@ -179,7 +185,7 @@ public class transactionBean {
 
 	public transactionBean(String household_id,String ws_name, int ws_householdMemberID,
 			 int ws_age, String ws_birthday,
-			boolean ws_pregnant, boolean ws_attendingSchool) {
+			boolean ws_pregnant, boolean ws_attendingSchool, String f_position, int status, String gender) {
 		super();
 		this.household_id = household_id;
 		this.ws_name = ws_name;
@@ -188,6 +194,9 @@ public class transactionBean {
 		this.ws_birthday = ws_birthday;
 		this.ws_pregnant = ws_pregnant;
 		this.ws_attendingSchool = ws_attendingSchool;
+		this.f_position = f_position;
+		this.status = status;
+		this.gender = gender;
 	}
 
 	
@@ -311,7 +320,7 @@ public class transactionBean {
 
 	public transactionBean(String household_id, int sd_householdMemberID,
 			String sd_name, int sd_age, String sd_birthday,
-			boolean sd_pregnant, boolean sd_attendingSchool, String f_position, int status) {
+			boolean sd_pregnant, boolean sd_attendingSchool, String f_position, int status, String gender) {
 		super();
 		this.household_id = household_id;
 		this.sd_householdMemberID = sd_householdMemberID;
@@ -322,10 +331,11 @@ public class transactionBean {
 		this.sd_attendingSchool = sd_attendingSchool;
 		this.f_position = f_position;
 		this.status = status;
+		this.gender = gender;
 	}
 	public transactionBean(String household_id, int gg_householdMemberID,int gg_age,
 			String gg_name,  String gg_birthday,
-			boolean gg_pregnant, boolean gg_attendingSchool, int status) {
+			boolean gg_pregnant, boolean gg_attendingSchool, int status, String gender) {
 		super();
 		this.household_id = household_id;
 		this.gg_householdMemberID = gg_householdMemberID;
@@ -335,6 +345,14 @@ public class transactionBean {
 		this.gg_pregnant = gg_pregnant;
 		this.gg_attendingSchool = gg_attendingSchool;
 		this.status = status;
+		this.gender = gender;
+	}
+	public transactionBean(String fname,String lname,String date,String mun_name,int ctr){
+		this.pl_fname = fname;
+		this.pl_lname= lname;
+		this.date_recorded = date;
+		this.municipality = mun_name;
+		this.count = ctr;
 	}
 	/*public transactionBean(String fname, String lname,byte[] photo_head,byte[] fingerprint, int mun, String mun_name, int brgy_id, String brgy_name) {
 		
@@ -370,7 +388,7 @@ public class transactionBean {
 		this.munlinkUser_id = munlinkUser_id;
 	}
 
-
+	
 
 
 
@@ -930,6 +948,30 @@ public class transactionBean {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+
+
+	public int getCount() {
+		return count;
+	}
+
+
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+
+
+	public String getDate_recorded() {
+		return date_recorded;
+	}
+
+
+
+	public void setDate_recorded(String date_recorded) {
+		this.date_recorded = date_recorded;
 	}
 
 

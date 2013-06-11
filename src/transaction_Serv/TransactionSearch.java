@@ -33,14 +33,12 @@ public class TransactionSearch extends HttpServlet {
      */
     public TransactionSearch() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.sendRedirect("TransactionView");
 		return;
 	}
@@ -49,7 +47,7 @@ public class TransactionSearch extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		System.out.println("TransactionSearch servlet doPost");
 		HttpSession session = request.getSession(false);
 		if(session==null){
 			System.out.println("session is null add municipality servelet");
@@ -78,6 +76,7 @@ public class TransactionSearch extends HttpServlet {
 				ArrayList<Beanstransaction>brgy_list=new ArrayList<Beanstransaction>();
 				ArrayList<Beanstransaction>birth_list=new ArrayList<Beanstransaction>();
 				ArrayList<Beanstransaction>phil_list=new ArrayList<Beanstransaction>();
+				ArrayList<Beanstransaction>hhset_list=new ArrayList<Beanstransaction>();
 				String name=request.getParameter("val");
 				String transaction=request.getParameter("transaction");
 				JSONObject obj = new JSONObject();
@@ -173,14 +172,25 @@ public class TransactionSearch extends HttpServlet {
 							obj.put("data", phil_list);
 						}
 					}
-					
+					else if(transaction.equals("set")){
+						String hhset = request.getParameter("hhset");
+						String set[] = hhset.split(" ");
+						hhset_list=dao.hhset_list(Integer.parseInt(set[0]),set[1]);
+						if(hhset_list.isEmpty()){
+							String mess="No Record Found";
+							obj.put("mess", mess);
+						}else{
+							obj.put("data", hhset_list);
+						}
+					}
+
 					out.print(obj);
 					out.flush();
 					out.close();
 					
 					
 				}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 			}
 		}

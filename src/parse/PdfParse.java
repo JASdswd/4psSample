@@ -51,7 +51,6 @@ public class PdfParse extends HttpServlet {
      */
     public PdfParse() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -120,7 +119,6 @@ public class PdfParse extends HttpServlet {
 				String savefile = split1[0];
 				System.out.println("savefile:"+savefile);
 				
-				// TODO Auto-generated method stub
 				PdfParse pdfTextParserObj = new PdfParse();
 				
 				//String pdfToText1 = pdfTextParserObj.pdftoText("C:\\Users\\postgres.HIS-PC\\Documents\\DSWD Files\\GCASH -SEPT-OCT 2011\\P5 Payroll List GCASH Set 1-FO-VIII.pdf");

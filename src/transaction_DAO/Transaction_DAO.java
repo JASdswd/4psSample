@@ -19,7 +19,6 @@ public class Transaction_DAO extends ConnectionDAO{
 
 	public Transaction_DAO() throws SQLException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	//searching for household_id
 	public ArrayList<Beanstransaction>household_list(String val ,int condition){
@@ -44,7 +43,22 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public ArrayList<Beanstransaction> getIDOCP(){
+		ArrayList<Beanstransaction>list=new ArrayList<Beanstransaction>();
+		Beanstransaction beans=null;
+		try{
+				rs=con.createStatement().executeQuery("select * from grsidoctypes_tbl");
+			
+			while(rs.next()){
+				beans = new Beanstransaction(rs.getInt(1),rs.getString(2),rs.getString(3));
+				list.add(beans);
+			}
+			
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return list;
@@ -62,7 +76,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -85,7 +98,6 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -109,7 +121,6 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -139,7 +150,6 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -159,7 +169,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			if(ret!=1)
 				throw new SQLException("Failed to Add");
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}
@@ -177,7 +186,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
-			// TODO: handle exception
 		}
 		return check;
 	}
@@ -187,13 +195,13 @@ public class Transaction_DAO extends ConnectionDAO{
 		ArrayList<Municpality>list =new ArrayList<Municpality>();
 		Municpality bean=null;
 		try{
-			rs=con.createStatement().executeQuery("select distinct m.mun_id,m.mun_name from household_tbl as h,municipal_tbl as m where h.municipality = m.mun_id order by h.municipality");
+			rs=con.createStatement().executeQuery("select distinct m.mun_id,m.mun_name from household_tbl as h,municipal_tbl as m where h.municipality = m.mun_id order by m.mun_name");
 			while(rs.next()){
 				bean=new Municpality(rs.getInt(1),rs.getString(2));
 				list.add(bean);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -206,11 +214,10 @@ public class Transaction_DAO extends ConnectionDAO{
 			rs=con.createStatement().executeQuery("select distinct b.brgy_id,b.brgy_name from household_tbl as h,brgy_tbl as b where h.barangay = b.brgy_id and h.municipality = b.mun_id and b.mun_id="+municipal+" order by h.barangay");
 			while(rs.next()){
 				bean=new Brgy(rs.getInt(1),rs.getString(2));
-				//System.out.println(rs.getInt(1)+rs.getString(2));
 				list.add(bean);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -231,7 +238,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -252,7 +259,6 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -279,7 +285,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -297,7 +303,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			if(ret!=1)
 				throw new SQLException("Failed to Add");
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}*/
@@ -353,7 +358,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
 		}
 		return list;
 	}*/
@@ -372,7 +376,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -386,7 +390,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				check=true;
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return check;
 	}
@@ -399,7 +403,6 @@ public class Transaction_DAO extends ConnectionDAO{
 				check=true;
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
 		}
 		return check;
 	}*/
@@ -413,7 +416,6 @@ public class Transaction_DAO extends ConnectionDAO{
 				id=rs.getInt("reason_id")+1;
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
 		}
 		return id;
 	}*/
@@ -425,25 +427,21 @@ public class Transaction_DAO extends ConnectionDAO{
 			/*try{
 				con.createStatement().execute("delete from reason_tbl where household_id='"+household_id+"' and month="+month+" and year="+year+" ");
 			}catch (Exception e) {
-				// TODO: handle exception
 			}*/
 			try{
 				con.createStatement().execute("update received_tbl set month_and_year="+nwmonth+",amount="+amount+" where household_id='"+household_id+"' and month_and_year="+month+" ");
 			}catch (Exception e) {
-				// TODO: handle exception
 			}
 			
 		/*}else if(recieve==3){
 			try{
 				con.createStatement().execute("delete from reason_tbl where household_id='"+household_id+"' and month="+month+" and year="+year+" ");
 			}catch (Exception e) {
-				// TODO: handle exception
 				e.printStackTrace();
 			}
 			try{
 				con.createStatement().execute("update received_tbl set month_and_year="+nwmonth+",amount="+amount+",receive="+recieve+" where household_id='"+household_id+"' and month_and_year="+month+" ");
 			}catch (Exception e) {
-				// TODO: handle exception
 				e.printStackTrace();
 			}
 		}*/
@@ -457,14 +455,13 @@ public class Transaction_DAO extends ConnectionDAO{
 				con.createStatement().execute("update received_tbl set month_and_year="+nwmonth+",amount="+amount+",receive="+recieve+" where household_id='"+household_id+"' and month_and_year="+month+" ");
 				check=true;
 			}catch (Exception e) {
-				// TODO: handle exception
+				e.printStackTrace();
 			}
 		}else if(recieve==false){
 			try{
 				con.createStatement().execute("update received_tbl set month_and_year="+nwmonth+",amount="+amount+",receive="+recieve+" where household_id='"+household_id+"' and month_and_year="+month+" ");
 				check=true;
 			}catch (Exception e) {
-				// TODO: handle exception
 				e.printStackTrace();
 			}
 		}
@@ -480,7 +477,7 @@ public class Transaction_DAO extends ConnectionDAO{
 			head_name=rs.getString("head_name");
 		}
 	}catch (Exception e) {
-		// TODO: handle exception
+		e.printStackTrace();
 	}
 	return head_name;
 	}
@@ -494,7 +491,7 @@ public class Transaction_DAO extends ConnectionDAO{
 			barangay=rs.getString("barangay");
 		}
 	}catch (Exception e) {
-		// TODO: handle exception
+		e.printStackTrace();
 	}
 	return barangay;
 	}
@@ -508,7 +505,7 @@ public class Transaction_DAO extends ConnectionDAO{
 			municipal=rs.getString("municipality");
 		}
 	}catch (Exception e) {
-		// TODO: handle exception
+		e.printStackTrace();
 	}
 	return municipal;
 	}
@@ -518,7 +515,7 @@ public class Transaction_DAO extends ConnectionDAO{
 		try{
 				con.createStatement().execute("update received_tbl set date_receive='"+day+"' ,time='"+time+"',receive='"+receive+"',comment='"+comment+"' where household_id='"+household_id+"' and month_and_year='"+month+"' ");
 		}catch (Exception e) {
-		// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 	
@@ -565,7 +562,6 @@ public class Transaction_DAO extends ConnectionDAO{
 		
 	}catch (Exception e) {
 		e.printStackTrace();
-		// TODO: handle exception
 	}
 	return list;
 	}
@@ -584,7 +580,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			list.add(beans);
 		}
 	}catch (Exception e) {
-		// TODO: handle exception
 		e.printStackTrace();
 	}
 	return list;
@@ -606,7 +601,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -622,7 +617,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -635,7 +630,6 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(rs.getString("household_id"));
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -649,7 +643,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(rs.getString("head_name"));
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -662,7 +656,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(rs.getString("spouse_name"));
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -682,7 +676,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(rs.getString("child_name"));
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -695,7 +689,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(rs.getString("head_name"));
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -708,7 +702,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(rs.getString("head_name"));
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}	
 		return list;
 	}
@@ -721,7 +715,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(rs.getString("barangay"));
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -741,7 +735,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -755,7 +749,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(rs.getString("philhealth_id"));
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -775,7 +769,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -797,7 +791,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -818,7 +811,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -838,7 +831,6 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -861,7 +853,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -883,7 +874,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -906,7 +896,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -922,7 +911,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(bean);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -947,7 +936,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -990,7 +978,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -1011,7 +998,7 @@ public class Transaction_DAO extends ConnectionDAO{
 				list.add(beans);
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return list;
 	}
@@ -1033,7 +1020,6 @@ public class Transaction_DAO extends ConnectionDAO{
 			}
 			
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return list;
@@ -1148,4 +1134,23 @@ public BeansAdd getDataByGrantee2(String dateoftransaction, String id,int sub) {
 	
 	return bean;
 }
+public ArrayList<Beanstransaction>hhset_list(int hhset, String hhgroup){
+		ArrayList<Beanstransaction>list=new ArrayList<Beanstransaction>();
+		Beanstransaction beans=null;
+		try{
+			rs=con.createStatement().executeQuery("select household_id, household_member_id,head_name,barangay,municipality from household_tbl " +
+					"where  hh_set ="+hhset+" and set_group = '"+hhgroup+"' order by head_name ");
+			while(rs.next()){
+				beans = new Beanstransaction(rs.getString("household_id"), 
+						rs.getInt("household_member_id"), 
+						rs.getString("head_name"),
+						rs.getString("barangay"),
+						rs.getString("municipality"));
+				list.add(beans);
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }

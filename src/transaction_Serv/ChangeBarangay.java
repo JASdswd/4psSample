@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +15,6 @@ import org.json.JSONObject;
 
 import transaction_DAO.Transaction_DAO;
 
-import beans.Beanstransaction_record;
 import beans.Brgy;
 
 /**
@@ -32,14 +29,12 @@ public class ChangeBarangay extends HttpServlet {
      */
     public ChangeBarangay() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		ArrayList<Brgy>brgy_list=new ArrayList<Brgy>();
 		try{
 			PrintWriter out=response.getWriter();
@@ -60,7 +55,7 @@ public class ChangeBarangay extends HttpServlet {
 			out.flush();
 			out.close();
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 
@@ -68,7 +63,6 @@ public class ChangeBarangay extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
 	}
 	

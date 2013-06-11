@@ -12,7 +12,6 @@ public class UserDAO extends ConnectionDAO {
 
 	public UserDAO() throws SQLException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public ArrayList<transactionBean> getmunicipal(boolean flag) //getting municipal names
 		throws SQLException {
@@ -214,7 +213,6 @@ public class UserDAO extends ConnectionDAO {
 		}		
 	}
 	public String getMunValue(String mun_id) {
-		// TODO Auto-generated method stub
 		String munValue = "";
 		String sql = "SELECT mun_name FROM `municipal_tbl` WHERE mun_id = '"+mun_id+"'";
 		
@@ -368,7 +366,7 @@ public class UserDAO extends ConnectionDAO {
 				check=true;
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return check;
 	}
@@ -476,7 +474,7 @@ public class UserDAO extends ConnectionDAO {
 		ArrayList<transactionBean> list = new ArrayList<transactionBean>();
 		transactionBean bean = null;
 		System.out.println("view method UserDAO user_role:"+user_role);
-		if(user_role.equals("3") || user_role.equals("1")){
+		if(user_role.equals("3") || user_role.equals("1") || user_role.equals("10")){
 		}
 		else{
 			user_role = "0";
@@ -684,4 +682,48 @@ public class UserDAO extends ConnectionDAO {
 		return image;
 	}
 //************************End of Functions for provincial link and financial analyst*******************************
+//Reports Verifier
+	
+	public ArrayList<transactionBean> getNameofVerifier(){
+		ArrayList<transactionBean> name = new ArrayList<transactionBean>();
+		transactionBean bean = null;
+		String sql = "select fname,lname,u.id from user_tbl as u where user_id = 5";
+		try {
+			rs = con.createStatement().executeQuery(sql);
+			while (rs.next()){
+				bean = new transactionBean(
+						rs.getString(1),
+						rs.getString(2),
+						rs.getInt(3)
+				);
+				name.add(bean);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return name;
+	}
+	public ArrayList<transactionBean> getVRR(int ctr, String sqlQuery){
+		ArrayList<transactionBean> list = new ArrayList<transactionBean>();
+		transactionBean bean = null;
+		if(ctr == 1){
+			sqlQuery+= " limit 50";
+		}
+		try {
+			rs = con.createStatement().executeQuery(sqlQuery);
+			while(rs.next()){
+				bean = new transactionBean(
+						rs.getString(1),
+						rs.getString(2),
+						rs.getString(3),
+						rs.getString(4),
+						rs.getInt(5)
+				);
+				list.add(bean);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }// end of UserDAO

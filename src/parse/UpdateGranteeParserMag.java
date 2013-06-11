@@ -54,7 +54,6 @@ public class UpdateGranteeParserMag extends HttpServlet {
      */
     public UpdateGranteeParserMag() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -140,7 +139,7 @@ public class UpdateGranteeParserMag extends HttpServlet {
 											if(!wife_exists){
 												//myrow++;
 												//System.out.println("in sa add spouse:"+l.getHousehold_id());
-												dao.addSpouse(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+												dao.addSpouse(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 											}
 											else{
 												/*b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id());
@@ -152,7 +151,7 @@ public class UpdateGranteeParserMag extends HttpServlet {
 											if(!child_exists){
 												//myrow++;
 												System.out.println("do get in sa add sa children"+l.getHousehold_id());
-												dao.addChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+												dao.addChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 											}else{
 												/*b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id());
 												*/duplicateList.add(l);
@@ -163,7 +162,7 @@ public class UpdateGranteeParserMag extends HttpServlet {
 											if(!grandchild_exists){
 												//myrow++;
 												//System.out.println("in sa add sa gchildren"+l.getHousehold_id());
-												dao.addGrandChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getStatus());
+												dao.addGrandChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getStatus(),l.getGender());
 											}else{
 												duplicateList.add(l);
 											}
@@ -173,7 +172,7 @@ public class UpdateGranteeParserMag extends HttpServlet {
 											if(!or_exists){
 												//myrow++;
 												//System.out.println("in sa add sa gchildren"+l.getHousehold_id());
-												dao.addOtherRealtives(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+												dao.addOtherRealtives(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 											}else{
 												duplicateList.add(l);
 											}
@@ -1257,6 +1256,7 @@ public class UpdateGranteeParserMag extends HttpServlet {
 									
 								}
 								else{
+									hhlist.setGstatus("0");
 									rowData.add(hhlist);
 								}
 									
@@ -1352,7 +1352,7 @@ public class UpdateGranteeParserMag extends HttpServlet {
 											wife_exists = dao.searchWife(false,l.getHousehold_id(),l.getHmember_id());
 											if(!wife_exists){
 												System.out.println("in sa add spouse:"+l.getHousehold_id());
-												dao.addSpouse(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+												dao.addSpouse(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 												addList.add(l);
 											}
 											else{
@@ -1368,7 +1368,7 @@ public class UpdateGranteeParserMag extends HttpServlet {
 											if(!child_exists){
 												//myrow++;
 												System.out.println("in sa add sa children"+l.getHousehold_id());
-												dao.addChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+												dao.addChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 												addList.add(l);
 											}else{
 												dao.updateMember(false, l,"children_tbl","child_name");
@@ -1382,7 +1382,7 @@ public class UpdateGranteeParserMag extends HttpServlet {
 											if(!grandchild_exists){
 												//myrow++;
 												System.out.println("in sa add sa gchildren"+l.getHousehold_id());
-												dao.addGrandChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getStatus());
+												dao.addGrandChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getStatus(),l.getGender());
 												addList.add(l);
 											}else{
 												dao.updateMemberG(false, l,"grandchild_tbl","grandchild_name");
@@ -1398,7 +1398,7 @@ public class UpdateGranteeParserMag extends HttpServlet {
 												if(!or_exists){
 													//myrow++;
 													System.out.println("in sa add sa other_relatives"+l.getHousehold_id());
-													dao.addOtherRealtives(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+													dao.addOtherRealtives(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 													addList.add(l);
 												}else{
 													dao.updateMember(false, l,"other_relatives_tbl","fullname");

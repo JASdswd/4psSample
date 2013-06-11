@@ -1,8 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="java.util.*,java.awt.*,javax.swing.*"%>
-<%@ page import="java.text.*"%> 
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
     <% String cPath = request.getContextPath(); %>
     <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
       <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
@@ -23,7 +20,7 @@ if(session.getAttribute("username")==null){
 }
 %>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="<%= cPath %>/css/home.css"/>
 <link rel="stylesheet" type="text/css" href="<%= cPath %>/pro_drop_1/pro_drop_1.css" />
 
@@ -36,8 +33,6 @@ if(session.getAttribute("username")==null){
 <script type="text/javascript" src="<%= cPath %>/js/jquery-1.6.2.min.js" ></script>
 <script type="text/javascript" src="<%=cPath %>/js/jquery_ui.js"></script>
 <script type="text/javascript" src="<%= cPath %>/js/pages.js"></script>
-<script type="text/javascript" src="<%=cPath %>/js/displayTimeDate.js"></script> 
-<link rel="stylesheet" type="text/css" href="<%=cPath %>/css/displayTimeDate.css"/>
 <!--for pagination  -->
 <!--<script type="text/javascript" src="<%=cPath %>/paginationAndSort/jquery.tablesorter.filer.js" ></script>
 <script type="text/javascript" src="<%=cPath %>/paginationAndSort/jquery.tablesorter.pager.js" ></script>
@@ -483,8 +478,9 @@ var today=new Date();
 				GetCount(dateFuture1, 'countbox1');
 				var strbuild="";
 				var ctr = 0;
+				var amount = "";
 				for(var i=0;i<x.data.length;i++){
-
+						amount += x.data[i].current_amount;
 						strbuild+="<td>"+x.data[i].month+"</td>";
 						/* strbuild+="<td>"+x.data[i].year+"</td>"; */
 						strbuild+="<td>P"+x.data[i].amount+"</td>";
@@ -504,7 +500,22 @@ var today=new Date();
 						strbuild+="<td>"+x.data[i].comment+"</td>";
 					
 				}
+				
+				var new_amount = "";
+				var count = 0;
+				for(var i = amount.length-1;i>=0;i--){
+					if(count==3){
+						new_amount = "," + new_amount;
+						new_amount = amount[i] + new_amount;
+					}
+					else{
+						new_amount = amount[i] + new_amount;
+						count++;
+					}
+				}
+				new_amount = "P "+new_amount+".00";
 				document.getElementById(x.id).innerHTML=strbuild;
+				document.getElementById("cur_amount").innerHTML = new_amount;
 			}
 			
 		}
@@ -542,8 +553,8 @@ var today=new Date();
 					var municipality = $("#munc1").val();
 					if(municipality=="Municipality"){
 						$( "#dialog_no_mun_selected" ).dialog({
-							show: "fade",
-							hide: "fade",
+							show: "show",
+							hide: "slide",
 							resizable: false,
 							height:140,
 							modal: true,
@@ -580,8 +591,8 @@ var today=new Date();
 					var municipality = $("#munc1").val();
 					if(municipality=="Municipality"){
 						$( "#dialog_no_mun_selected" ).dialog({
-							show: "fade",
-							hide: "fade",
+							show: "show",
+							hide: "slide",
 							resizable: false,
 							height:140,
 							modal: true,
@@ -706,14 +717,14 @@ var today=new Date();
 			//alert("minutes:"+dateFuture2.getMinutes());
 			
 			dateFuture2.setMinutes(dateFuture2.getMinutes() + 10); // for adding 10 minutes.
-			//dateFuture2.setSeconds(dateFuture2.getSeconds()+20); // for adding seconds. (20 seconds)
+			//dateFuture2.setSeconds(dateFuture2.getSeconds()+10); // for adding seconds. (10 seconds)
 			
 		dateNow = new Date();	//grab current date
 		amount = dateFuture2.getTime() - dateNow.getTime();	//calc milliseconds between dates
 		delete dateNow;
 		
 		
-		// if time is already past
+		// if time is already past.
 		if(amount < 0){
 			//document.getElementById(iid).innerHTML="Now!";
 			document.getElementById('confirm_password').value = "";
@@ -797,7 +808,12 @@ var today=new Date();
 	  }
 	}
 	window.onbeforeunload=goodbye; 
-	
+	function OnEnterEvery10Min(e){
+		if(e && e.keyCode == 13){
+			var password = document.getElementById("confirm_password").value;
+			xhrGo("GET","Password_Confirmation?confirmation_password="+password, fingerprintConfirm, "plain");
+		}	
+	}
 </script>
 <style type="text/css">
 #main{
@@ -967,31 +983,11 @@ table {
 		response.sendRedirect(cPath+"/login/login1.jsp");
 	}
 %>
-<%
-	SimpleDateFormat dateSDF = new	SimpleDateFormat("MMMM dd,yyyy");
-	SimpleDateFormat dw = new SimpleDateFormat("EEEE");
- 	Calendar s = Calendar.getInstance();
-	Date today = s.getTime();
-	String sDate = dateSDF.format(today);
-	String Dw = dw.format(today);
-%>
-<body onload="updateClock(); setInterval('updateClock()', 1000 )">
-<div id="displayTD">
-<table id="tbl">
-	<tr> <td><input checked="checked" onclick="hide();" id="hide" type="checkbox"/> Keep this date & time in view</td> </tr>
- 	<tr>
- 		<td class="day"><%if(Dw.equals("Sunday")){%> <font id="sun"><% out.println(Dw); %>,</font> 
-						  <%}else{%> <font class="mon-sat"><% out.println(Dw); %>,</font><% } %>
-		<!-- </td>
- 		<td class="timeDate"> --><font class="mon-sat"><% out.println(sDate); %></font><!-- <hr> --></td></tr><!--displaying Date[jm]  -->
-	<tr><td class="timeDate"> <span id="clock">&nbsp;</span><!-- <hr> --> </td></tr><!--displaying Time[jm]  -->
-	</table>		 
-</div>
+<body>
 <div id="page-wrap">
 <div id="header" >
 <div id="logo" >
 	<img id="logo_image" alt="" src="<%=cPath %>/logos/headers-mag.jpg">
-	<div id="display-login"> Login as <c:out value="${duser_rolename }"></c:out>(<c:out value="${dfname }"></c:out>) </div>
 </div><!-- End of Logo -->
 </div><!-- End of Header -->
 <div id="main-content">
@@ -1051,7 +1047,7 @@ table {
 					</tr>
 					<tr>
 						<td>	
-								<p class="cur_amount" >P&nbsp;
+								<p class="cur_amount" id="cur_amount" >P&nbsp;
 									<c:choose>
 										<c:when test="${last_amount > 999}">
 											<fmt:formatNumber pattern="0,000.00" type="currency" >
@@ -1114,7 +1110,7 @@ table {
 									<td class="tbl_data">Not Yet Received</td>
 								</c:when>
 								<c:otherwise>
-									<td class="tbl_data">Not Yet Received:Confirmed by <a href="<%=cPath %>/ViewMunProf?name=${list.munLink_name}&h=${list.household_id}"><c:out value="${list.munLink_name}"></c:out></a> </td>
+									<td class="tbl_data">Not Yet Received:Confirmed by <a href="<%=cPath %>/ViewMunProf?user_role=user_role&mun_id=mun_id&id=id"></a> </td>
 								</c:otherwise>
 							</c:choose>
 						</c:if>
@@ -1179,7 +1175,7 @@ table {
 <div id="noFingerprint" title="Message" style="display: none;">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><c:out value="${head_name}"></c:out> doesn't have a registered fingerprint.</p>
 </div>
-<div class="hidden" id="confirm_prov" title="Confirmation">
+<div class="hidden" id="confirm_prov" title="Confirmation" onkeypress="return OnEnterEvery10Min(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
 		Please enter password of bookkeeper for confirmation.
 	</p>
@@ -1227,7 +1223,7 @@ table {
 	<p style="margin-left: 30px;"><img src="<%= cPath %>/images/loading.gif" /></p>
 
 </div>
-<div id="dialog-select_mun" title="4PS system" style="display:none;">
+<div id="dialog-select_mun" title="4PS system" style="display:none">
 	<label>Select municipal :</label>
 	<select name="municipal" id="munc1" class="input">
 							<option selected="selected" disabled="disabled" >Municipality</option>

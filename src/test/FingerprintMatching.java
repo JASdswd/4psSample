@@ -2,9 +2,12 @@ package test;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.Calendar;
+import java.util.Timer;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -26,12 +29,6 @@ import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPSample;
 import com.digitalpersona.onetouch.DPFPTemplate;
-import com.digitalpersona.onetouch.capture.DPFPCapture;
-import com.digitalpersona.onetouch.capture.DPFPCapturePriority;
-import com.digitalpersona.onetouch.capture.event.DPFPDataEvent;
-import com.digitalpersona.onetouch.capture.event.DPFPDataListener;
-import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusAdapter;
-import com.digitalpersona.onetouch.capture.event.DPFPReaderStatusEvent;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
@@ -48,7 +45,6 @@ public class FingerprintMatching extends HttpServlet {
      */
     public FingerprintMatching() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -79,36 +75,94 @@ public class FingerprintMatching extends HttpServlet {
 		                    transactionBean beanFingerprint = new transactionBean();
 		                    transactionBean beanFingerprint1 = new transactionBean();
 		                    BaseDAO dao = new BaseDAO();
-		                    byte[] data = beanFingerprint.getFingerprint();
-		                    beanFingerprint = dao.getfingerprint(false, "158407014-5967-00003");
-		                    beanFingerprint1 = dao.getfingerprint(false, "158407014-5967-00003");
-		                    DPFPSample sample1 = DPFPGlobal.getSampleFactory().createSample(beanFingerprint.getFingerprint());
-		                   DPFPFeatureExtraction featureExtractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
-		                    DPFPFeatureSet featureSet = featureExtractor.createFeatureSet(sample1, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
-		                   //DPFPFeatureSet featureSet = DPFPGlobal.getFeatureSetFactory().createFeatureSet();
-		                  // featureSet.deserialize(beanFingerprint.getFingerprint());
-		                    //featureSet.deserialize(beanFingerprint.getFingerprint());
+		                    beanFingerprint = dao.getfingerprint(false, "select fingerprint from fingerprint_tbl_temp where household_id = '153828004-4279-00051'");
+		                    beanFingerprint1 = dao.getfingerprint(false, "select fingerprintForFM from fingerprint_tbl_tempForFM where household_id = '153828004-5493-00016'");
+		                   /* DPFPSample sample1 = DPFPGlobal.getSampleFactory().createSample();
+		                    sample1.deserialize(beanFingerprint.getFingerprint());
+		                    DPFPFeatureExtraction featureExtractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
+		                   // DPFPFeatureSet featureSet = featureExtractor.createFeatureSet(sample1, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
+		                   DPFPFeatureSet featureSet = DPFPGlobal.getFeatureSetFactory().createFeatureSet();
+		                   featureSet.deserialize(sample1.serialize());*/
+		                    /*DPFPSample sample = DPFPGlobal.getSampleFactory().createSample();
+		                    sample.deserialize(beanFingerprint1.getFingerprint());
+		                    DPFPFeatureExtraction featureExtractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
+		                    DPFPFeatureSet featureSet = featureExtractor.createFeatureSet(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);*/
+		                    
+		                    //DPFPFeatureSet featureSet1 = DPFPGlobal.getFeatureSetFactory().createFeatureSet(beanFingerprint1.getFingerprint());
+		                  //  featureSet1.deserialize(beanFingerprint1.getFingerprint());
+		                    
+		                    ArrayList<transactionBean> bean = new ArrayList<transactionBean>();
+		                    ArrayList<transactionBean> bean123 = new ArrayList<transactionBean>();
 		                    DPFPVerification matcher = DPFPGlobal.getVerificationFactory().createVerification();
 		                    matcher.setFARRequested(DPFPVerification.MEDIUM_SECURITY_FAR);
+		                    bean = dao.getallfingerprintForFM(false, "select fingerprint,household_id from fingerprint_tbl_temp");
+		                    bean123 = dao.getallfingerprintForFM(false, "select fingerprintForFM,household_id from fingerprint_tbl_tempForFM");
+		                    DPFPFeatureSet featureSet1;
+		                    DPFPFeatureSet featureSet2;
+		                    int controller = 0;
+		                    int count = 0;
+		                    int ctr = 0;
+		                    for(transactionBean k: bean123){
+		                    	//controller = 0;
+		                    	
+		                    		//if(count==20){
+		                    		Calendar calendar= Calendar.getInstance();
+									DateFormat timeInstance = SimpleDateFormat.getTimeInstance();
+									SimpleDateFormat format= new SimpleDateFormat("MM/dd/yyyy");
+									
+									String date = format.format(calendar.getTime());
+									String time = timeInstance.format(Calendar.getInstance().getTimeInMillis());
+									//System.out.println(time);
+									System.out.println("df:"+Calendar.getInstance().getTimeInMillis());
+		                    		for(transactionBean l: bean){
+			                    		 featureSet1 = DPFPGlobal.getFeatureSetFactory().createFeatureSet(k.getFingerprint());
+			                    		 /*DPFPTemplate t = DPFPGlobal.getTemplateFactory().createTemplate();
+			                    		 t.deserialize(l.getFingerprint());*/
+			                    		 // t1 was created kai mas pas pas cja inig compare.
+			                    		// System.out.println("count:"+k.getHousehold_id());
+			                    		 DPFPTemplate t1 = DPFPGlobal.getTemplateFactory().createTemplate(l.getFingerprint());
+			                    		 featureSet2 = DPFPGlobal.getFeatureSetFactory().createFeatureSet(l.getFingerprint());
+			                    		 DPFPVerificationResult result = 
+			 	    						matcher.verify(featureSet1, t1);
+			                    		 //System.out.println("count:"+ctr++);
+			                    		 if (result.isVerified()){
+			 	    						//household_ctr ="yes..!!";
+			                    			// controller++;
+			                    			if(!l.getHousehold_id().equals(k.getHousehold_id())){
+			                    				System.out.println("duplicate fingerprint:"+k.getHousehold_id()+"-and-:"+l.getHousehold_id());
+			                    			}
+			 	    						
+			 	    						controller = 1;
+			 	    					}
+			                    		 
+			                    	}
+		                    		String time1 = timeInstance.format(Calendar.getInstance().getTimeInMillis());
+		                    		System.out.println(Calendar.getInstance().getTimeInMillis());
+		                    		//System.out.println("time1:"+time1);
+		                    		//}
+		                    	count++;
+		                    	
+		                    }
+		                    
+		                    
+		                   
 		                    String household_ctr = "";
-		    				int controller = 0;
-		    				System.out.println("Compare two bytes of array:"+Arrays.equals(beanFingerprint.getFingerprint(), beanFingerprint1.getFingerprint()));
+		    				//int controller = 0;
+		    				/*System.out.println("Compare two bytes of array:"+Arrays.equals(beanFingerprint.getFingerprint(), beanFingerprint1.getFingerprint()));
 		    				DPFPTemplate t = DPFPGlobal.getTemplateFactory().createTemplate();
 		    				
 		    					
-	    					t.deserialize(beanFingerprint1.getFingerprint());
-	    					DPFPVerificationResult result = 
-	    						matcher.verify(featureSet, t);
-	    				
+	    					t.deserialize(beanFingerprint.getFingerprint());*/
+	    					/*DPFPVerificationResult result = 
+	    						matcher.verify(featureSet1, t);
+	    		
 	    					System.out.println("result:"+result.getFalseAcceptRate());
 	    					System.out.println("result:"+result.isVerified());
-	    					System.out.println("dfdf:"+result.hashCode());
-	    					System.out.println("result.toString:"+result.toString());
 	    					if (result.isVerified()){
 	    						household_ctr ="yes..!!";
 	    						System.out.print("-------------------------searched:hsh:"+household_ctr);
 	    						controller = 1;
-	    					}
+	    					}*/
 		                    /*    try search by fingerprint        */
 		        			/*try {
 		        				BaseDAO dao = new BaseDAO();
@@ -154,7 +208,6 @@ public class FingerprintMatching extends HttpServlet {
 									byte[] argie = sample.serialize();
 									d.searchArgie(false, argie,household_ctr);
 								} catch (Exception e) {
-									// TODO: handle exception
 								}*/
 		        				System.out.println("match found:"+household_ctr);
 		        	            PrintWriter out1= response.getWriter();
@@ -163,7 +216,6 @@ public class FingerprintMatching extends HttpServlet {
 		        					obj.put("matchedHousehold_id", household_ctr);
 		        					obj.put("mun", request.getParameter("mun"));
 		        				} catch (JSONException e2) {
-		        					// TODO Auto-generated catch block
 		        					e2.printStackTrace();
 		        				}
 		        	            out1.print(obj);
@@ -175,10 +227,9 @@ public class FingerprintMatching extends HttpServlet {
 		        	            PrintWriter out1= response.getWriter();
 		        	            JSONObject obj=new JSONObject();
 		        	        	try {
-		        					obj.put("matchedHousehold_id", "false");
+		        					obj.put("fingerprintMatching", "false");
 		        					obj.put("mun", request.getParameter("mun"));
 		        				} catch (JSONException e2) {
-		        					// TODO Auto-generated catch block
 		        					e2.printStackTrace();
 		        				}
 		        	            out1.print(obj);
@@ -204,9 +255,8 @@ public class FingerprintMatching extends HttpServlet {
 		                    PrintWriter out1= response.getWriter();
 		                    JSONObject obj=new JSONObject();
 		                	try {
-		        				obj.put("failedToVerify", "1");
+		        				obj.put("failedToVerify", "1"); 
 		        			} catch (JSONException e2) {
-		        				// TODO Auto-generated catch block
 		        				e2.printStackTrace();
 		        			}
 		                    out1.print(obj);
@@ -222,7 +272,6 @@ public class FingerprintMatching extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

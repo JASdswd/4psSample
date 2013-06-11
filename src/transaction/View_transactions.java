@@ -12,17 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.poi.hssf.util.HSSFColor.TAN;
-
 import transaction_DAO.Transaction_DAO;
 
 
 
 import DAO.BaseDAO;
-import DAO.GrsCasesDAO;
 import bean.reportBean;
 import bean.transactionBean;
-import beans.Beanstransaction_record;
 
 /**
  * Servlet implementation class View_transactions
@@ -36,14 +32,12 @@ public class View_transactions extends HttpServlet {
      */
     public View_transactions() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doPost(request, response);
 	}
 
@@ -52,7 +46,6 @@ public class View_transactions extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session  = request.getSession(false);
-	
 		if(session==null){
 			System.out.println("session is null add municipality servelet");
 			ServletContext sc=this.getServletContext();
@@ -78,7 +71,6 @@ public class View_transactions extends HttpServlet {
 				
 				try{
 					String household_id = (String)session.getAttribute("household_id");
-					String username = (String)session.getAttribute("username");
 					BaseDAO dao = new BaseDAO();
 					ArrayList<transactionBean> hh_setgroup = new ArrayList<transactionBean>();
 					String f_position = dao.getfPosition(household_id);	
@@ -88,7 +80,6 @@ public class View_transactions extends HttpServlet {
 					municipal = dao.getmunicipal(false);
 					barangay = dao.getbrgy(mun);
 					hh_setgroup = dao.getHH_SetGroup(false,household_id);
-					
 					if(household.isEmpty()){
 						ServletContext sc = this.getServletContext();
 						RequestDispatcher rd = sc.getRequestDispatcher("/redirectPage/redirect.jsp");
@@ -111,8 +102,9 @@ public class View_transactions extends HttpServlet {
 						other_relatives = dao.getother_rel_info(false, household_id);
 						
 						grandchild = dao.getgrandchild_info(false, household_id);
-						
-						int ctr = dao.testIfExist(false, "select * from photo_tbl_temp2 where household_id = '"+household_id+"'");
+						System.out.println("before cted");
+						int ctr = dao.testIfExist(false, "select household_id from photo_tbl_temp2 where household_id = '"+household_id+"'");
+						System.out.println("cterer");
 						if(ctr>0){
 							request.setAttribute("photohead_exist", true);
 						}
@@ -125,7 +117,7 @@ public class View_transactions extends HttpServlet {
 						else{
 							request.setAttribute("user_Prov", false);
 						}
-						int fingerprint_ctr = dao.testIfExist(false, "select * from fingerprint_tbl_temp where household_id = '"+household_id+"'");
+						int fingerprint_ctr = dao.testIfExist(false, "select household_id from fingerprint_tbl_temp where household_id = '"+household_id+"'");
 						if(fingerprint_ctr>0){
 							request.setAttribute("fingerprint_exist", true);
 						}
@@ -143,7 +135,7 @@ public class View_transactions extends HttpServlet {
 						Transaction_DAO dao1 = new Transaction_DAO();
 						servers = dao1.getServers();
 						request.setAttribute("serv", session.getAttribute("server"));
-						
+						System.out.println("pompom puyangaw bukhad ilawm");
 						request.setAttribute("other_relatives", other_relatives);
 						request.setAttribute("hh_setgroup", hh_setgroup);
 						request.setAttribute("mun", mun);

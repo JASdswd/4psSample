@@ -38,14 +38,12 @@ public class Password_Confirmation extends HttpServlet {
      */
     public Password_Confirmation() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		System.out.println("doget password_confirmation");
 		HttpSession session = request.getSession(false);
 		System.out.println("pass servlet");
@@ -70,7 +68,9 @@ public class Password_Confirmation extends HttpServlet {
 				try {
 					Login_DAO dao = new Login_DAO();
 					String username = (String)session.getAttribute("username");
-					boolean check_password = dao.check_passwordbookKeeper(username, request.getParameter("confirmation_password"),4);
+					String hash = dao.byteArrayToHexString(dao.computeHash(request.getParameter("confirmation_password")));
+					boolean check_password = dao.check_passwordbookKeeper(username, hash,4);
+					System.out.println("check_password:"+check_password);
 					if(check_password){
 						//obj.put("trys", true);
 						Date date = new Date();
@@ -93,7 +93,6 @@ public class Password_Confirmation extends HttpServlet {
 								obj.put("pass_con", 1);
 								obj.put("transaction_time",simpDate.format(date));
 							} catch (JSONException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							out.print(obj);
@@ -105,7 +104,6 @@ public class Password_Confirmation extends HttpServlet {
 						try {
 							obj.put("pass_con", 0);
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						//obj.put("trys", false);
@@ -115,6 +113,8 @@ public class Password_Confirmation extends HttpServlet {
 					}
 					
 				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -128,9 +128,7 @@ public class Password_Confirmation extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("password_xonfirmation do post");
 		HttpSession session = request.getSession(false);
-		System.out.println("pass servlet");
 		if(session==null){
 			System.out.println("session is null servlet");
 			ServletContext sc=this.getServletContext();
@@ -154,13 +152,11 @@ public class Password_Confirmation extends HttpServlet {
 					try {
 						hash = dao.byteArrayToHexString(dao.computeHash(request.getParameter("confirmation_password")));
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					boolean check_password = dao.check_password("Provincial link", hash);
+					boolean check_password = dao.check_password("JAS", hash);
 					System.out.println("checkpassword:"+check_password);
 					if(check_password){
-						System.out.println("arg");
 						out.print(1);
 						out.flush();
 						out.close();
@@ -172,7 +168,6 @@ public class Password_Confirmation extends HttpServlet {
 					}
 					
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

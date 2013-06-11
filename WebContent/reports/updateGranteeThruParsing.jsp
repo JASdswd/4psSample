@@ -203,7 +203,7 @@ if(session.getAttribute("username")==null){
 			var x = eval('('+data+')');
 			
 			$( "#messageDialog" ).dialog( "close" );
-			$("#path").html("<u style='color:blue;font-size:12px;font-weight:bold;' >"+x.file+"</u>");
+			$("#downloadpath").html("<u style='color:blue;font-size:12px;font-weight:bold;' >"+x.file+"</u>");
 			$( "#alertme" ).dialog({
 				show: "fade",
 				hide: "fade",
@@ -223,7 +223,7 @@ if(session.getAttribute("username")==null){
 			var x = eval('('+data+')');
 			
 			$( "#updates" ).dialog( "close" );
-			$("#path").html("<u style='color:blue;font-size:12px;font-weight:bold;' >"+x.file+"</u>");
+			$("#downloadpath").html("<u style='color:blue;font-size:12px;font-weight:bold;' >"+x.file+"</u>");
 			$( "#alertme" ).dialog({
 				show: "fade",
 				hide: "fade",
@@ -298,7 +298,7 @@ if(session.getAttribute("username")==null){
 		function changeData(data){
 			
 			var x = eval('('+data+')');
-			document.getElementById("path").innerHTML = "<u>"+x.path+"</u>";
+			document.getElementById("downloadpath").innerHTML = "<u>"+x.path+"</u>";
 			if(x.status == "not"){
 				$( "#ask" ).dialog("close");
 				$( "#messageDialog" ).dialog("close");
@@ -831,7 +831,7 @@ input[type="text"]{
 </div>
 
 <div id="alertme" title="Message">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your file is saved at <span id="path" ></span> </p>
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your file is saved at <span id="downloadpath" ></span> </p>
 </div>
 <div id="dialog-confirm2" title="Warning">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Please select an excel file format.</p>

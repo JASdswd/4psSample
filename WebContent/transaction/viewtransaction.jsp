@@ -48,6 +48,8 @@ if(session.getAttribute("username")==null){
 <script type="text/javascript" src="<%= cPath %>/js/pages.js" charset="utf-8"></script>
 <script type="text/javascript" src="<%=cPath %>/js/displayTimeDate.js"></script> 
 <link rel="stylesheet" type="text/css" href="<%=cPath %>/css/displayTimeDate.css"/>
+
+<script type="text/javascript" src="<%= cPath %>/js/validateNumber.js"></script>
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function(){
 	$(window).unload(function(){});
@@ -250,13 +252,17 @@ var controller = 0;
 		$("#mun").hide();
 		$("#br").hide();
 		$("#date").hide();
-		
+		$("#br3").hide();
 		$("#search_btn").button({
 			icons: {primary: "ui-icon-search"}
 		});
 		$("#sbf_btn123").button({
 			icons: {primary: "ui-icon-search"}
 		});
+		$("#pop-up-add").button({
+			icons: {primary: "ui-icon-circle-plus"}
+		});
+		
 		//pagination buttons style
 		$("#tablePagination_firstPage").button({
 			icons: {primary: "ui-icon-seek-first"}
@@ -271,12 +277,57 @@ var controller = 0;
 			icons: {secondary: "ui-icon-seek-end"}
 		});
 		//end
+		 $('#grsCasesBtn').click(function(){
+				$('#grsCasesDialog').dialog({
+					show: "fade",
+					hide: "fade",
+					resizable: false,
+					height: 520,
+					width: 450,
+					modal: true
+					/* buttons: {
+						"Ok": function() {
+							 var inputs = document.getElementsByName("grsCasesRadio");
+							 var grsCase = "";
+							 var grsCasesCombo = "";
+							 var grsCasesServer = "";
+							 var grsRemarks = "";
+							 var household_id = $("#hidden_householdId").val();
+							 grsCasesCombo = document.getElementById("grsCasesCombo").value;
+							 grsCasesServer = document.getElementById("grsServer").value;
+							 grsRemarks = document.getElementById("grsRemarks").value;
+							for (var i = 0; i < inputs.length; i++) {
+					              if (inputs[i].checked) {
+					                grsCase = inputs[i].value;
+					              }
+					        }
+							if(grsCase==""){
+								alert("Please select GRS Case.");
+							}
+							else{
+								if(grsCasesServer==""){
+									alert("Please select Server. ");
+								}
+								else{
+									xhrGo("POST","AddGrsCases?grsCase="+grsCase+"&grsCasesCombo="+grsCasesCombo+"&household_id="+household_id+"&grsServer="+grsCasesServer+"&grsRemarks="+grsRemarks, addGrsResult, "plain"); //for municipal link
+								}
+							}
+							//xhrGo("POST","Password_Confirmation?confirmation_password="+password, fingerprintConfirm, "plain"); for provincial link
+							//xhrGo("POST","AddGrsCases?confirmation_password="+password+"&username="+username, fingerprintConfirm, "plain"); //for municipal link
+						},
+						"Cancel": function() {
+							$( this ).dialog( "close" );
+						}
+					} */
+				}); 
+				
+			});
 		$("#sbf_btn").click(function(){
 			$( "#dialog-select_mun" ).dialog({
 				show: "fade",
 				hide: "fade",
 				resizable: false,
-				height:140,
+				height:150,
 				modal: true,
 				buttons: {
 					"Ok": function() {
@@ -313,7 +364,7 @@ var controller = 0;
 				show: "fade",
 				hide: "fade",
 				resizable: false,
-				height:140,
+				height:150,
 				modal: true,
 				buttons: {
 					"Ok": function() {
@@ -361,7 +412,7 @@ var controller = 0;
 			//alert("matched household id hehehe:"+x.matchedHousehold_id);
 			//alert("mun:"+x.mun);
 			validNavigation = false;
-			$( '#fpt_dialog' ).dialog( "close" );
+			$( '#fpt_dialog' ).dialog( "close" ); 
 			if(x.failedToVerify == 1){
 				$('#verificationFailed').dialog({
 					show: "fade",
@@ -412,8 +463,21 @@ var controller = 0;
 				$("#search_field").hide();
 				$("#br2").hide();
 				$("#date").hide();
+				$("#br3").hide();
+			}
+			else if(tran_value=='set'){
+				$( "#mun" ).hide();
+				$( "#br" ).hide();
+				$("#search_field").hide();
+				$("#br2").hide();
+				$("#date").hide();
+				$( "#br3" ).fadeIn('slow');
+				$("#hhsetgroup").focus();
+				xhrGo("POST", "<%= cPath %>/ChooseReport", viewhhset, "plain");
+				
 			}
 			else if(tran_value=='birth'){
+				$("#br3").hide();
 				$("#mun").hide();
 				$("#br").hide();
 				$( "#date" ).show( 'drop', 500);
@@ -425,7 +489,7 @@ var controller = 0;
 				});
 			}
 			else if(tran_value == 'brgy'){
-				
+				$("#br3").hide();
 				$("#search_field").hide();
 				$("#mun").hide();
 				$("#br").hide();
@@ -463,6 +527,7 @@ var controller = 0;
 				$("#date").hide();
 				$("#search_field").show( 'drop', 500).focus();
 				$("#br2").hide();
+				$("#br3").hide();
 				
 			}
 		});
@@ -470,11 +535,30 @@ var controller = 0;
 			var municipal=document.getElementById("munc").value;
 			xhrGo("GET","ViewBarangy?municipal="+municipal, show, "plain");
 		});
+		$("#munc123").change(function(){
+			var municipal=document.getElementById("munc123").value;
+			var regex = municipal.split("+");
+			var mun_id = regex[0];
+			xhrGo("GET","ViewBarangy?municipal="+mun_id, show123, "plain");
+		});
 	
-		
+		$('#grsCasesBtn').button({
+			icons : {primary : "ui-icon-circle-plus" }
+		});
 		
 		$("html").scrollTop(50);
 	});
+	function viewhhset(data){
+		
+		var x = eval('('+data+')');
+		var str= "";
+		str += "<option value=''>HH Set Group</option>";
+		for(var r=0;r<x.data.length;r++){
+			str += "<option>"+x.data[r]+"</option>";
+		}
+		
+		getID("hhsetgroup").innerHTML = str;
+	}
 	function searchByFingerprint(){
 			xhrGo("POST","SearchByFingerprint",display, "plain");
 	}
@@ -495,6 +579,21 @@ var controller = 0;
 				"</td>";
 		document.getElementById("br").innerHTML=strbuild;
 		$( "#brgay" ).focus();
+	}
+	function show123(data){
+		//alert(data);
+		var x=eval('('+data+')');
+		var strbuild="";
+		strbuild+="<td id='br123'>"+
+				"<select id='brgay123' required name='brgy123' class='input'>"+
+				"<option selected='selected' disabled='disabled' >Barangay</option>";
+		for(var i=0;i<x.data.length;i++){
+			strbuild+="<option value='"+x.data[i].barangay+"'>"+x.data[i].barangay+"</option>";
+		}
+			strbuild+="</select>"+
+				"</td>";
+		document.getElementById("br123").innerHTML=strbuild;
+		$( "#brgay123" ).focus();
 	}
 	$(function(){
 		var dialogSettingsInEdit = {
@@ -561,13 +660,90 @@ var controller = 0;
 		}
 
 	} */
-	
+	function addGrsNR(){
+		var household_idNR = getIDValue("household_idNRF");
+		var fullNameNR = getIDValue("full_nameNRF");
+		var municipalityNR = getIDValue("munc123");
+		var regex = municipalityNR.split("+");
+		var municipalNR = regex[1];
+		var barangayNR = getIDValue("brgay123");
+		var idocpNR = getIDValue("idocpNR");
+		var remarksNR = getIDValue("grsRemarksNR");
+		alert("household:"+household_idNR);
+		alert(fullNameNR);
+		alert(municipalNR);
+		alert(barangayNR);
+		alert("cf:"+idocpNR);
+		alert(remarksNR);
+		xhrGo("POST","AddGrsCase?hh_id="+household_idNR+"&grsCase=NRF&syscode=O&fullName="+fullNameNR+"&municipal="+municipalNR+"&barangay="+barangayNR+"&idocp="+idocpNR+"&remarks="+remarksNR,addNRFresult, "plain");
+		/* brgy_select = getIDValue("brgy_select");
+		var transaction = getIDValue("transaction");
+		var val = getIDValue("search_field");
+		var munc = getIDValue("munc");
+		var brgy = getIDValue("brgay");
+		var date = getIDValue("date");  
+		var hhset = getIDValue("hhsetgroup");
+		alert("transaction:"+transaction);
+		alert(munc);
+		alert(brgy);
+		alert(date);
+		alert(hhset);
+		xhrGo("POST","TransactionSearch?transaction="+transaction+"&val="+val+"&municipal="+munc+"&brgy="+brgy+"&date="+date+"&brgy_select="+brgy_select,displayDivData, "plain");
+	 */
+	}
+	function addNRFresult(data){
+		if(data==1){
+			//alert("password confirmed.!!");
+			$( '#grsCasesDialog' ).dialog( "close" );
+			$( "#addgrsOk" ).dialog({
+				show: "fade",
+				hide: "fade",
+				resizable: false,
+				height:140,
+				modal: true,
+				buttons: {
+					"OK": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		}
+		if(data==2){
+			$( "#addgrsRecordFound" ).dialog({
+				show: "fade",
+				hide: "fade",
+				resizable: false,
+				height:140,
+				modal: true,
+				buttons: {
+					"OK": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		}
+		else{
+			$( "#addgrsnotOk" ).dialog({
+				show: "fade",
+				hide: "fade",
+				resizable: false,
+				height:140,
+				modal: true,
+				buttons: {
+					"OK": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		}
+	}
 	function changeDivData(){
 		var transaction = getIDValue("transaction");
 		var val = getIDValue("search_field");
 		var munc = getIDValue("munc");
 		var brgy = getIDValue("brgay");
 		var date = getIDValue("date");  
+		var hhset = getIDValue("hhsetgroup");
 		var brgy_select;
 		
 		if(transaction == "brgy"){
@@ -580,6 +756,11 @@ var controller = 0;
 			$("#div").show();
 			$("#overlay").show();
 			xhrGo("POST","TransactionSearch?transaction="+transaction+"&val="+val+"&municipal="+munc+"&brgy="+brgy+"&date="+date,displayDivData, "plain");
+		}
+		else if(transaction == "set"){
+			$("#div").show();
+			$("#overlay").show();
+			xhrGo("POST","TransactionSearch?transaction="+transaction+"&hhset="+hhset,displayDivData, "plain");
 		}
 		else{
 			if(val != "" || date != ""){
@@ -681,40 +862,6 @@ var controller = 0;
 	   {
 		   changeDivData();
 	   }
-	}
-
-	function pop_up_box(){
-		xhrGo("GET","<%=cPath%>/SystemOnHold",prompt, "plain");
-	}
-
-	function prompt(data){
-		var x = eval('('+data+')');
-		
-		if(x.status == "not"){
-			document.getElementById("path").innerHTML = "<u>"+x.path+"</u>";	
-			document.getElementById("messageb").innerHTML = "Your file is saved at ";	
-		}
-		else if(x.status == "empty"){
-			document.getElementById("path").innerHTML = "No record Found.</p>";
-			document.getElementById("messageb").innerHTML = "File cannot be save.";	
-		}
-		else{
-			document.getElementById("path").innerHTML = "<p style='color:red;font-size:11px;' >"+x.path+":File Name already exists.</p>";
-			document.getElementById("messageb").innerHTML = "File cannot be save at ";	
-		}
-		$( "#note" ).dialog({
-			show: "fade",
-			hide: "fade",
-			resizable: false,
-			height:150,
-			width:500,
-			modal: true,
-			buttons: {
-				"OK": function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});	
 	}
 
 </script>
@@ -832,6 +979,7 @@ img{
 		padding: 5px 3px 5px 10px;
 		color:#000000;
 		outline: none;
+		margin-left: 20px;
 	}
 	.input:FOCUS{
 		border: 1px solid #000045;
@@ -861,7 +1009,7 @@ img{
 	}
 	.t{
 		padding: 5px 10px;
-		width: 150px;
+		width: 180px;
 		background-color: lightblue;
 	}
 	.ft{
@@ -878,6 +1026,11 @@ img{
 		width: 200px;
 		background-color: lightblue;
 	}
+	.t23{
+		padding: 5px 10px;
+		width: 120px;
+		background-color: lightblue;
+	}
 	.t3{
 		padding: 5px 10px;
 		width: 280px;
@@ -887,7 +1040,9 @@ img{
 		padding:5px 0px 5px;
 	}
 	
-	
+	#brgay123{
+		width: 245px;
+	}
 .overlay{
 	height: 100%;
 	width: 100%;
@@ -914,6 +1069,13 @@ img{
 	background-position: center;
 	color: red;
 }
+#page-title{
+	text-transform: capitalize;
+	font-size: 18px;
+	letter-spacing: 4px;
+	font-family: helvetica, sans-serif;
+	text-shadow: 2px 2px 2px #999;
+}
 
 #munc{
 	width:180px;
@@ -924,23 +1086,14 @@ img{
 .tbl_r .listID{
 	font-size: 14px;
 }
-
-#daily_div{
-	background:#f9edbe;
-	border-radius:2px;
-	border:1px solid #f0c36d;
-	box-shadow:0 2px 4px rgba(0,0,0,0.2);
-	color:#666;
-	display:block;
-	padding:16px;
-	position:fixed;
-	right:10px;
-	bottom:30px;
-	width:236px;
-	z-index:11;
-	-moz-border-radius:2px;
-	-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);
-	cursor:pointer;
+#grsCasesBtn{
+	position: absolute;
+	right: 0;
+	margin-right: 20px;
+}
+#divGrsBTN{
+	position: relative;	
+	height: 30px;
 }
 
 </style>
@@ -965,7 +1118,6 @@ img{
 	<tr><td class="timeDate"> <span id="clock">&nbsp;</span><!-- <hr> --> </td></tr><!--displaying Time[jm]  -->
 	</table>		 
 </div>
-<div id="daily_div" > <div onclick="pop_up_box();" style="color:#222;margin-top:0;font-weight:bold;font-size: medium;"> Download System On Hold Report..?</div> </div>
 <div id="page-wrap">
 <div id="header" >
 <div id="logo" >
@@ -983,7 +1135,14 @@ img{
 
 <div id="main">
 <div>
-<h3 align="center" >View Records</h3>
+<h3 align="center" id="page-title" >View Records</h3>
+		<c:choose>
+			<c:when test="${verifier}">
+				<div id="divGrsBTN">
+					<button type="button" id="grsCasesBtn" onclick="add_grs()">Add GRS No Record</button>
+				</div>
+			</c:when>
+		</c:choose>
 <div align="center">
 
 	<table id="tab">
@@ -996,7 +1155,7 @@ img{
 					<option value="municipal" id="municipal">Search By Municipality</option>
 					<option value="brgy" id="brgy">Search By Barangay</option>
 					<option value="birth" id="birth">Search By Birthday</option>
-					<option value="phil" id="phil">Search By PhilHealth NO.</option>
+					<option value="set" id="set">Search By HH Set Group</option>
 				</select></label>
 			</td>
 			<td id="mun"><select name="municipal" id="munc" class="input">
@@ -1012,6 +1171,11 @@ img{
 			</td>
 			<td id="br2" >
 				<select id='brgy_select' name='brgy_select' >
+					
+				</select>
+			</td>
+			<td id="br3" >
+				<select id='hhsetgroup' class="input" name='hhsetgroup' >
 					
 				</select>
 			</td>
@@ -1044,7 +1208,7 @@ img{
 		<tr>
 			<th class="ft">#</th>
 			<th class="t">Household ID NO.</th>
-			<th class="t2">Household Member ID NO.</th>
+			<th class="t23">HH Member ID NO.</th>
 			<th class="t3">Name of Head</th>
 			<th colspan="2" align="center" class="t2">Action</th>
 		</tr>
@@ -1056,7 +1220,7 @@ img{
 					<td><%=++count %></td>
 					<td class="listID"><c:out value="${list.household_id}"></c:out></td>
 					<td><c:out value="${list.householdmember_id}"></c:out></td>
-					<td><c:out value="${list.name}"></c:out></td>
+					<td class="listID"><c:out value="${list.name}"></c:out></td>
 					<td><a href="<%=cPath %>/View_transactions2?hh_id=${list.household_id}">ViewProfile</a>&nbsp;&nbsp;<a href="Addtransaction?household_id=${list.household_id}&head_name=${list.name}&brgy=${list.brgy}&municipal=${list.municipal}" >ViewTransaction</a></td>
 				</tr>
 			</c:forEach>
@@ -1115,10 +1279,100 @@ img{
 	<img alt="" src="<%=cPath %>/images/loading_transparent.gif"><br>
 	
 </div>
-<div id="note" title="Note:" class="hidden">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="messageb"></span><span id="path" ></span> </p>
+<div class="hidden" id="grsCasesDialog" title="GRS CASES">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+		Add GRS No Records
+	</p>
+	<div id="divGRS2" >
+		<table id="divGRS" >
+			<tr>
+				<td>
+					<label>Household ID : </label>
+				</td>
+				<td>
+					<input required type="text"  class="input" onkeypress="return numbersonly(event,false);" size="35" name="household_idNRF" id="household_idNRF" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Full Name : </label>
+				</td>
+				<td>
+					<input required type="text" class="input" size="35" name="full_nameNRF" id="full_nameNRF" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Municipality : </label>
+				</td>
+				<td>
+					<select required name="municipal" id="munc123" class="input">
+						<option selected="selected" disabled="disabled" >Municipality</option>
+						<c:forEach items="${municipal_list}" var="list">
+							<option value="${list.mun_id}+${list.municipal}" ><c:out value="${list.municipal}"></c:out></option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>Barangay : </label>
+				</td>
+				<td id="br123">
+					<select required name="brgy123" id="brgay123" class="input">
+						<option selected="selected" disabled="disabled">Barangay</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label>ID-OCP : </label>
+				</td>
+				<td>
+					<!-- <select name= "grsCasesCombo" class="input" id="grsCasesCombo">
+						<option value="">------</option>
+						<option value="LID">LID</option>
+						<option value="TID">TID</option>
+						<option value="OCP">OCP</option>
+					</select> -->
+					<select name="grsCasesCombo" class="input" id="idocpNR">
+						<option value="0">------</option>
+						<c:forEach items="${iDOCP}" var="list">
+								<option value="${list.grsidoctypes_id}" title="${list.grsidoctypes_description}" ><c:out value="${list.grsidoctypes_casetypes}"></c:out></option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<label></label>
+	</div>
+	<div> 
+		<table>
+			<tr>
+				<td>
+					<label>Remarks</label>
+				</td>
+				<td>
+					<textarea class="input" rows="" cols="" style="width: 270px;height: 90px;font-size: 16px;" id="grsRemarksNR" name="grsRemarks"></textarea>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="border-top: 1px solid gray; margin-top: 20px;">
+	<div style=" width: 85px; margin: 0 auto; margin-top: 8px; margin-right: 20px;">
+		<button id="pop-up-add" onclick="addGrsNR()" >Add</button>
+	</div>
+	</div>
 </div>
-		
+<div id="addgrsOk" title="4Ps Message" class="hidden">
+	<p>GRS Cases Successfully added.</p>
+</div>
+<div id="addgrsnotOk" title="4Ps Message" class="hidden">
+	<p>Failed to add GRS Cases.</p>
+</div>
+<div id="addgrsRecordFound" title="4Ps Message" class="hidden">
+	<p>Household ID is found in the database.</p>
+</div>
 </div> <!-- end of page wrap -->
 </body>
 </html>

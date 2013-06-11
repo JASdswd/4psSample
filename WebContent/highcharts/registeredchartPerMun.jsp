@@ -57,9 +57,78 @@ if(session.getAttribute("username")==null){
 <script type="text/javascript">
 	$(function () {
 		
-	    $('#container').highcharts({
+	    $('#container0').highcharts({
 	        data: {
-	            table: document.getElementById('datatable')
+	            table: document.getElementById('datatable0')
+	        },
+	        chart: {
+	            type: 'column'
+	        },
+	        title: {
+	            text: 'Registration Dashboard Report'
+	        },
+	        yAxis: {
+	            allowDecimals: false,
+	            title: {
+	                text: 'Number of Beneficiaries'
+	            }
+	        },
+	        tooltip: {
+	            formatter: function() {
+	                return '<b>'+ this.series.name +'</b><br/>'+
+	                    this.y +' '+ this.x.toLowerCase();
+	            }
+	        }
+	    });
+	    $('#container1').highcharts({
+	        data: {
+	            table: document.getElementById('datatable1')
+	        },
+	        chart: {
+	            type: 'column'
+	        },
+	        title: {
+	            text: 'Registration Dashboard Report'
+	        },
+	        yAxis: {
+	            allowDecimals: false,
+	            title: {
+	                text: 'Number of Beneficiaries'
+	            }
+	        },
+	        tooltip: {
+	            formatter: function() {
+	                return '<b>'+ this.series.name +'</b><br/>'+
+	                    this.y +' '+ this.x.toLowerCase();
+	            }
+	        }
+	    });
+	    $('#container2').highcharts({
+	        data: {
+	            table: document.getElementById('datatable2')
+	        },
+	        chart: {
+	            type: 'column'
+	        },
+	        title: {
+	            text: 'Registration Dashboard Report'
+	        },
+	        yAxis: {
+	            allowDecimals: false,
+	            title: {
+	                text: 'Number of Beneficiaries'
+	            }
+	        },
+	        tooltip: {
+	            formatter: function() {
+	                return '<b>'+ this.series.name +'</b><br/>'+
+	                    this.y +' '+ this.x.toLowerCase();
+	            }
+	        }
+	    });
+	    $('#container3').highcharts({
+	        data: {
+	            table: document.getElementById('datatable3')
 	        },
 	        chart: {
 	            type: 'column'
@@ -91,19 +160,20 @@ if(session.getAttribute("username")==null){
 	.hidden{
 		display: none;
 	}
-	#datatable{
+	#datatable0{
 		width: 500px;
 		margin: 0 auto;
 		border: 1px solid #000;
+		font-size: 13px;
 	}
-	#datatable th{
+	#datatable0 th{
 		background-color: #ccc;
 	}
-	#datatable td{
+	#datatable0 td{
 		padding-left: 5px;
 		background-color: #eee;
 	}
-	#datatable tr:HOVER{
+	#datatable0 #tbodydata .tbl_r:HOVER {
 		background-color: #fff;
 	}
 </style>
@@ -142,80 +212,34 @@ if(session.getAttribute("username")==null){
 	<tr><td class="timeDate"> <span id="clock">&nbsp;</span><!-- <hr> --> </td></tr><!--displaying Time[jm]  -->
 	</table>		 
 </div>
-<div id="container" style=""></div>
-<%int row = 1; %>
-<table id="datatable">
-	<thead>
-		<tr>
-			<th>Municipality</th>
-			<th>Registered</th>
-			<th>Not Registered</th>
-		</tr>
-	</thead>
-	<tbody>
-		<c:forEach items="${list}" var="list">
-			<% if(row<=10){ %> 
-				<tr>
-					<td><c:out value="${list.municipality}"></c:out></td>
-					<td><c:out value="${list.registered}"></c:out></td>
-					<td><c:out value="${list.notRegistered}"></c:out></td>
-				</tr>
-			<%}
-				row++;
-			%>
-		</c:forEach>
-		<!-- <tr>
-			<th>Hindang</th>
-			<td>7007</td>
-			<td>2700</td>
-		</tr>
-		<tr>
-			<th>Hilongos</th>
-			<td>8000</td>
-			<td>3000</td>
-		</tr>
-		<tr>
-			<th>Palo</th>
-			<td>3000</td>
-			<td>2500</td>
-		</tr>
-		<tr>
-			<th>Inopacan</th>
-			<td>5000</td>
-			<td>2000</td>
-		</tr>
-		<tr>
-			<th>Matag-ob</th>
-			<td>4000</td>
-			<td>2000</td>
-		</tr>
-		<tr>
-			<th>Hindang</th>
-			<td>7007</td>
-			<td>2700</td>
-		</tr>
-		<tr>
-			<th>Hilongos</th>
-			<td>8000</td>
-			<td>3000</td>
-		</tr>
-		<tr>
-			<th>Palo</th>
-			<td>3000</td>
-			<td>2500</td>
-		</tr>
-		<tr>
-			<th>Inopacan</th>
-			<td>5000</td>
-			<td>2000</td>
-		</tr>
-		<tr>
-			<th>Matag-ob</th>
-			<td>4000</td>
-			<td>2000</td>
-		</tr> -->
-	</tbody>
-</table>
+<div id="container0" style=""></div>
+<%int row = 0;int ctr = 0; %>
+
+	<table id="datatable0">
+		<thead>
+			<tr>
+				<th>Municipality</th>
+				<th>Registered</th>
+				<th>Not Registered</th>
+			</tr>
+		</thead>
+		<tbody id="tbodydata">
+			<c:forEach items="${list}" var="list">
+				<% if(row<=5){ %> 
+					<tr class="tbl_r">
+						<td ><c:out value="${list.municipality}"></c:out></td>
+						<td><c:out value="${list.registered}"></c:out></td>
+						<td><c:out value="${list.notRegistered}"></c:out></td>
+					</tr>
+				<%}else{
+					ctr++;
+				}
+					row++;
+				%>	
+			</c:forEach>
+		</tbody>
+	</table>
+
 </div>
 </div>
 <div id="dialog-confirm" class="hidden" title="Logout">

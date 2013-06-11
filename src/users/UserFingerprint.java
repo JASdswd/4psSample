@@ -46,14 +46,12 @@ public class UserFingerprint extends HttpServlet {
      */
     public UserFingerprint() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -83,7 +81,6 @@ public class UserFingerprint extends HttpServlet {
 					int mun = Integer.parseInt(request.getParameter("mun"));
 					String uniqueId = request.getParameter("id");
 					int user_role = Integer.parseInt(request.getParameter("user_role"));
-					System.out.println("uniqueID:"+uniqueId);
 					String municipality = request.getParameter("municipality");
 					// DPFPFingerIndex finger = DPFPFingerIndex.values()[nFinger];
 		            DPFPFeatureExtraction featureExtractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
@@ -121,7 +118,6 @@ public class UserFingerprint extends HttpServlet {
 				        		/*try {
 									obj.put("secret", "1");
 								} catch (JSONException e1) {
-									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}*/
 				        	}
@@ -132,7 +128,6 @@ public class UserFingerprint extends HttpServlet {
 				        			/*try {
 				    					obj.put("secret", "0");
 				    				} catch (JSONException e1) {
-				    					// TODO Auto-generated catch block
 				    					e1.printStackTrace();
 				    				}*/
 				        	}
@@ -153,7 +148,6 @@ public class UserFingerprint extends HttpServlet {
 		        				obj.put("badImageQuality", "0");
 		        				obj.put("startCaptureFailed", "1");
 		        			} catch (JSONException e2) {
-		        				// TODO Auto-generated catch block
 		        				e2.printStackTrace();
 		        			}
 		                    out1.print(obj);
@@ -190,7 +184,6 @@ public class UserFingerprint extends HttpServlet {
 		    				obj.put("badImageQuality", "1");
 		    				obj.put("startCaptureFailed", "0");
 		    			} catch (JSONException e2) {
-		    				// TODO Auto-generated catch block
 		    				e2.printStackTrace();
 		    			}
 		                out1.print(obj);
@@ -216,7 +209,6 @@ public class UserFingerprint extends HttpServlet {
 			    				obj.put("failedToEnroll", "0");
 			    				obj.put("badImageQuality", "0");
 			    			} catch (JSONException e2) {
-			    				// TODO Auto-generated catch block
 			    				e2.printStackTrace();
 			    			}
 			                out1.print(obj);
@@ -259,7 +251,6 @@ public class UserFingerprint extends HttpServlet {
 		        	try {
 						obj.put("failedToEnroll", "1");
 					} catch (JSONException e2) {
-						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
 		            out1.print(obj);

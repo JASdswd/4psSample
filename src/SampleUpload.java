@@ -1,7 +1,4 @@
 
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -21,7 +18,6 @@ import jxl.CellType;
 import jxl.Sheet;
 import jxl.Workbook;
 
-import org.apache.commons.io.IOUtils;
 
 import DAO.BaseDAO;
 import bean.reportBean;
@@ -40,15 +36,12 @@ public class SampleUpload extends HttpServlet {
      */
     public SampleUpload() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		System.out.println("ddddddddddd");
 	}
 
 	/**
@@ -56,7 +49,6 @@ public class SampleUpload extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		// TODO Auto-generated method stub
 		/*InputStream in = request.getInputStream();
 		
 		byte[] data = IOUtils.toByteArray(in);
@@ -197,6 +189,7 @@ public class SampleUpload extends HttpServlet {
 				else{
 					System.out.println("in sa else");
 					
+					@SuppressWarnings("unused")
 					boolean add = false;
 					String f_position = "";
 					String ff_position = "";
@@ -793,7 +786,7 @@ public class SampleUpload extends HttpServlet {
 										if(wife_exists == false){
 											//myrow++;
 											//System.out.println(myrow+"in sa add spouse:"+l.getHousehold_id());
-											dao.addSpouse(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+											dao.addSpouse(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 										}
 										/*else{
 											b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id(),l.getF_position());
@@ -807,7 +800,7 @@ public class SampleUpload extends HttpServlet {
 										if(child_exists == false){
 											//myrow++;
 											//System.out.println(myrow+"in sa add sa children"+l.getHousehold_id());
-											dao.addChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+											dao.addChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 										}/*else{
 											b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id(),l.getF_position());
 											catchList.add(b);
@@ -819,7 +812,7 @@ public class SampleUpload extends HttpServlet {
 										if(grandchild_exists == false){
 											//myrow++;
 											//System.out.println(myrow+"in sa add sa gchildren"+l.getHousehold_id());
-											dao.addGrandChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getStatus());
+											dao.addGrandChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getStatus(),l.getGender());
 										}/*else{
 											b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id());
 											catchList.add(b);
@@ -833,7 +826,7 @@ public class SampleUpload extends HttpServlet {
 											if(other_relatives_exists == false){
 												//myrow++;
 												//System.out.println(myrow+"in sa add sa children"+l.getHousehold_id());
-												dao.addOtherRealtives(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+												dao.addOtherRealtives(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 											}/*else{
 												b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id(),l.getF_position());
 												catchList.add(b);

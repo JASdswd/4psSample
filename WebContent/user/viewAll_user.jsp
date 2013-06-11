@@ -765,9 +765,10 @@ function OnEnter(e){
 				</select>
 				</td >
 				<td width="200px" > <button onclick="searchUser();" id="btn_search">Search</button>&nbsp;
-				</c:when></c:choose>
+					</c:when>
+					</c:choose>
 					<c:choose>
-						<c:when test="${provlink}">
+						<c:when test="${admin}">
 							<button id="btn_user" onclick="confirm_saving();">Add User</button>
 						</c:when>
 					</c:choose>
@@ -851,13 +852,13 @@ function OnEnter(e){
 </div>
 <div class="hidden" id="confirm_prov" title="Confirmation" onkeypress="return OnEnter(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 						
 		<tr>
 			<td><label>User role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password" id="confirm_password"  class="input" type="password" value="" />

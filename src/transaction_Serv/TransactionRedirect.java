@@ -28,7 +28,6 @@ public class TransactionRedirect extends HttpServlet {
      */
     public TransactionRedirect() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -70,7 +69,7 @@ public class TransactionRedirect extends HttpServlet {
 				RequestDispatcher rd=sc.getRequestDispatcher("/transaction/viewtransaction.jsp");
 				rd.forward(request, response);
 				}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 			}
 		}

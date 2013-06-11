@@ -486,6 +486,14 @@ function displayBrgy2(data){
 	document.getElementById("default").hide(); */
 	
 }
+function OnEnterFPT(e){
+	if(e && e.keyCode == 13){
+		var password = document.getElementById("confirm_password").value;
+		var username = document.getElementById("munLink_username").value;
+		//xhrGo("POST","Password_Confirmation?confirmation_password="+password, fingerprintConfirm, "plain"); for provincial link
+		xhrGo("POST","Password_Confirmation?confirmation_password="+password+"&username="+username, fingerprintConfirm, "plain"); //for municipal link
+	}
+}
 
 //-->
 </script>
@@ -676,7 +684,12 @@ function displayBrgy2(data){
 	<c:forEach items="${household}" var="name">
 		<a id="viewTransaction" href="<%=cPath %>/View_trans?id=${name.household_id }">View Transactions of <c:out value="${name.head_name}"></c:out></a>
 		<br/><br/>
-		<button type="button" id="grsCasesBtn" onclick="add_grs()">Add GRS CASES</button>
+		<c:choose>
+			<c:when test="${verifier}">
+				<button type="button" id="grsCasesBtn">Add GRS CASES</button>
+			</c:when>
+		</c:choose>
+		
 	</c:forEach>
 	</div>
 	
@@ -1011,8 +1024,25 @@ function displayBrgy2(data){
 							<label class="data">Birthday :</label><label ><c:out value="${wife.ws_birthday }"></c:out></label><br/>
 							<br/>
 							<c:choose>
-								<c:when test="${h_gender}"><!-- if gender is equal to male -->
-									<label class="data">Pregnant:</label>
+							<c:when test="${wife.gender == 'M'}"><!-- if gender is equal to male -->
+								<label class="data">Gender:</label>
+										<label class="radio">Male</label>
+										<c:choose>
+										<c:when test="${wife.ws_attendingSchool == true }">
+											<label  class="attending">Attending School:</label><input type="radio" checked="checked">
+											<label class="radio">Yes</label> <input type="radio"disabled="disabled" /><label class="radio">No</label>
+										</c:when>
+										<c:otherwise>
+											<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+											<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+										</c:otherwise>
+										
+									</c:choose>		
+							</c:when>
+							<c:otherwise>
+								<label class="data">Gender:</label>
+										<label  class="radio">Female</label>	
+								<label class="data">Pregnant:</label>
 									<c:choose>
 										<c:when test="${wife.ws_pregnant == true }">
 											<input type="radio"  checked="checked"/>
@@ -1035,23 +1065,8 @@ function displayBrgy2(data){
 										</c:otherwise>
 										
 									</c:choose>
-								</c:when>
-								<c:otherwise>
-									<!-- For wife / spouse  attending school -->
-									<c:choose>
-										<c:when test="${wife.ws_attendingSchool == true }">
-											<label  class="attending1">Attending School:</label><input type="radio" checked="checked">
-											<label class="radio">Yes</label> <input type="radio"disabled="disabled" /><label class="radio">No</label>
-										</c:when>
-										<c:otherwise>
-											<label  class="attending1">Attending School:</label><input type="radio" disabled="disabled" />
-											<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-										</c:otherwise>
-										
-									</c:choose>
-								</c:otherwise>
-							</c:choose><!-- end of c:choose after birthday -->
-							
+							</c:otherwise>
+					</c:choose>
 						</div><br/><hr/>
 						</c:if>
 						<c:if test="${wife.f_position == '2'}">
@@ -1086,8 +1101,25 @@ function displayBrgy2(data){
 							<label class="data">Birthday :</label><label ><c:out value="${wife.ws_birthday }"></c:out></label><br/>
 							<br/>
 							<c:choose>
-								<c:when test="${h_gender}"><!-- if gender is equal to male -->
-									<label class="data">Pregnant:</label>
+							<c:when test="${wife.gender == 'M'}"><!-- if gender is equal to male -->
+								<label class="data">Gender:</label>
+										<label class="radio">Male</label>
+										<c:choose>
+										<c:when test="${wife.ws_attendingSchool == true }">
+											<label  class="attending">Attending School:</label><input type="radio" checked="checked">
+											<label class="radio">Yes</label> <input type="radio"disabled="disabled" /><label class="radio">No</label>
+										</c:when>
+										<c:otherwise>
+											<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+											<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+										</c:otherwise>
+										
+									</c:choose>		
+							</c:when>
+							<c:otherwise>
+										<label class="data">Gender:</label>
+										<label  class="radio">Female</label>	
+								<label class="data">Pregnant:</label>
 									<c:choose>
 										<c:when test="${wife.ws_pregnant == true }">
 											<input type="radio"  checked="checked"/>
@@ -1110,22 +1142,8 @@ function displayBrgy2(data){
 										</c:otherwise>
 										
 									</c:choose>
-								</c:when>
-								<c:otherwise>
-									<!-- For wife / spouse  attending school -->
-									<c:choose>
-										<c:when test="${wife.ws_attendingSchool == true }">
-											<label  class="attending1">Attending School:</label><input type="radio" checked="checked">
-											<label class="radio">Yes</label> <input type="radio"disabled="disabled" /><label class="radio">No</label>
-										</c:when>
-										<c:otherwise>
-											<label  class="attending1">Attending School:</label><input type="radio" disabled="disabled" />
-											<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-										</c:otherwise>
-										
-									</c:choose>
-								</c:otherwise>
-							</c:choose><!-- end of c:choose after birthday -->
+							</c:otherwise>
+					</c:choose>
 							
 						</div><br/><hr/>
 						</c:if>
@@ -1179,26 +1197,47 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
+										
 										</c:choose>
 										
 									</div>
@@ -1258,27 +1297,49 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
+										
 										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
-										</c:choose>
+										
 										
 									</div>
 									
@@ -1337,26 +1398,47 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
+										
 										</c:choose>
 										
 									</div>
@@ -1409,28 +1491,48 @@ function displayBrgy2(data){
 										<label class="data">Birthday :</label> <label><c:out value="${grandchild.gg_birthday}"></c:out></label><br/>
 											
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${grandchild.gg_pregnant}">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${grandchild.gender == 'M'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+												<c:choose>
+													<c:when test="${grandchild.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${grandchild.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+													<c:choose>
+														<c:when test="${grandchild.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
 										
-										<c:choose>
-											<c:when test="${grandchild.gg_attendingSchool == true }">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled" /><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
-										</c:choose>	
+										</c:choose>
 									</div>
 								</td>
 							</tr>
@@ -1486,26 +1588,47 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
+										
 										</c:choose>
 										
 									</div>
@@ -1565,26 +1688,47 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
+										
 										</c:choose>
 										
 									</div>
@@ -1645,26 +1789,47 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
+										
 										</c:choose>
 										
 									</div>
@@ -1725,26 +1890,47 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
+										
 										</c:choose>
 										
 									</div>
@@ -1805,26 +1991,47 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
+										
 										</c:choose>
 										
 									</div>
@@ -1885,26 +2092,47 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
+										
 										</c:choose>
 										
 									</div>
@@ -1965,28 +2193,48 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
-										</c:choose>
 										
+										</c:choose>
 									</div>
 									
 							</td>
@@ -2045,28 +2293,48 @@ function displayBrgy2(data){
 										<label class="data" >Age :</label><label><c:out value="${children.sd_age}"></c:out></label>
 										<label class="data">Birthday :</label><label ><c:out value="${children.sd_birthday}"></c:out></label>	<br/>
 										<br/>
-										<label class="data">Pregnant:</label>
 										<c:choose>
-											<c:when test="${children.sd_pregnant == true }">
-												<input type="radio" checked="checked"/>
-												<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+											<c:when test="${children.gender == 'F'}">
+												<label class="data">Gender:</label>
+												<label class="radio">Female</label>
+												<label class="data">Pregnant:</label>
+												<c:choose>
+													<c:when test="${children.sd_pregnant == true }">
+														<input type="radio" checked="checked"/>
+														<label class="radio">Yes</label><input type="radio" disabled="disabled"/><label  class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<input type="radio" disabled="disabled"/>
+														<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
+												<c:choose>
+													<c:when test="${children.sd_attendingSchool == true}">
+														<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+														<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+													</c:when>
+													<c:otherwise>
+														<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+														<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+													</c:otherwise>
+												</c:choose>
 											</c:when>
 											<c:otherwise>
-												<input type="radio" disabled="disabled"/>
-												<label class="radio">Yes</label><input type="radio" checked="checked"/><label  class="radio">No</label>
+												<label class="data">Gender:</label>
+												<label class="radio">Male</label>
+													<c:choose>
+														<c:when test="${children.sd_attendingSchool == true}">
+															<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
+															<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
+														</c:when>
+														<c:otherwise>
+															<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
+															<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
+														</c:otherwise>
+													</c:choose>
 											</c:otherwise>
-										</c:choose>
-										<c:choose>
-											<c:when test="${children.sd_attendingSchool == true}">
-												<label  class="attending">Attending School:</label><input type="radio" checked="checked"/>
-												<label class="radio">Yes</label> <input type="radio" disabled="disabled"/><label class="radio">No</label>
-											</c:when>
-											<c:otherwise>
-												<label  class="attending">Attending School:</label><input type="radio" disabled="disabled" />
-												<label class="radio">Yes</label> <input type="radio" checked="checked"/><label class="radio">No</label>
-											</c:otherwise>
-										</c:choose>
 										
+										</c:choose>
 									</div>
 									
 							</td>
@@ -2125,7 +2393,7 @@ function displayBrgy2(data){
 	</form>	
 </div>
 <!-- confirm_prov an id kai provincial link man an may power nga maka change og fingerprint sauna karon kai ang municipal link na man -->
-<div class="hidden" id="confirm_prov" title="Confirmation">
+<div class="hidden" id="confirm_prov" title="Confirmation" onkeypress="return OnEnterFPT(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
 		Before you perform this action, please enter the username and password of Municipal Link for confirmation.
 	</p>
@@ -2225,17 +2493,17 @@ function displayBrgy2(data){
 						<option value="case_ocp">3</option>
 					</select> -->
 					<select name="grsServer" id="grsServer">
-							<option value="">------</option>
-							<c:forEach items="${servers}" var="list">
-								<c:if test="${serv==list.serverId}">
-									<option selected value="${list.serverId}" ><c:out value="${list.serverId}"></c:out></option>
-								</c:if>
-								<c:if test="${serv!=list.serverId}">
-									<option value="${list.serverId}" ><c:out value="${list.serverId}"></c:out></option>
-								</c:if>
-								
-							</c:forEach>
-						</select>
+						<option value="">------</option>
+						<c:forEach items="${servers}" var="list">
+							<c:if test="${serv==list.serverId}">
+								<option selected value="${list.serverId}" ><c:out value="${list.serverId}"></c:out></option>
+							</c:if>
+							<c:if test="${serv!=list.serverId}">
+								<option value="${list.serverId}" ><c:out value="${list.serverId}"></c:out></option>
+							</c:if>
+							
+						</c:forEach>
+					</select>
 				</td>
 			</tr>
 		</table>

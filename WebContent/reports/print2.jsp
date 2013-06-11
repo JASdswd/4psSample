@@ -113,22 +113,22 @@ function CallPrint(){
 </div>
 
 </div>
-	<%-- <c:choose>
-		<c:when test="${size1 > 0}"> --%>
+	 <c:choose>
+		<c:when test="${size1 > 0}"> 
 			<div class="tRelease" >
 				<div class="firstd" ><label for="total_release" >Total Payments:</label></div>
 				<div class="secd2" ><label class="totals" ><u><c:out value="P ${total_release}.00"></c:out></u></label></div>
 			</div>
-	<%-- 	</c:when>
+		</c:when>
 	</c:choose>
 	<c:choose>
-		<c:when test="${size2 > 0}"> --%>
+		<c:when test="${size2 > 0}"> 
 			<div class="tRelease" >
 				<div class="firstd1 firstd" ><label for="total_notrelease" >Cash in Hand:</label></div>
 				<div class="secd3" ><label class="totals" ><u><c:out value="P ${total_notrelease}.00"></c:out></u></label></div>
 			</div>
-	<%-- 	</c:when>
-	</c:choose> --%><br/>
+	 	</c:when>
+	</c:choose><br/>
 <br/>
 <c:choose>
 		
@@ -152,7 +152,7 @@ function CallPrint(){
 						<table id="display" border="1"  class="paginated display sortable"  >
 							<thead id="thead" >
 								<tr style="border-style: double;" >
-									<td colspan="9" class="title" >Released to Grantee</td>
+									<td colspan="10" class="title" >Released to Grantee</td>
 								</tr>	
 								<tr  style="border-style: double;" >
 									<th>#</th>
@@ -160,7 +160,7 @@ function CallPrint(){
 									<th id="head" >Name of Grantee</th>
 									<th  >Barangay</th>
 									<th class="min" >Municipality</th>
-									<!-- <th  >PhilHealth ID No.</th> -->
+									<th  >HH Set Group</th>
 									<th class="min" >Date of Transaction</th>
 									<th class="fix" >Date Received</th>
 									<th  class="fix" >Time Received</th>
@@ -226,7 +226,7 @@ function CallPrint(){
 												</td>
 												<td><c:out value="${list.brgy}"></c:out></td>
 												<td><c:out value="${list.municipality}"></c:out></td>
-												<%-- <td><c:out value="${list.philhealth_id}"></c:out></td> --%>
+												<td><c:out value="${list.philhealth_id}"></c:out></td>
 												<td style="font-size: 14px;" ><c:out value="${list.date_coverage}"></c:out></td>
 												<td><c:out value="${list.date_receive}"></c:out></td>
 												<td><c:out value="${list.time_receive}"></c:out></td>
@@ -373,7 +373,7 @@ function CallPrint(){
 						<table id="display3" border="1"  class="paginated display sortable"  >
 							<thead id="thead" >
 								<tr  style="border-style: double;" >
-									<td colspan="9" class="title" >Released to Representative</td>
+									<td colspan="10" class="title" >Released to Representative</td>
 								</tr>
 								<tr  style="border-style: double;" >
 									<th>#</th>
@@ -381,7 +381,7 @@ function CallPrint(){
 									<th id="head" >Name of Grantee</th>
 									<th  >Barangay</th>
 									<th class="min" >Municipality</th>
-									<!-- <th  >PhilHealth ID No.</th> -->
+									<th  >HH Set Group</th>
 									<th class="min" >Date of Transaction</th>
 									<th class="fix"  >Date Received</th>
 									<th class="fix"  >Time Received</th>
@@ -447,7 +447,7 @@ function CallPrint(){
 												</td>
 												<td><c:out value="${list.brgy}"></c:out></td>
 												<td><c:out value="${list.municipality}"></c:out></td> 
-												<%-- <td><c:out value="${list.philhealth_id}"></c:out></td> --%>
+												<td><c:out value="${list.philhealth_id}"></c:out></td>
 												<td style="font-size: 14px;" ><c:out value="${list.date_coverage}"></c:out></td> 
 												<td><c:out value="${list.date_receive}"></c:out></td>
 												<td><c:out value="${list.time_receive}"></c:out></td>
@@ -633,7 +633,7 @@ function CallPrint(){
 						<th id="head" >Name of Grantee</th>
 						<th  >Barangay</th>
 						<th  >Municipality</th>
-						<!-- <th  >PhilHealth ID No.</th> -->
+						<th  >HH Set Group</th>
 						<th  >Date of Transaction</th>
 						<th  >Amount</th>
 					</tr>
@@ -691,7 +691,7 @@ function CallPrint(){
 							</td>
 							<td><c:out value="${list.brgy}"></c:out></td>
 							<td><c:out value="${list.municipality}"></c:out></td>
-							<%-- <td><c:out value="${list.philhealth_id}"></c:out></td> --%>
+							<td><c:out value="${list.philhealth_id}"></c:out></td> 
 							<td><c:out value="${list.date_coverage}"></c:out></td>
 							<td class="amount" >
 							<div> <div style="float:left" >P</div>

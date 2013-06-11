@@ -31,7 +31,7 @@ import beans.BeansAdd;
 
 /**
  * Servlet implementation class Password_Con
- * Para ni cja sa kada dyes minutos nga pagpangayo og password inig panghatag og monart. hahaha.. Sayao bongotog lobot. 
+ * Para ni cja sa kada dyes minutos nga pagpangayo og password inig panghatag og monart.  
  */
 @WebServlet("/Password_Con")
 public class Password_Con extends HttpServlet {

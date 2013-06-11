@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import bean.reportBean;
-import bean.transactionBean;
 
 import myconnection.ConnectionDAO;
 
@@ -12,7 +11,6 @@ public class CleanListDAO extends ConnectionDAO{
 
 	public CleanListDAO() throws SQLException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 

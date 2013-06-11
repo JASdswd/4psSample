@@ -60,7 +60,6 @@ public class PrintReports extends HttpServlet {
      */
     public PrintReports() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**

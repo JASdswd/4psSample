@@ -32,14 +32,12 @@ public class TransactionView extends HttpServlet {
      */
     public TransactionView() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		if(session==null){
 			System.out.println("session is null servlet");
@@ -57,19 +55,26 @@ public class TransactionView extends HttpServlet {
 			else{
 				ArrayList<Municpality>municipal_list=new ArrayList<Municpality>();
 				ArrayList<Beanstransaction>householdlist=new ArrayList<Beanstransaction>();
+				ArrayList<Beanstransaction> iDOCP = new ArrayList<Beanstransaction>();
 				try{
+					
+					/*double countAllFPT = 113045;
+    				double batch = countAllFPT/20000;
+    				System.out.println(batch);
+					*/
 					Transaction_DAO dao=new Transaction_DAO();
 					municipal_list=dao.municipal_list();
 					householdlist=dao.household_list("",1);
+					iDOCP = dao.getIDOCP();
 					request.setAttribute("mun", session.getAttribute("mun"));
 					request.setAttribute("municipal_list",municipal_list);
 					request.setAttribute("householdlist", householdlist);
 					request.setAttribute("type", "household");
+					request.setAttribute("iDOCP", iDOCP);
 				ServletContext sc = this.getServletContext();
 				RequestDispatcher rd=sc.getRequestDispatcher("/transaction/viewtransaction.jsp");
 				rd.forward(request, response);
 				}catch (Exception e) {
-					// TODO: handle exception
 					e.printStackTrace();
 				}
 			}
@@ -80,7 +85,6 @@ public class TransactionView extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//HttpSession session=request.getSession(false);
 		HttpSession session = request.getSession(false);
 		if(session==null){
@@ -279,7 +283,7 @@ public class TransactionView extends HttpServlet {
 						}
 					}
 				}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 			}
 		}

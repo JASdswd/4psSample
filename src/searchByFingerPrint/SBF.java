@@ -1,7 +1,6 @@
 package searchByFingerPrint;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -11,16 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-
-import transaction_DAO.Transaction_DAO;
-
-import DAO.BaseDAO;
-import bean.transactionBean;
-import beans.BeansAdd;
-import beans.Beanstransaction;
-import beans.Municpality;
-
 
 
 /**
@@ -35,14 +24,12 @@ public class SBF extends HttpServlet {
      */
     public SBF() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("doget ghjkSearchByFingerprint");
 		HttpSession session = request.getSession(false);
 		if(session==null){
 			System.out.println("session is null servlet");
@@ -154,7 +141,6 @@ public class SBF extends HttpServlet {
 					
 					
 					}catch (Exception e) {
-						// TODO: handle exception
 					}
 				}
 				else{

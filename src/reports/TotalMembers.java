@@ -32,7 +32,6 @@ public class TotalMembers extends HttpServlet {
      */
     public TotalMembers() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -109,7 +108,6 @@ public class TotalMembers extends HttpServlet {
 					for(reportBean x:finalList){
 						System.out.println(x.getMunicipality().toLowerCase()+" "+x.getBrgy_name().toLowerCase());
 					}
-				int row = 1;
 					for(reportBean2 m:munList2){
 						for(reportBean2 b:totalMun){
 							if(b.getMun_id() == m.getMun_id()){

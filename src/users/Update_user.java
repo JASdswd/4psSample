@@ -29,14 +29,12 @@ public class Update_user extends HttpServlet {
      */
     public Update_user() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Get -- update grievance user");
 		HttpSession session  = request.getSession(false);
 		if(session==null){
 			ServletContext sc=this.getServletContext();
@@ -50,7 +48,6 @@ public class Update_user extends HttpServlet {
 				rd.forward(request, response);
 			}
 			else{
-				transactionBean bean = null;
 				ArrayList<transactionBean> plList = new ArrayList<transactionBean>();
 				ArrayList<transactionBean> mlist = new ArrayList<transactionBean>();
 				//System.out.println("in sa account settings...");
@@ -129,12 +126,10 @@ public class Update_user extends HttpServlet {
 					String email = request.getParameter("m_email");
 					String contact = request.getParameter("m_contact");
 					String mun_id =request.getParameter("mun_id");
-					String mun = request.getParameter("municipality");
 					String user_role =request.getParameter("update_user_role");
 					
 					String real_fname = request.getParameter("real_fname");
 					String real_lname = request.getParameter("real_lname");
-					String real_username = request.getParameter("real_username");
 					String real_gender = request.getParameter("real_gender");
 					String real_email = request.getParameter("real_email");
 					String real_contact = request.getParameter("real_contact");

@@ -53,7 +53,7 @@ way to fit your requirements.
 #nav li:hover ul.sub li a
 {display:block; font-size:13px; height:20px; width:125px; line-height:20px; text-indent:5px; color:#000; text-decoration:none;}
 #nav li:hover ul.sub li a.long
-{display:block; font-size:12px; height:20px; width:155px; line-height:20px; text-indent:5px; color:#000; text-decoration:none;}
+{display:block; font-size:12px; height:20px; width:170px; line-height:20px; text-indent:5px; color:#000; text-decoration:none;}
 #nav li:hover ul.sub li a.long1
 {display:block; font-size:13px; height:20px; width:150px; line-height:20px; text-indent:5px; color:#000; text-decoration:none;}
 #nav li ul.sub li a.fly

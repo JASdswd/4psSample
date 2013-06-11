@@ -125,6 +125,10 @@ public class Login extends HttpServlet {
 							request.setAttribute("social_worker", true);
 							session.setAttribute("grievance_worker", true);
 						}
+						else if(check_password==10){
+							request.setAttribute("admin", true);
+							session.setAttribute("admin", true);
+						}
 						byte[] ctr = null;
 						ctr = dao.testIfExist(false, "select photo from user_tbl where id = '"+user_id+"'");
 						System.out.println("ctr login.java:"+ctr);

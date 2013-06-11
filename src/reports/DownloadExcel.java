@@ -41,7 +41,6 @@ public class DownloadExcel extends HttpServlet {
      */
     public DownloadExcel() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -79,39 +78,49 @@ public class DownloadExcel extends HttpServlet {
 				String status = "exists";
 				JSONObject obj = new JSONObject();
 				PrintWriter out = response.getWriter();
+				int param_op = (Integer) session.getAttribute("param_op");
+				int gsize = 0;
+				int rsize = 0;
+				int fgsize = 0;  
+				int frsize = 0;
+				
 				try{
 					
-					list = (ArrayList<reportBean>) session.getAttribute("releaseList");
-					list_size = list.size();
-					list2 = (ArrayList<reportBean>) session.getAttribute("notReleaseList");
-					list2_size = list2.size();
+					
+					if(param_op == 1){
+						list = (ArrayList<reportBean>) session.getAttribute("releaseList");
+						total_release = (String) session.getAttribute("total_release");
+						list_size = list.size();
+						
+						
+						for(reportBean l:list){
+							munp = l.getMunicipality();
+							dtp = l.getDate_coverage();
+							if(l.getSub() == 0){
+								gsize = 1;
+								fgsize++;
+							}
+							
+							if(l.getSub() == 1){
+								rsize = 1;
+								frsize++;
+							}
+							
+							
+						}
+					}
+					else if(param_op == 2){
+						list2 = (ArrayList<reportBean>) session.getAttribute("notReleaseList");
+						list2_size = list2.size();
+						total_notrelease = (String) session.getAttribute("total_notrelease");
+					}
+					
 					
 					cash_total = (String) session.getAttribute("cash_total");
-					total_release = (String) session.getAttribute("total_release");
-					total_notrelease = (String) session.getAttribute("total_notrelease");
 					
 					System.out.println("size1: "+list_size+" size2: "+list2_size +" reportVal:"+request.getParameter("reportVal"));
 					
-					int gsize = 0;
-					int rsize = 0;
-					int fgsize = 0;  
-					int frsize = 0;
 					
-					for(reportBean l:list){
-						munp = l.getMunicipality();
-						dtp = l.getDate_coverage();
-						if(l.getSub() == 0){
-							gsize = 1;
-							fgsize++;
-						}
-						
-						if(l.getSub() == 1){
-							rsize = 1;
-							frsize++;
-						}
-						
-						
-					}
 					
 					SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 					Date date = new Date();
@@ -208,12 +217,6 @@ public class DownloadExcel extends HttpServlet {
 								c2.setCellStyle(celld1);
 								c2 = rowdate.createCell((short) 2);
 								c2.setCellValue("P "+total_release+".00");
-								c2.setCellStyle(celld1);
-								c2 = row5.createCell((short) 1);
-								c2.setCellValue("Cash in Hand:");
-								c2.setCellStyle(celld1);
-								c2 = row5.createCell((short) 2);
-								c2.setCellValue("P "+total_notrelease+".00");
 								c2.setCellStyle(celld1);
 								c2 = rowdate.createCell((short) 7);
 								c2.setCellValue("Date Created:");
@@ -564,12 +567,6 @@ public class DownloadExcel extends HttpServlet {
 								nc2 = nrow4.createCell((short) 2);
 								nc2.setCellValue("P "+cash_total+".00");
 								nc2.setCellStyle(ncelld1);
-								nc2 = nrowdate.createCell((short) 1);
-								nc2.setCellValue("Total Payments:");
-								nc2.setCellStyle(ncelld1);
-								nc2 = nrowdate.createCell((short) 2);
-								nc2.setCellValue("P "+total_release+".00");
-								nc2.setCellStyle(ncelld1);
 								nc2 = nrow5.createCell((short) 1);
 								nc2.setCellValue("Cash in Hand:");
 								nc2.setCellStyle(ncelld1);
@@ -719,7 +716,6 @@ public class DownloadExcel extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

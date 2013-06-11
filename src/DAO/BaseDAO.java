@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,19 +22,21 @@ public class BaseDAO extends ConnectionDAO {
 
 	}
 
-	public void add_fingerprint(boolean flag, String hh_id, byte[] fingerprint, String date, String time,String user_id,int mun_id)
+	public void add_fingerprint(boolean flag, String hh_id, byte[] fingerprint, String date, String time,int server_id,int team_id,String user_id,int mun_id)
 			throws SQLException {
 		
 		try {
 			stmt = con
-					.prepareStatement("insert into fingerprint_tbl_temp(household_id,fingerprint,date_recorded,time_recorded,user_id,mun_id) values(?,?,?,?,?,?)");
+					.prepareStatement("insert into fingerprint_tbl_temp(household_id,fingerprint,date_recorded,time_recorded,server_id,team_id,user_id,mun_id) values(?,?,?,?,?,?,?,?)");
 			
 			stmt.setString(1, hh_id);
 			stmt.setBytes(2, fingerprint);
 			stmt.setString(3, date);
 			stmt.setString(4, time);
-			stmt.setString(5, user_id);
-			stmt.setInt(6, mun_id);
+			stmt.setInt(5, server_id);
+			stmt.setInt(6, team_id);
+			stmt.setString(7, user_id);
+			stmt.setInt(8, mun_id);
 			
 			int ret = stmt.executeUpdate();
 			// When Insert not completed
@@ -107,15 +110,19 @@ public class BaseDAO extends ConnectionDAO {
 	}
 	
 	public void update_fingerprint(boolean flag, String hh_id,
-			byte[] fingerprint, String date, String time) throws SQLException {
+			byte[] fingerprint, String date, String time,int server_id,int team_id,String user_id,int mun_id) throws SQLException {
 		try {
 			stmt = con
-					.prepareStatement("update fingerprint_tbl_temp set fingerprint = ?, date_recorded = ?, time_recorded = ?  where household_id = '"
+					.prepareStatement("update fingerprint_tbl_temp set fingerprint = ?, date_recorded = ?, time_recorded = ?,server_id = ?," +
+							" team_id = ?, user_id = ?, mun_id = ?  where household_id = '"
 							+ hh_id + "'");
 			stmt.setBytes(1, fingerprint);
 			stmt.setString(2, date);
 			stmt.setString(3, time);
-
+			stmt.setInt(4, server_id);
+			stmt.setInt(5, team_id);
+			stmt.setString(6, user_id);
+			stmt.setInt(7,mun_id);
 			int ret = stmt.executeUpdate();
 			// When Insert not completed
 			if (ret != 1)
@@ -319,7 +326,7 @@ public class BaseDAO extends ConnectionDAO {
 						rs.getString("spouse_name"),
 						rs.getInt("household_member_id"), rs.getInt("age"),
 						rs.getString("birthday"), rs.getBoolean("pregnant"),
-						rs.getBoolean("attending_school"));
+						rs.getBoolean("attending_school"),rs.getString("f_position"),rs.getInt("status"),rs.getString("gender"));
 				list.add(bean);
 
 			}
@@ -353,7 +360,7 @@ public class BaseDAO extends ConnectionDAO {
 						rs.getInt("household_member_id"),
 						rs.getString("child_name"), rs.getInt("age"),
 						rs.getString("birthday"), rs.getBoolean("pregnant"),
-						rs.getBoolean("attending_school"),rs.getString("f_position"),rs.getInt("status"));
+						rs.getBoolean("attending_school"),rs.getString("f_position"),rs.getInt("status"),rs.getString("gender"));
 				list.add(bean);
 
 			}
@@ -453,7 +460,7 @@ public class BaseDAO extends ConnectionDAO {
 						rs.getInt("household_member_id"), rs.getInt("age"),
 						rs.getString("grandchild_name"),
 						rs.getString("birthday"), rs.getBoolean("pregnant"),
-						rs.getBoolean("attending_school"),rs.getInt("status"));
+						rs.getBoolean("attending_school"),rs.getInt("status"),rs.getString("gender"));
 				list.add(bean);
 
 			}
@@ -627,12 +634,10 @@ public class BaseDAO extends ConnectionDAO {
 
 		try {
 			rs = con.createStatement().executeQuery(
-					"select fingerprint from fingerprint_tbl_temp where household_id = '"
-							+ hh_id + "'");
+					hh_id);
 
 			while (rs.next()) {
-				System.out.println("naa sa fingerprint");
-				fingerprint = new transactionBean(rs.getBytes("fingerprint"),
+				fingerprint = new transactionBean(rs.getBytes(1),
 						"none");
 
 			}
@@ -649,6 +654,32 @@ public class BaseDAO extends ConnectionDAO {
 		}
 		return fingerprint;
 	}
+	
+	public int getCountAllFPT(boolean flag)
+		throws SQLException {
+	
+	int fingerprint = 0;
+	
+	try {
+		rs = con.createStatement().executeQuery("select count(*) from fingerprint_tbl_temp");
+	
+		while (rs.next()) {
+			fingerprint = rs.getInt(1);
+	
+		}
+	
+	} catch (SQLException ex) {
+		if (flag)
+			rollback();
+		throw new SQLException(ex.getMessage());
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		if (flag)
+			close();
+	}
+	return fingerprint;
+	}
 
 public ArrayList<transactionBean> getallfingerprint(boolean flag, String municipal, String brgy_id) throws SQLException {
 		
@@ -660,13 +691,15 @@ public ArrayList<transactionBean> getallfingerprint(boolean flag, String municip
 				"  where h.household_id = f.household_id and r.household_id = f.household_id and receive = 0 and h.municipality like '%"+municipal+"%' and barangay like '%"+brgy_id+"%'  order by head_name ";
 				*/sql = "SELECT distinct f.household_id, f.fingerprint FROM `fingerprint_tbl_temp` as f , household_tbl as h" +
 				"  where h.household_id = f.household_id and h.municipality like '%"+municipal+"%' and barangay like '%"+brgy_id+"%'  order by head_name ";
+				//sql = "select household_id, fingerprint from fingerprint_tbl_temp ";
 			System.out.println(sql);
 			rs=con.createStatement().executeQuery(sql);
-			
+			int count = 1;
 			while (rs.next()) {
 				
 				fingerprint = new transactionBean(rs.getBytes("fingerprint"), rs.getString("household_id"));
 				allFingerPrint.add(fingerprint);
+				System.out.println("count:"+count++);
 			}
 
 		} catch (SQLException ex) {
@@ -681,6 +714,42 @@ public ArrayList<transactionBean> getallfingerprint(boolean flag, String municip
 		}
 		return allFingerPrint;
 	}
+public ArrayList<transactionBean> getallfingerprintByBatch(boolean flag, int limit) throws SQLException {
+	
+	transactionBean fingerprint = null;
+	ArrayList<transactionBean> allFingerPrint = new ArrayList<transactionBean>();
+	String sql = "";
+	try {
+		/*	sql = "SELECT distinct f.household_id, f.fingerprint FROM `fingerprint_tbl_temp` as f , household_tbl as h, received_tbl as r" +
+			"  where h.household_id = f.household_id and r.household_id = f.household_id and receive = 0 and h.municipality like '%"+municipal+"%' and barangay like '%"+brgy_id+"%'  order by head_name ";
+			sql = "SELECT distinct f.household_id, f.fingerprint FROM `fingerprint_tbl_temp` as f , household_tbl as h" +
+			"  where h.household_id = f.household_id and h.municipality like '%"+municipal+"%' and barangay like '%"+brgy_id+"%'  order by head_name ";
+		*/
+		int range = limit - 10000;
+		sql = "select household_id, fingerprint from fingerprint_tbl_temp limit "+range+","+10000;
+		System.out.println(sql);
+		/*stmtZ = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		//rs.setFetchSize(1);
+		rs = stmtZ.executeQuery(sql);*/
+		rs = con.createStatement().executeQuery(sql);
+		int count = 1;
+		while (rs.next()) {
+			fingerprint = new transactionBean(rs.getBytes("fingerprint"), rs.getString("household_id"));
+			allFingerPrint.add(fingerprint);
+		}
+
+	} catch (SQLException ex) {
+		if(flag)
+			rollback();
+		throw new SQLException(ex.getMessage());
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		if(flag)
+		close();
+	}
+	return allFingerPrint;
+}
 	
 public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throws SQLException {
 		
@@ -867,7 +936,6 @@ public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throw
 	
 	public void addSpouse(boolean flag, String household_id, String name, String hmember_id,
 			int age, String bday, int pregnant, int attending_school) throws SQLException {
-		// TODO Auto-generated method stub
 		try{
 			stmt = con.prepareStatement("INSERT INTO wife_tbl VALUES (?,?,?,?,?,?,?)");
 
@@ -899,7 +967,6 @@ public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throw
 	public void addChildren(boolean flag, String household_id, String name,
 			String hmember_id, int age, String bday, int pregnant,
 			int attending_school) throws SQLException {
-		// TODO Auto-generated method stub
 		try{
 			stmt = con.prepareStatement("INSERT INTO children_tbl VALUES (?,?,?,?,?,?,?)");
 
@@ -946,7 +1013,6 @@ public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throw
 	public void addGrandChildren(boolean flag, String household_id, String name,
 			String hmember_id, int age, String bday, int pregnant,
 			int attending_school) throws SQLException {
-		// TODO Auto-generated method stub
 		try{
 			stmt = con.prepareStatement("INSERT INTO grandchild_tbl VALUES (?,?,?,?,?,?,?)");
 
@@ -1380,7 +1446,6 @@ public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throw
 	
 	public void addSpouse(boolean flag, String household_id, String name, String hmember_id,
 			int age, String bday,String gender, int pregnant, int attending_school) throws SQLException {
-		// TODO Auto-generated method stub
 		try{
 			stmt = con.prepareStatement("INSERT INTO wife_tbl VALUES (?,?,?,?,?,?,?,?)");
 
@@ -1413,7 +1478,6 @@ public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throw
 	public void addChildren(boolean flag, String household_id, String name,
 			String hmember_id, int age, String bday, String gender, int pregnant,
 			int attending_school) throws SQLException {
-		// TODO Auto-generated method stub
 		try{
 			stmt = con.prepareStatement("INSERT INTO children_tbl VALUES (?,?,?,?,?,?,?,?)");
 
@@ -1446,7 +1510,6 @@ public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throw
 	public void addGrandChildren(boolean flag, String household_id, String name,
 			String hmember_id, int age, String bday, String gender, int pregnant,
 			int attending_school) throws SQLException {
-		// TODO Auto-generated method stub
 		try{
 			stmt = con.prepareStatement("INSERT INTO grandchild_tbl VALUES (?,?,?,?,?,?,?,?)");
 
@@ -1459,6 +1522,49 @@ public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throw
 			stmt.setString(6, gender);
 			stmt.setInt(7, pregnant);
 			stmt.setInt(8, attending_school);
+			
+			int ret = stmt.executeUpdate();
+			// When Insert not completed
+			if (ret != 1)
+				throw new SQLException("Failed to add.");
+			if (flag) {
+				commit();
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (flag) {
+				close();
+			}
+		}
+	}
+	public void addGrsCase(boolean flag, String household_id, String grsCase,
+			String syscode, String fullName, String municipal, String barangay , String idocp,
+			String remarks,String date, String time, int server_id , int team_id,String user_id) throws SQLException {
+		try{
+			stmt = con.prepareStatement("INSERT INTO grscases2_tbl_temp(date_recorded,time_recorded,household_id," +
+					"captured_province,captured_citymunicipality,captured_barangay,captured_fullname,grievance_officer,captured_grscasetype," +
+					"captured_grsidoctype,status,remarks,team_id,server_id,user_id,grscasetype_id,grsidoctype_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+			// stmt.setBytes(1, bean.getFingerprint());
+			stmt.setString(1,date);
+			stmt.setString(2,time);
+			stmt.setString(3,household_id);
+			stmt.setString(4,"captured_province here!");
+			stmt.setString(5,municipal);
+			stmt.setString(6,barangay);
+			stmt.setString(7,fullName);
+			stmt.setString(8,"");
+			stmt.setString(9,grsCase);
+			stmt.setString(10,"");
+			stmt.setString(11,syscode);
+			stmt.setString(12,remarks);
+			stmt.setInt(13,team_id);
+			stmt.setInt(14,server_id);
+			stmt.setString(15,user_id);
+			stmt.setInt(16,0);
+			stmt.setString(17, idocp);
+			
 			
 			int ret = stmt.executeUpdate();
 			// When Insert not completed
@@ -1497,7 +1603,6 @@ public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throw
 	}
 
 	public void updateGrantee(boolean flag, reportBean bean) throws SQLException {
-		// TODO Auto-generated method stub
 		
 		String sql = "update household_tbl set philhealth_id = ?,household_member_id = ?,head_name = ?,age = ?,birthday = ?,gender = ?,pregnant = ?,attending_school = ?,street = ?,purok = ?,barangay = ?,municipality = ?,f_position = ? where household_id = ?  ";
 		
@@ -1594,7 +1699,7 @@ public boolean isExists(String name, String tbl_name, String col_name, String ho
 
 public void updateMember(boolean flag, reportBean bean, String tbl_name, String col_name) throws SQLException {
 	//System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------in");
-	String sql = "update "+tbl_name+" set "+col_name+" = ?,household_member_id = ?,age = ?,birthday = ?,pregnant = ?,attending_school = ?,f_position = ?,status = ?  where household_id = ? and household_member_id = ?";
+	String sql = "update "+tbl_name+" set "+col_name+" = ?,household_member_id = ?,age = ?,birthday = ?,pregnant = ?,attending_school = ?,f_position = ?,status = ?, gender = ?  where household_id = ? and household_member_id = ?";
 	
 	try{
 		
@@ -1607,8 +1712,9 @@ public void updateMember(boolean flag, reportBean bean, String tbl_name, String 
 		stmt.setInt(6, bean.getAttending_school());
 		stmt.setString(7, bean.getF_position());
 		stmt.setInt(8, bean.getStatus());
-		stmt.setString(9, bean.getHousehold_id());
-		stmt.setInt(10, Integer.parseInt(bean.getHmember_id()));
+		stmt.setString(9, bean.getGender());
+		stmt.setString(10, bean.getHousehold_id());
+		stmt.setInt(11, Integer.parseInt(bean.getHmember_id()));
 		
 		int ret = stmt.executeUpdate();
 		// When Insert not completed
@@ -1718,7 +1824,7 @@ public void UpdateFPosition(boolean flag,String ff_position, String household_id
 						rs.getString("spouse_name"),
 						rs.getInt("household_member_id"), rs.getInt("age"),
 						rs.getString("birthday"), rs.getBoolean("pregnant"),
-						rs.getBoolean("attending_school"));
+						rs.getBoolean("attending_school"),rs.getString("f_position"),rs.getInt("status"),rs.getString("gender"));
 				list.add(bean);
 	
 			}
@@ -2032,7 +2138,6 @@ public void UpdateFPosition(boolean flag,String ff_position, String household_id
 	}
 
 	public int getMunId(String fname, String lname) {
-		// TODO Auto-generated method stub
 		int mun = 0;
 		
 		try{
@@ -2071,7 +2176,6 @@ public void UpdateFPosition(boolean flag,String ff_position, String household_id
 	}
 
 	public String getMunValue(String mun_id) {
-		// TODO Auto-generated method stub
 		String munValue = "";
 		String sql = "SELECT mun_name FROM `municipal_tbl` WHERE mun_id = '"+mun_id+"'";
 		
@@ -3024,10 +3128,9 @@ public ArrayList<reportBean2> getHHList(String tbl,String col) {
 }
 
 public void addSpouse(boolean flag, String household_id, String name, String hmember_id,
-		int age, String bday, int pregnant, int attending_school, String f_position, int status) throws SQLException {
-	// TODO Auto-generated method stub
+		int age, String bday, int pregnant, int attending_school, String f_position, int status, String gender) throws SQLException {
 	try{
-		stmt = con.prepareStatement("INSERT INTO wife_tbl VALUES (?,?,?,?,?,?,?,?,?)");
+		stmt = con.prepareStatement("INSERT INTO wife_tbl VALUES (?,?,?,?,?,?,?,?,?,?)");
 
 		// stmt.setBytes(1, bean.getFingerprint());
 		stmt.setString(1, household_id);
@@ -3039,6 +3142,7 @@ public void addSpouse(boolean flag, String household_id, String name, String hme
 		stmt.setInt(7, attending_school);
 		stmt.setString(8, f_position);
 		stmt.setInt(9, status);
+		stmt.setString(10, gender);
 		
 		int ret = stmt.executeUpdate();
 		// When Insert not completed
@@ -3057,10 +3161,9 @@ public void addSpouse(boolean flag, String household_id, String name, String hme
 }
 public void addChildren(boolean flag, String household_id, String name,
 		String hmember_id, int age, String bday, int pregnant,
-		int attending_school, String f_position, int status) throws SQLException {
-	// TODO Auto-generated method stub
+		int attending_school, String f_position, int status, String gender) throws SQLException {
 	try{
-		stmt = con.prepareStatement("INSERT INTO children_tbl VALUES (?,?,?,?,?,?,?,?,?)");
+		stmt = con.prepareStatement("INSERT INTO children_tbl VALUES (?,?,?,?,?,?,?,?,?,?)");
 
 		// stmt.setBytes(1, bean.getFingerprint());
 		stmt.setString(1, household_id);
@@ -3072,6 +3175,8 @@ public void addChildren(boolean flag, String household_id, String name,
 		stmt.setInt(7, attending_school);
 		stmt.setString(8, f_position);
 		stmt.setInt(9, status);
+		stmt.setString(10, gender);
+		
 		int ret = stmt.executeUpdate();
 		// When Insert not completed
 		if (ret != 1)
@@ -3089,10 +3194,9 @@ public void addChildren(boolean flag, String household_id, String name,
 }
 public void addGrandChildren(boolean flag, String household_id, String name,
 		String hmember_id, int age, String bday, int pregnant,
-		int attending_school, int status) throws SQLException {
-	// TODO Auto-generated method stub
+		int attending_school, int status, String gender) throws SQLException {
 	try{
-		stmt = con.prepareStatement("INSERT INTO grandchild_tbl VALUES (?,?,?,?,?,?,?,?)");
+		stmt = con.prepareStatement("INSERT INTO grandchild_tbl VALUES (?,?,?,?,?,?,?,?,?)");
 
 		// stmt.setBytes(1, bean.getFingerprint());
 		stmt.setString(1, household_id);
@@ -3103,6 +3207,8 @@ public void addGrandChildren(boolean flag, String household_id, String name,
 		stmt.setInt(6, pregnant);
 		stmt.setInt(7, attending_school);
 		stmt.setInt(8, status);
+		stmt.setString(9, gender);
+		
 		int ret = stmt.executeUpdate();
 		// When Insert not completed
 		if (ret != 1)
@@ -3120,10 +3226,9 @@ public void addGrandChildren(boolean flag, String household_id, String name,
 }
 public void addOtherRealtives(boolean flag, String household_id, String name,
 		String hmember_id, int age, String bday, int pregnant,
-		int attending_school, String f_position, int status) throws SQLException {
-	// TODO Auto-generated method stub
+		int attending_school, String f_position, int status, String gender) throws SQLException {
 	try{
-		stmt = con.prepareStatement("INSERT INTO other_relatives_tbl VALUES (?,?,?,?,?,?,?,?,?)");
+		stmt = con.prepareStatement("INSERT INTO other_relatives_tbl VALUES (?,?,?,?,?,?,?,?,?,?)");
 
 		// stmt.setBytes(1, bean.getFingerprint());
 		stmt.setString(1, household_id);
@@ -3135,6 +3240,8 @@ public void addOtherRealtives(boolean flag, String household_id, String name,
 		stmt.setInt(7, attending_school);
 		stmt.setString(8, f_position);
 		stmt.setInt(9, status);
+		stmt.setString(10, gender);
+		
 		int ret = stmt.executeUpdate();
 		// When Insert not completed
 		if (ret != 1)
@@ -3195,7 +3302,7 @@ public ArrayList<transactionBean> getother_rel_info(boolean flag,
 					rs.getInt("household_member_id"),
 					rs.getString("fullname"), rs.getInt("age"),
 					rs.getString("birthday"), rs.getBoolean("pregnant"),
-					rs.getBoolean("attending_school"),rs.getString("f_position"),rs.getInt("status"));
+					rs.getBoolean("attending_school"),rs.getString("f_position"),rs.getInt("status"),rs.getString("gender"));
 			list.add(bean);
 
 		}
@@ -3288,7 +3395,7 @@ public void deleteMember(boolean flag, String household_id, String hmember, Stri
 
 public void updateMemberG(boolean flag, reportBean bean, String tbl_name, String col_name) throws SQLException {
 	//System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------in");
-	String sql = "update "+tbl_name+" set "+col_name+" = ?,household_member_id = ?,age = ?,birthday = ?,pregnant = ?,attending_school = ?,status = ? where household_id = ? and household_member_id = ?";
+	String sql = "update "+tbl_name+" set "+col_name+" = ?,household_member_id = ?,age = ?,birthday = ?,pregnant = ?,attending_school = ?,status = ?, gender = ? where household_id = ? and household_member_id = ?";
 	
 	try{
 		
@@ -3300,8 +3407,9 @@ public void updateMemberG(boolean flag, reportBean bean, String tbl_name, String
 		stmt.setInt(5, bean.getPregnant());
 		stmt.setInt(6, bean.getAttending_school());
 		stmt.setInt(7, bean.getStatus());
-		stmt.setString(8, bean.getHousehold_id());
-		stmt.setInt(9, Integer.parseInt(bean.getHmember_id()));
+		stmt.setString(8, bean.getGender());
+		stmt.setString(9, bean.getHousehold_id());
+		stmt.setInt(10, Integer.parseInt(bean.getHmember_id()));
 		
 		int ret = stmt.executeUpdate();
 		// When Insert not completed
@@ -3339,4 +3447,142 @@ public int getServerId(){
 	return server_id ;
 }
 
+public void UpdateMember(boolean flag, String household_id, int hmember_id,
+		String gender, String string) throws SQLException {
+	
+	try {
+		stmt = con
+				.prepareStatement("update ? set gender = ? where household_id = ? and household_member_id = ?");
+		stmt.setString(1, string);
+		stmt.setString(2, gender);
+		stmt.setString(3, household_id);
+		stmt.setInt(4, hmember_id);
+		
+		int ret = stmt.executeUpdate();
+		// When Insert not completed
+		if (ret != 1)
+			throw new SQLException("Failed to update.");
+		if (flag) {
+			commit();
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		if (flag) {
+			close();
+		}
+	}
+	
+}
+public String getDateAndTime(){
+	String dateAndTime = "";
+	try{
+		rs = con.createStatement().executeQuery("Select NOW()");
+	while(rs.next()){
+		dateAndTime = rs.getString(1);
+	}
+	}
+	catch(Exception ex){
+		ex.printStackTrace();
+	}
+	return dateAndTime;
+}
+public String getTime(){
+	String dateAndTime = "";
+	try{
+		rs = con.createStatement().executeQuery("Select CURTIME()");
+	while(rs.next()){
+		dateAndTime = rs.getString(1);
+	}
+	}
+	catch(Exception ex){
+		ex.printStackTrace();
+	}
+	return dateAndTime;
+}
+public void addWebData(String id,String fname,String mname,String lname,String bday,String gender,int lengthofstay,int maritalstat,int occupation){
+	
+	try {
+		stmt = con
+				.prepareStatement("insert into mcct_grantee_tbl(FamilyId,fname,mname,lname,birthday,gender,lengthofstay,maritalStat,occupation) values(?,?,?,?,?,?,?,?,?)");
+		
+		stmt.setString(1, id);
+		stmt.setString(2, fname);
+		stmt.setString(3, mname);
+		stmt.setString(4, lname);
+		stmt.setString(5, bday);
+		stmt.setString(6, gender);
+		stmt.setInt(7, lengthofstay);
+		stmt.setInt(8, maritalstat);
+		stmt.setInt(9, occupation);
+		
+		int ret = stmt.executeUpdate();
+		// When Insert not completed
+		if (ret != 1){
+			throw new SQLException("Failed to add.");
+		}else{
+			System.out.println(id+" named "+fname+" "+lname+" was successfully added to database.");
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+	}
+}
+public void add_fingerprintForFM(boolean flag, String hh_id, byte[] fingerprint)
+	throws SQLException {
+	
+	try {
+	stmt = con
+			.prepareStatement("insert into fingerprint_tbl_tempForFM(household_id,fingerprintForFM) values(?,?)");
+	
+	stmt.setString(1, hh_id);
+	stmt.setBytes(2, fingerprint);
+	
+	int ret = stmt.executeUpdate();
+	// When Insert not completed
+	if (ret != 1)
+		throw new SQLException("Failed to add.");
+	if (flag) {
+		commit();
+	}
+	
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		if (flag) {
+			close();
+		}
+	}
+	}
+public ArrayList<transactionBean> getallfingerprintForFM(boolean flag, String sql) throws SQLException {
+	
+	transactionBean fingerprint = null;
+	ArrayList<transactionBean> allFingerPrint = new ArrayList<transactionBean>();
+	try {
+		/*	sql = "SELECT distinct f.household_id, f.fingerprint FROM `fingerprint_tbl_temp` as f , household_tbl as h, received_tbl as r" +
+			"  where h.household_id = f.household_id and r.household_id = f.household_id and receive = 0 and h.municipality like '%"+municipal+"%' and barangay like '%"+brgy_id+"%'  order by head_name ";
+			*//*sql = "SELECT distinct f.household_id, f.fingerprint FROM `fingerprint_tbl_temp` as f , household_tbl as h" +
+			"  where h.household_id = f.household_id and h.municipality like '%"+municipal+"%' and barangay like '%"+brgy_id+"%'  order by head_name ";
+		System.out.println(sql);*/
+		rs=con.createStatement().executeQuery(sql);
+		
+		while (rs.next()) {
+			
+			fingerprint = new transactionBean(rs.getBytes(1), rs.getString(2));
+			allFingerPrint.add(fingerprint);
+		}
+
+	} catch (SQLException ex) {
+		if(flag)
+			rollback();
+		throw new SQLException(ex.getMessage());
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		if(flag)
+		close();
+	}
+	return allFingerPrint;
+}
 }

@@ -2,9 +2,6 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.servlet.RequestDispatcher;
@@ -115,30 +112,16 @@ public class PLFingerprint extends HttpServlet {
 				        	public void readerConnected(DPFPReaderStatusEvent e) {
 				        		if (lastStatus != e.getReaderStatus())	System.out.println("Reader is connected");
 				        		lastStatus = e.getReaderStatus();
-				        		/*try {
-									obj.put("secret", "1");
-								} catch (JSONException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-								}*/
 				        	}
 				        	public void readerDisconnected(DPFPReaderStatusEvent e) {
 				        		if (lastStatus != e.getReaderStatus())
 				        			System.out.println("Reader is disconnected");
 				        			lastStatus = e.getReaderStatus();
-				        			/*try {
-				    					obj.put("secret", "0");
-				    				} catch (JSONException e1) {
-				    					// TODO Auto-generated catch block
-				    					e1.printStackTrace();
-				    				}*/
 				        	}
 				                	
 				         });
 		                try {
 		                		capture.startCapture();
-		                    
-		                   // System.out.print(prompt);
 		                    sample =  samples.take();
 		                } catch (RuntimeException e) {
 		                	startCaptureFailed = 1;
@@ -150,7 +133,6 @@ public class PLFingerprint extends HttpServlet {
 		        				obj.put("badImageQuality", "0");
 		        				obj.put("startCaptureFailed", "1");
 		        			} catch (JSONException e2) {
-		        				// TODO Auto-generated catch block
 		        				e2.printStackTrace();
 		        			}
 		                    out1.print(obj);
@@ -187,7 +169,6 @@ public class PLFingerprint extends HttpServlet {
 		    				obj.put("badImageQuality", "1");
 		    				obj.put("startCaptureFailed", "0");
 		    			} catch (JSONException e2) {
-		    				// TODO Auto-generated catch block
 		    				e2.printStackTrace();
 		    			}
 		                out1.print(obj);
@@ -198,25 +179,29 @@ public class PLFingerprint extends HttpServlet {
 		            	
 			            DPFPTemplate template = enrollment.getTemplate();
 			            byte[] fingerprint_byte = template.serialize();
-			            Calendar calendar= Calendar.getInstance();
-						DateFormat timeInstance = SimpleDateFormat.getTimeInstance();
-						SimpleDateFormat format= new SimpleDateFormat("MM/dd/yyyy");
-						
-						String date = format.format(calendar.getTime());
-						//System.out.println("date:"+day);
-						String time = timeInstance.format(Calendar.getInstance().getTime());
 			            try{
 			            	BaseDAO dao = new BaseDAO();  
-			            	System.out.println("the fingerprint was accidentally added.");
-			            	System.out.println("remuel gwapo:"+request.getParameter("id"));
-			            	System.out.println("start capture failed.:"+startCaptureFailed);
+			            	/*================ Geting date from the server ===================*/
+			    			String dateAndTime = dao.getDateAndTime();
+			    			String regex[] = dateAndTime.split(" ");
+			    			String curDate = regex[0];
+			    			String regex1[] = regex[1].split("\\."); // naa cjay duha ka slash kung mag split ka with only a dot.
+			    			String curTime = regex1[0];
+			    			
+			    			String regex3[] = curDate.split("-");
+			    			String curYear = regex3[0];
+			    			String curMonth = regex3[1];
+			    			String curDay = regex3[2];
+			    			String convertedDate = curMonth+"/"+curDay+"/"+curYear;
+			    			
+			    			
+			    			/*================================================================*/
 			                PrintWriter out1= response.getWriter();
 			                JSONObject obj=new JSONObject();
 			            	try {
 			    				obj.put("failedToEnroll", "0");
 			    				obj.put("badImageQuality", "0");
 			    			} catch (JSONException e2) {
-			    				// TODO Auto-generated catch block
 			    				e2.printStackTrace();
 			    			}
 			                out1.print(obj);
@@ -224,14 +209,11 @@ public class PLFingerprint extends HttpServlet {
 			    			out1.close();
 			    			/*add fingerprint*/
 			    			dao.update_fingerprint(false,fingerprint_byte);
-							dao.add_logs(false, date, time, "Provincial user change its fingerprint by Provincial Link");
+							dao.add_logs(false, convertedDate, curTime, "Provincial user change its fingerprint by Provincial Link");
 							
 			            }catch(Exception e){
 			            	e.printStackTrace();
 			            }
-			           // user.setTemplate(DPFPFingerIndex.values()[nFinger], template);
-			
-			            //System.out.printf("%s was enrolled.\n", "Argie's fingerprint");
 		            }
 		        } catch (DPFPImageQualityException e) {
 		            System.out.printf("Failed to enroll the finger.\n");
@@ -240,7 +222,6 @@ public class PLFingerprint extends HttpServlet {
 		        	try {
 						obj.put("failedToEnroll", "1");
 					} catch (JSONException e2) {
-						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
 		            out1.print(obj);

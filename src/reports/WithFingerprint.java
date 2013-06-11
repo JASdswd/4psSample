@@ -18,7 +18,6 @@ import org.json.JSONObject;
 
 import transaction_DAO.Transaction_DAO;
 import DAO.WithFingerprintDAO;
-import DAO.reportDAO;
 import beans.Beanstransaction;
 import beans.Municpality;
 
@@ -34,7 +33,6 @@ public class WithFingerprint extends HttpServlet {
      */
     public WithFingerprint() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -61,16 +59,15 @@ public class WithFingerprint extends HttpServlet {
 				ArrayList<Beanstransaction>householdlist=new ArrayList<Beanstransaction>();
 				
 				try{
-					reportDAO dao2 = new reportDAO();
+					
 					Transaction_DAO dao=new Transaction_DAO();
 					WithFingerprintDAO dao1 = new WithFingerprintDAO();
-					ArrayList<String> tm = new ArrayList<String>();
-					tm = dao2.getTeamsReg("fingerprint_tbl_temp");
+					
 					
 					municipal_list=dao.municipal_list();
 					householdlist=dao1.household_list("",1);
 
-					request.setAttribute("tm", tm);
+					
 					request.setAttribute("municipal_list",municipal_list);
 					request.setAttribute("householdlist", householdlist);
 					ServletContext sc = this.getServletContext();
@@ -78,7 +75,7 @@ public class WithFingerprint extends HttpServlet {
 					rd.forward(request, response);
 					
 				}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 				
 			}
@@ -89,7 +86,6 @@ public class WithFingerprint extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		System.out.println("with fingeprint dopost");
 		if(session==null){
@@ -112,7 +108,6 @@ public class WithFingerprint extends HttpServlet {
 				ArrayList<Beanstransaction> householdlist = new ArrayList<Beanstransaction>();
 				ArrayList<Beanstransaction> granteelist = new ArrayList<Beanstransaction>();
 				ArrayList<Beanstransaction> wifelist  = new ArrayList<Beanstransaction>();
-				ArrayList<Beanstransaction> studentlist = new ArrayList<Beanstransaction>();
 				//ArrayList<BeansAdd>receivelist=new ArrayList<BeansAdd>();
 				ArrayList<Beanstransaction> municipal_list1 = new ArrayList<Beanstransaction>();
 				ArrayList<Beanstransaction> brgy_list = new ArrayList<Beanstransaction>();
@@ -224,7 +219,7 @@ public class WithFingerprint extends HttpServlet {
 					
 					
 				}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 			}
 		}

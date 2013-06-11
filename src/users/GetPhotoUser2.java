@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,8 +31,6 @@ import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
-import DAO.BaseDAO;
-import DAO.FinancialAnalystDAO;
 import bean.transactionBean;
 
 import com.thebuzzmedia.imgscalr.Scalr;
@@ -50,7 +47,6 @@ public class GetPhotoUser2 extends HttpServlet {
      */
     public GetPhotoUser2() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -86,7 +82,6 @@ public class GetPhotoUser2 extends HttpServlet {
 					bean= userdao.getphoto_user2(false,user_role);
 					 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				ByteArrayInputStream in = new ByteArrayInputStream(bean.getPhoto_head());
@@ -201,7 +196,10 @@ public class GetPhotoUser2 extends HttpServlet {
 									dao.add_logs(false, date, time, "Provincial Link user named "+rlname+", "+rfname+" change its photo by "+logs_fname+" "+logs_lname);
 								}else if(user_role==3){
 									dao.add_logs(false, date, time, "Financial Analyst user named "+rlname+", "+rfname+" change its photo by "+logs_fname+" "+logs_lname);
-								}								
+								}	
+								else if(user_role==10){
+									dao.add_logs(false, date, time, "Administrator user named "+rlname+", "+rfname+" change its photo by "+logs_fname+" "+logs_lname);
+								}	
 							}catch (Exception e) {
 								e.printStackTrace();
 							}							

@@ -38,7 +38,6 @@ public class DownloadChanges extends HttpServlet {
      */
     public DownloadChanges() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -159,7 +158,7 @@ public class DownloadChanges extends HttpServlet {
 						c2.setCellValue(new HSSFRichTextString("Updated Grantee and Family Members Data"));
 						c2.setCellStyle(cell1);
 						
-						for(int i=1;i<12;i++){
+						for(int i=1;i<10;i++){
 							
 							String cellValue = "";
 							
@@ -199,14 +198,7 @@ public class DownloadChanges extends HttpServlet {
 								cellValue = "Relationship to HH Head";
 								sheet.setColumnWidth(i, 6000);
 							}
-							else if(i == 10){
-								cellValue = "Pregnant";
-								sheet.setColumnWidth(i, 4000);
-							}
-							else if(i == 11){
-								cellValue = "Attending School";
-								sheet.setColumnWidth(i, 4000);
-							}
+							
 							
 							sheet.setFitToPage(true);
 							cell2.setFont(f2);
@@ -227,7 +219,7 @@ public class DownloadChanges extends HttpServlet {
 						    sheet.setFitToPage(true);
 							cell.setFont(f);
 							
-							for(int i=1;i<12;i++){
+							for(int i=1;i<10;i++){
 								
 								
 								String cellValue = "";
@@ -248,7 +240,7 @@ public class DownloadChanges extends HttpServlet {
 									cellValue = l.getName();
 								}
 								else if(i == 6){
-									if(l.getStatus() == 1){
+									if(l.getGstatus().equals("1")){
 										cellValue = "Yes";
 									}
 									else{
@@ -265,43 +257,62 @@ public class DownloadChanges extends HttpServlet {
 								else if(i == 9){
 									System.out
 											.println("status:"+l.getStatus());
-									if(l.getStatus() == 1){
+									if(l.getF_position().equals("1")){
 										cellValue = "1 - Head";
 									}
-									else if(l.getStatus() == 2){
+									else if(l.getF_position().equals("2")){
 										cellValue = "2 - Wife Spouse";
 									}
-									else if(l.getStatus() == 3){
+									else if(l.getF_position().equals("3")){
 										cellValue = "3 - Son Daughter";
 									}
-									else if(l.getStatus() == 5){
-										cellValue = "5 - GrandSon GrandDaughter";
+									else if(l.getF_position().equals("4")){
+										cellValue = "4 - Brother / Sister";
 									}
-									else if(l.getStatus() == 6){
-										cellValue = "6 - Son-in-law   Daughter-in-law";
+									else if(l.getF_position().equals("5")){
+										cellValue = "5 - Son-in-law / Daughter-in-law";
+									}
+									else if(l.getF_position().equals("6")){
+										cellValue = "6 - GrandSon / GrandDaughter";
+									}
+									else if(l.getF_position().equals("7")){
+										cellValue = "7 - Father / Mother";
+									}
+									else if(l.getF_position().equals("8")){
+										cellValue = "8 - Other Relatives";
+									}
+									else if(l.getF_position().equals("9")){
+										cellValue = "9 - Boarders";
+									}
+									else if(l.getF_position().equals("10")){
+										cellValue = "10 - Domestic Helper";
+									}
+									else if(l.getF_position().equals("11")){
+										cellValue = "11 - Non-relative";
+									}
+									else if(l.getF_position().equals("12")){
+										cellValue = "12 - Grandfather / GrandMother";
+									}
+									else if(l.getF_position().equals("13")){
+										cellValue = "13 - Uncle / Auntie";
+									}
+									else if(l.getF_position().equals("14")){
+										cellValue = "14 - Nephew / Niece";
 									}
 								}
-								else if(i == 10){
-									if(l.getPregnant() == 1){
-										cellValue = "Yes";
-									}
-									else{
-										cellValue = "";
-									}
+
+								if(i == 4){
+
+									c2 = rowtitle.createCell((short) i);
+									c2.setCellValue(Integer.parseInt(cellValue));
+									c2.setCellStyle(cell);
 								}
-								else if(i == 11){
-									if(l.getAttending_school() == 1){
-										cellValue = "Yes";
-									}
-									else{
-										cellValue = "";
-									}
+								else{
+
+									c2 = rowtitle.createCell((short) i);
+									c2.setCellValue(new HSSFRichTextString(cellValue));
+									c2.setCellStyle(cell);
 								}
-								
-								
-								c2 = rowtitle.createCell((short) i);
-								c2.setCellValue(new HSSFRichTextString(cellValue));
-								c2.setCellStyle(cell);
 							}
 							row++;
 						}
@@ -315,7 +326,7 @@ public class DownloadChanges extends HttpServlet {
 						c2 = hrowtitle5.createCell((short) 2);
 						c2.setCellValue(new HSSFRichTextString("New Family Members"));
 						c2.setCellStyle(cell1);
-						for(int i=1;i<12;i++){
+						for(int i=1;i<10;i++){
 							
 							String cellValue = "";
 							
@@ -355,14 +366,7 @@ public class DownloadChanges extends HttpServlet {
 								cellValue = "Relationship to HH Head";
 								sheet.setColumnWidth(i, 6000);
 							}
-							else if(i == 10){
-								cellValue = "Pregnant";
-								sheet.setColumnWidth(i, 4000);
-							}
-							else if(i == 11){
-								cellValue = "Attending School";
-								sheet.setColumnWidth(i, 4000);
-							}
+							
 							
 							sheet.setFitToPage(true);
 							cell2.setFont(f2);
@@ -383,7 +387,7 @@ public class DownloadChanges extends HttpServlet {
 						    sheet.setFitToPage(true);
 							cell.setFont(f);
 							
-							for(int i=1;i<12;i++){
+							for(int i=1;i<10;i++){
 								
 								
 								String cellValue = "";
@@ -404,7 +408,7 @@ public class DownloadChanges extends HttpServlet {
 									cellValue = k.getName();
 								}
 								else if(i == 6){
-									if(k.getStatus() == 1){
+									if(k.getGstatus().equals("1")){
 										cellValue = "Yes";
 									}
 									else{
@@ -421,43 +425,63 @@ public class DownloadChanges extends HttpServlet {
 								else if(i == 9){
 									System.out
 											.println("status:"+k.getStatus());
-									if(k.getStatus() == 1){
+									if(k.getF_position().equals("1")){
 										cellValue = "1 - Head";
 									}
-									else if(k.getStatus() == 2){
+									else if(k.getF_position().equals("2")){
 										cellValue = "2 - Wife Spouse";
 									}
-									else if(k.getStatus() == 3){
+									else if(k.getF_position().equals("3")){
 										cellValue = "3 - Son Daughter";
 									}
-									else if(k.getStatus() == 5){
-										cellValue = "5 - GrandSon GrandDaughter";
+									else if(k.getF_position().equals("4")){
+										cellValue = "4 - Brother / Sister";
 									}
-									else if(k.getStatus() == 6){
-										cellValue = "6 - Son-in-law   Daughter-in-law";
+									else if(k.getF_position().equals("5")){
+										cellValue = "5 - Son-in-law / Daughter-in-law";
 									}
-								}
-								else if(i == 10){
-									if(k.getPregnant() == 1){
-										cellValue = "Yes";
+									else if(k.getF_position().equals("6")){
+										cellValue = "6 - GrandSon / GrandDaughter";
 									}
-									else{
-										cellValue = "";
+									else if(k.getF_position().equals("7")){
+										cellValue = "7 - Father / Mother";
 									}
-								}
-								else if(i == 11){
-									if(k.getAttending_school() == 1){
-										cellValue = "Yes";
+									else if(k.getF_position().equals("8")){
+										cellValue = "8 - Other Relatives";
 									}
-									else{
-										cellValue = "";
+									else if(k.getF_position().equals("9")){
+										cellValue = "9 - Boarders";
+									}
+									else if(k.getF_position().equals("10")){
+										cellValue = "10 - Domestic Helper";
+									}
+									else if(k.getF_position().equals("11")){
+										cellValue = "11 - Non-relative";
+									}
+									else if(k.getF_position().equals("12")){
+										cellValue = "12 - Grandfather / GrandMother";
+									}
+									else if(k.getF_position().equals("13")){
+										cellValue = "13 - Uncle / Auntie";
+									}
+									else if(k.getF_position().equals("14")){
+										cellValue = "14 - Nephew / Niece";
 									}
 								}
 								
-								
-								c2 = rowtitle.createCell((short) i);
-								c2.setCellValue(new HSSFRichTextString(cellValue));
-								c2.setCellStyle(cell);
+
+								if(i == 4){
+
+									c2 = rowtitle.createCell((short) i);
+									c2.setCellValue(Integer.parseInt(cellValue));
+									c2.setCellStyle(cell);
+								}
+								else{
+
+									c2 = rowtitle.createCell((short) i);
+									c2.setCellValue(new HSSFRichTextString(cellValue));
+									c2.setCellStyle(cell);
+								}
 							}
 							row3++;
 						}
@@ -473,7 +497,7 @@ public class DownloadChanges extends HttpServlet {
 						c2 = hrowtitle6.createCell((short) 2);
 						c2.setCellValue(new HSSFRichTextString("Deleted Members Turn into Grantee"));
 						c2.setCellStyle(cell1);
-						for(int i=1;i<12;i++){
+						for(int i=1;i<10;i++){
 							
 							String cellValue = "";
 							
@@ -513,14 +537,7 @@ public class DownloadChanges extends HttpServlet {
 								cellValue = "Relationship to HH Head";
 								sheet.setColumnWidth(i, 6000);
 							}
-							else if(i == 10){
-								cellValue = "Pregnant";
-								sheet.setColumnWidth(i, 4000);
-							}
-							else if(i == 11){
-								cellValue = "Attending School";
-								sheet.setColumnWidth(i, 4000);
-							}
+							
 							
 							sheet.setFitToPage(true);
 							cell2.setFont(f2);
@@ -541,7 +558,7 @@ public class DownloadChanges extends HttpServlet {
 						    sheet.setFitToPage(true);
 							cell.setFont(f);
 							
-							for(int i=1;i<12;i++){
+							for(int i=1;i<10;i++){
 								
 								
 								String cellValue = "";
@@ -562,7 +579,7 @@ public class DownloadChanges extends HttpServlet {
 									cellValue = k.getName();
 								}
 								else if(i == 6){
-									if(k.getStatus() == 1){
+									if(k.getGstatus().equals("1")){
 										cellValue = "Yes";
 									}
 									else{
@@ -579,43 +596,62 @@ public class DownloadChanges extends HttpServlet {
 								else if(i == 9){
 									System.out
 											.println("status:"+k.getStatus());
-									if(k.getStatus() == 1){
+									if(k.getF_position().equals("1")){
 										cellValue = "1 - Head";
 									}
-									else if(k.getStatus() == 2){
+									else if(k.getF_position().equals("2")){
 										cellValue = "2 - Wife Spouse";
 									}
-									else if(k.getStatus() == 3){
+									else if(k.getF_position().equals("3")){
 										cellValue = "3 - Son Daughter";
 									}
-									else if(k.getStatus() == 5){
-										cellValue = "5 - GrandSon GrandDaughter";
+									else if(k.getF_position().equals("4")){
+										cellValue = "4 - Brother / Sister";
 									}
-									else if(k.getStatus() == 6){
-										cellValue = "6 - Son-in-law   Daughter-in-law";
+									else if(k.getF_position().equals("5")){
+										cellValue = "5 - Son-in-law / Daughter-in-law";
 									}
-								}
-								else if(i == 10){
-									if(k.getPregnant() == 1){
-										cellValue = "Yes";
+									else if(k.getF_position().equals("6")){
+										cellValue = "6 - GrandSon / GrandDaughter";
 									}
-									else{
-										cellValue = "";
+									else if(k.getF_position().equals("7")){
+										cellValue = "7 - Father / Mother";
 									}
-								}
-								else if(i == 11){
-									if(k.getAttending_school() == 1){
-										cellValue = "Yes";
+									else if(k.getF_position().equals("8")){
+										cellValue = "8 - Other Relatives";
 									}
-									else{
-										cellValue = "";
+									else if(k.getF_position().equals("9")){
+										cellValue = "9 - Boarders";
+									}
+									else if(k.getF_position().equals("10")){
+										cellValue = "10 - Domestic Helper";
+									}
+									else if(k.getF_position().equals("11")){
+										cellValue = "11 - Non-relative";
+									}
+									else if(k.getF_position().equals("12")){
+										cellValue = "12 - Grandfather / GrandMother";
+									}
+									else if(k.getF_position().equals("13")){
+										cellValue = "13 - Uncle / Auntie";
+									}
+									else if(k.getF_position().equals("14")){
+										cellValue = "14 - Nephew / Niece";
 									}
 								}
 								
-								
-								c2 = rowtitle.createCell((short) i);
-								c2.setCellValue(new HSSFRichTextString(cellValue));
-								c2.setCellStyle(cell);
+								if(i == 4){
+
+									c2 = rowtitle.createCell((short) i);
+									c2.setCellValue(Integer.parseInt(cellValue));
+									c2.setCellStyle(cell);
+								}
+								else{
+
+									c2 = rowtitle.createCell((short) i);
+									c2.setCellValue(new HSSFRichTextString(cellValue));
+									c2.setCellStyle(cell);
+								}
 							}
 							row5++;
 						}

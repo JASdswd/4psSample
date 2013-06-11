@@ -30,7 +30,6 @@ public class NoFingerPrint extends HttpServlet {
      */
     public NoFingerPrint() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -54,12 +53,10 @@ public class NoFingerPrint extends HttpServlet {
 			else{
 				
 				ArrayList<Municpality>municipal_list=new ArrayList<Municpality>();
-				ArrayList<Beanstransaction>householdlist=new ArrayList<Beanstransaction>();
 				
 				try{
 					
 					Transaction_DAO dao=new Transaction_DAO();
-					WithFingerprintDAO dao1 = new WithFingerprintDAO();
 					municipal_list=dao.municipal_list();
 					//householdlist=dao1.household_listnf("",0);
 					
@@ -70,7 +67,7 @@ public class NoFingerPrint extends HttpServlet {
 					rd.forward(request, response);
 					
 				}catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
 				
 			}
@@ -81,7 +78,6 @@ public class NoFingerPrint extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

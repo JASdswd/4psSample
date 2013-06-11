@@ -25,7 +25,6 @@ public class ViewAllUser2 extends HttpServlet {
      */
     public ViewAllUser2() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -77,7 +76,7 @@ public class ViewAllUser2 extends HttpServlet {
 						}
 					}
 				} catch (Exception e) {
-					e.printStackTrace();// TODO: handle exception
+					e.printStackTrace();
 				}
 			}
 			

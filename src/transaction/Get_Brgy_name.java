@@ -33,7 +33,6 @@ public class Get_Brgy_name extends HttpServlet {
      */
     public Get_Brgy_name() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -56,7 +55,7 @@ public class Get_Brgy_name extends HttpServlet {
 			out.flush();
 			out.close();
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 

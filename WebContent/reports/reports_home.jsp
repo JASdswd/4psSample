@@ -72,7 +72,7 @@ var empl = 0;
 var femp = 0;
 
 function changeTbl(op){
-
+	var param_op = 0;
 	var sdate = "";
 	var edate = "";
 	var search = "";
@@ -80,48 +80,41 @@ function changeTbl(op){
 	var mun = "";
 	var brgy = "";
 	var t = "";
+	var hhset = "";
 	edate = getIDValue("edate");
 	sdate = getIDValue("sdate");
 	t = getIDValue("view_trans");
+	hhset = getIDValue("view_hhset");
+	param_op  =getIDValue("param_op");
 	if(op == '1'){
 		
 		if(t != "Transactions"){
 			$("#terr").hide();
 			val = getIDValue("transaction");
 			
-			
-			if(val == "bday"){
-				search = getIDValue("b-day");
-			}
-			else if(val == "municipal"){
+			if(val == "municipal"){
 				
 				mun = getIDValue("mun");
 				brgy = getIDValue("bname");
 				$("#div").show();
 				$("#overlay").show();
-				xhrGo("GET", "<%= cPath %>/GetData?sdate="+sdate+"&edate="+edate+"&mun="+mun+"&val="+val+"&brgy="+brgy+"&transaction="+t, changeData, "plain");
-			}
-			else if(val == "transact"){
-				mun = getIDValue("view_trans");
-				$("#div").show();
-				$("#overlay").show();
-				xhrGo("GET", "<%= cPath %>/GetData?sdate="+sdate+"&edate="+edate+"&krisSayao="+mun+"&val="+val, changeData, "plain");
+				xhrGo("GET", "<%= cPath %>/GetData?sdate="+sdate+"&edate="+edate+"&mun="+mun+"&val="+val+"&brgy="+brgy+"&transaction="+t+"&param_op="+param_op+"&hh_set="+hhset, changeData, "plain");
 			}
 			else{
-				
 				search = getIDValue("search");
+				if(edate != "" && sdate != ""){
+					$("#div").show();
+					$("#overlay").show();
+					xhrGo("GET", "<%= cPath %>/GetData?sdate="+sdate+"&edate="+edate+"&search="+search+"&val="+val+"&transaction="+t+"&param_op="+param_op+"&hh_set="+hhset, changeData, "plain");
+				}
+				else{
+					$("#div").show();
+					$("#overlay").show();
+					xhrGo("GET", "<%= cPath %>/GetData?sdate="+sdate+"&edate="+edate+"&search="+search+"&val="+val+"&transaction="+t+"&param_op="+param_op+"&hh_set="+hhset, changeData, "plain");
+				}
 			}
 			
-			if(edate != "" && sdate != ""){
-				$("#div").show();
-				$("#overlay").show();
-				xhrGo("GET", "<%= cPath %>/GetData?sdate="+sdate+"&edate="+edate+"&search="+search+"&val="+val+"&transaction="+t, changeData, "plain");
-			}
-			else{
-				$("#div").show();
-				$("#overlay").show();
-				xhrGo("GET", "<%= cPath %>/GetData?sdate="+sdate+"&edate="+edate+"&search="+search+"&val="+val+"&transaction="+t, changeData, "plain");
-			}
+			
 		}
 		else{
 			$("#terr").show();
@@ -279,8 +272,20 @@ $(document).ready(function() {
 	document.getElementById('bname').style.display= 'none';
 	document.getElementById('mun').style.display= 'none';
 	xhrGo("POST", "<%= cPath %>/TotalMembers", viewtransactins, "plain");
+	xhrGo("POST", "<%= cPath %>/ChooseReport", viewhhset, "plain");
 });
 
+function viewhhset(data){
+	
+	var x = eval('('+data+')');
+	var str= "";
+	str += "<option value=''>HH Set Group</option>";
+	for(var r=0;r<x.data.length;r++){
+		str += "<option>"+x.data[r]+"</option>";
+	}
+	
+	getID("view_hhset").innerHTML = str;
+}
 
 function changeBrgy(mun){
 	xhrGo("POST", "<%= cPath %>/PrintReports?op=2&mun="+mun, brgyData, "plain");
@@ -529,6 +534,10 @@ function changeData(data){
         };
         $('#display3').tablePagination(options);
 	}
+	cash_total = "P "+x.cash_total+".00";
+	getID("cash_total").value = cash_total;
+	$("#div").fadeOut(100);	
+	$("#overlay").fadeOut(900);
 	
 	if(x.data2 == "" || x.data2 == "{}"){
 		total_notrelease = "P 0.00";
@@ -776,7 +785,7 @@ function DownloadExcel(){
 function finishDownload(data){
 	
 	var x = eval('('+data+')');
-	document.getElementById("path").innerHTML = "<u>"+x.path+"</u>";
+	document.getElementById("reportspath").innerHTML = "<u>"+x.path+"</u>";
 	if(x.status == "not"){
 		$( "#ask" ).dialog("close");
 		$( "#note" ).dialog({
@@ -798,95 +807,6 @@ function finishDownload(data){
 	
 }
 
-var ope;
-function pop_up_box(op){
-	
-	if(op == 1){
-		
-		$("#cleanList").title = "Generate Summary Report";
-	}
-	
-	ope = op;
-	xhrGo("POST", "<%= cPath %>/PrintReports?op=3", munData2, "plain");
-	
-}
-
-function munData2(data){
-	//alert(data);
-	var x = eval('('+data+')');
-	var st= "";
-	
-	st = "<option value = '' >--------------</option>";
-	for(var m=0;m<x.data.length;m++){
-		st += "<option value='"+ x.data[m].mun_id+"' > "+x.data[m].mun_name+" </option>";
-	}
-	
-	getID("munc").innerHTML = st;
-	
-	pop_up_box2();
-}
-
-function pop_up_box2(){
-	document.getElementById("messerr").innerHTML = "";	
-	$( "#cleanList" ).dialog({
-		show: "drop",
-		hide: "drop",
-		resizable: false,
-		height:250,
-		width:500,
-		modal: true,
-		buttons: {
-			"OK": function() {
-				var mun = getID("munc").value;
-
-				if(mun != ""){
-					$("#saving").html("<p style='color:red;text-decoration:blink;font-size:12px;' >Please wait for a while. Processing Report..</p><img src='<%= cPath%>/images/276.gif' />");
-					if(ope == 0){
-						xhrGo("POST","<%=cPath%>/GenerateCleanList?mun="+mun,prompt, "plain");
-					}
-					else if(ope == 1){
-						xhrGo("POST","<%=cPath%>/SummaryReport?mun="+mun,prompt, "plain");
-					}
-				}
-				else{
-					document.getElementById("messerr").innerHTML = "Please complete your input.";	
-				}
-			}
-		}
-	});
-}
-
-function prompt(data){
-	var x = eval('('+data+')');
-	$("#saving").html("");
-	$( "#cleanList" ).dialog( "close" );
-	if(x.status == "not"){
-		document.getElementById("cpath").innerHTML = "<u>"+x.path+"</u>";	
-		document.getElementById("messageb").innerHTML = "Your file is saved at ";	
-	}
-	else if(x.status == "empty"){
-		document.getElementById("cpath").innerHTML = "No data Found..</p>";
-		document.getElementById("messageb").innerHTML = "File cannot be save.";	
-	}
-	else{
-		document.getElementById("cpath").innerHTML = "<p style='color:red;font-size:11px;' >"+x.path+":File Name already exists.</p>";
-		document.getElementById("messageb").innerHTML = "File cannot be save at ";	
-	}
-	$( "#cnote" ).dialog({
-		show: "drop",
-		hide: "blind",
-		resizable: false,
-		height:200,
-		width:500,
-		modal: true,
-		buttons: {
-			"OK": function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});	
-}
-
 
 </script>
 <style type="text/css">
@@ -894,31 +814,7 @@ function prompt(data){
 		display: none;
 	}
 	
-	#daily_div,#daily_div1{
-	background:#f9edbe;
-	border-radius:2px;
-	border:1px solid #f0c36d;
-	box-shadow:0 2px 4px rgba(0,0,0,0.2);
-	color:#666;
-	display:block;
-	padding:16px;
-	position:fixed;
-	right:10px;
-	width:236px;
-	z-index:11;
-	-moz-border-radius:2px;
-	-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);
-	cursor:pointer;
-}
-#daily_div{
-	bottom:30px;
-	font-size: 14px;
-}	
 	
-	#daily_div1{
-	bottom:120px;
-	font-size: 14px;
-}
 </style>
 
 </head>
@@ -934,17 +830,12 @@ function prompt(data){
 
 <% String user = (String) session.getAttribute("username"); %>
 
-<div id="daily_div" > <div onclick="pop_up_box(0);" style="color:#222;margin-top:0;font-weight:bold">Generate Clean List</div> </div>
-<div id="daily_div1" > <div onclick="pop_up_box(1);" style="color:#222;margin-top:0;font-weight:bold">Generate Summary Report</div> </div>
-
-
 <input type="hidden" value="<%= user %>" id="username" />
 <input type="hidden" value="0" id="femp" />
 <div id="page-wrap">
 <div id="header" >
 <div id="logo" >
 	<img id="logo_image" alt="" src="<%=cPath %>/images/headers.jpg">
-	<div id="display-login"> Login as <c:out value="${duser_rolename }"></c:out>(<c:out value="${dfname }"></c:out>) </div>
 </div><!-- End of Logo -->
 </div><!-- End of Header -->
 <div id="main-content">
@@ -966,17 +857,13 @@ function prompt(data){
 	</table>		 
 </div>
 <% int r=1; %>
-<c:out value="${parami}"></c:out>
+
 <div id="main" >
-	<input type="text" id="param" name="param" value="${parami}" />
 	<div id="filterDiv1" >
 		<label for="transaction">
 				<select name="transaction" id="transaction" class="input" onchange="checkValue(this.value);" >
 					<option selected="selected" value="household">Search By HouseHold ID No.</option>
-					<!-- <option value="pId" id="pID">Search By PhilHealth ID No.</option> -->
 					<option value="municipal" id="municipal">Search By Municipality</option>
-				<!-- 	<option value="transact" id="transact">Search By Transaction</option> -->
-				<!-- 	<option value="brgy" id="brgy">Search By Brgy</option> -->
 				</select>
 		</label>
 		<select class="input" id="mun" name="mun" onchange="changeBrgy(this.value);" >
@@ -985,7 +872,7 @@ function prompt(data){
 		<select class="input" id="bname" name="bname" >
 			<option>Barangay</option>
 		</select>
-		
+		<input type="hidden" value="1" id="param_op" name = "param_op" />
 		<label for="search" > <input type="text" id="search" autocomplete="off" name="search" /> <input style="display: none;" type="text" id="b-day" name="b-day" />  </label>
 		<label for="ok" > <button id="ok" onclick="changeTbl(1);" >Search</button> </label>
 	</div>
@@ -995,6 +882,10 @@ function prompt(data){
 		<select class="input trans" id="view_trans" name="view_trans" >
 			<option>Transactions</option>
 		</select><span  id ="terr"  style="font-size:11px;color:red;" >&nbsp;&nbsp;Choose Value here.</span><br/>
+		<label class="prgrph" >Search By Set Group:&nbsp;&nbsp;&nbsp;</label>
+		<select class="input hhset" id="view_hhset" name="view_hhset" >
+			<option value="">HH Set Group</option>
+		</select><br/>
 		<p class="prgrph" >Date Coverage:</p>
 		<label for="sdate" >From</label>
 		<input type="text" id="sdate" name="sdate" />
@@ -1011,7 +902,7 @@ function prompt(data){
 					<button type="button"  id="download_btn" onclick="DownloadExcel()" >Download as Excel</button>
 				</label>
 				<label class="plabel" >
-					<input type="button" value="Print Preview" id="print_btn" onclick="javascript:  return goPrintpre();" />
+					<input type="submit" value="Print Preview" id="print_btn" />
 				</label>
 				<input type="hidden" id="startDate" name="startDate" />
 				<input type="hidden" id="endDate" name="endDate" />
@@ -1019,13 +910,12 @@ function prompt(data){
 				<input type="hidden" id="munVal" name="munVal" />
 				<input type="hidden" id="brgyVal" name="brgyVal" />
 				<input type="hidden" id="trans" name="trans" />
-				<input type="hidden" id="reportVal" name="reportVal"/>
+				<input type="hidden" id="reportVal" name="reportVal" value="1"/>
 			</form>
 		</div>
 	<hr/>
 	
-	<c:if test="${param == '1' }">
-		<div align="center">
+	<div align="center">
 	<h3>CCT Payments</h3>
 	
 		<table id="display" border="1"  class="paginated display sortable"  >
@@ -1105,50 +995,6 @@ function prompt(data){
 		<label for="total_release" >Total Payments:</label>
 		<input class="textField" id="total_release" value="P 0.00" name="total_release" readonly="readonly" />
 	</div>
-	</c:if>
-	
-	<c:if test="${param == '2'}">
-	
-	<div align="center" >
-		<h3>CCT Not Released</h3>
-	
-		<table id="display2" border="1"  class="paginated display sortable"  >
-			<thead id="thead" >
-				<tr>
-					<th>#</th>
-					<th class="sort-numeric" >Household ID No.</th>
-					<th>Name of Grantee</th>
-					<th>Barangay</th>
-					<th>Municipality</th>
-					<th>Set Group</th>
-					<th>Date of Transaction</th>
-					<th id="id_cell9" >Amount</th>
-				</tr>
-			</thead>
-			
-			<tbody id="tbody1" >
-				<%-- <% for(int i=0;i<20;i++){ %> --%>
-					<tr>
-						<%for(int c=0;c<8;c++){ %> 
-							<th>&nbsp;</th>
-						 <%} %> 
-					</tr>
-				<%-- <%} %> --%>
-			</tbody>
-			
-			<tfoot id="tfoot" >
-			
-			</tfoot>
-			 
-		</table>
-	</div>
-	
-	<div id="tRelease" >
-		<label for="total_notrelease" >Cash in hand:</label>
-		<input class="textField" id="total_notrelease" value="P 0.00" name="total_notrelease" readonly="readonly" />
-	</div>
-	</c:if>
-	
 	
 </div>
 </div> <!-- end of main content -->
@@ -1200,24 +1046,9 @@ function prompt(data){
 	</p>
 </div>
 <div id="note" title="Note:">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your file is saved at <span id="path" ></span> </p>
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Your file is saved at <span id="reportspath" ></span> </p>
 </div>
 
-<div title="Generate Clean List" id="cleanList" style = "text-align: left;font-size:15px;"  >
-<br/>
-	<form action="GenerateCleanList" method="POST" name="drform2" id="drform2" >
-	<div style="margin-bottom:10px;">
-	<label for="team_no" >Municipality:</label>
-		<select class="input" id="munc" name="munc" onchange="changeBrgy(this.value);" ></select>
-	</div>
-	<div id="saving" ></div>
-	
-	<span style="font-size:11px;color:red;" id="messerr"></span>
-	</form>
-</div>
 
-<div id="cnote" title="Note:">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="messageb"></span><span id="cpath" ></span> </p>
-</div>
 </body>
 </html>

@@ -2,9 +2,7 @@ package reports;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -33,7 +31,6 @@ public class Print extends HttpServlet {
      */
     public Print() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -68,50 +65,51 @@ public class Print extends HttpServlet {
 				String reportVal = request.getParameter("reportVal");
 				String dtp = "";
 				String munp = "";
-				
+				int gsize = 0;
+				int rsize = 0;
+				int fgsize = 0;  
+				int frsize = 0;
+				int sub=0;
 				try{
 					
 					if(reportVal.equalsIgnoreCase("1")){
 						list = (ArrayList<reportBean>) session.getAttribute("releaseList");
-						
+						total_release = (String) session.getAttribute("total_release");
 						list_size = list.size();
 						System.out.println("rsize:"+list_size);
+						for(reportBean l:list){
+							
+							sub = l.getSub();
+							System.out.println("rsize:"+sub);
+							munp = l.getMunicipality();
+							dtp = l.getDate_coverage();
+							if(sub == 0){
+								gsize = 1;
+								fgsize++;
+							}
+							
+							if(sub != 0){
+								rsize = 1;
+								frsize++;
+								System.out.println("rsize:"+rsize);
+							}
+							
+							
+						}
 					}
 					else if(reportVal.equalsIgnoreCase("2")){
 						list2 = (ArrayList<reportBean>) session.getAttribute("notReleaseList");
-						
+						total_notrelease = (String) session.getAttribute("total_notrelease");
 						list2_size = list2.size();
 						System.out.println("rsize:"+list2_size);
 					}
 					
 					cash_total = (String) session.getAttribute("cash_total");
-					total_release = (String) session.getAttribute("total_release");
-					total_notrelease = (String) session.getAttribute("total_notrelease");
+					
+					
 					System.out.println("size1: "+list_size+" size2: "+list2_size +" reportVal:"+request.getParameter("reportVal"));
-					int gsize = 0;
-					int rsize = 0;
-					int fgsize = 0;  
-					int frsize = 0;
-					int sub=0;
-					for(reportBean l:list){
-						
-						sub = l.getSub();
-						System.out.println("rsize:"+sub);
-						munp = l.getMunicipality();
-						dtp = l.getDate_coverage();
-						if(sub == 0){
-							gsize = 1;
-							fgsize++;
-						}
-						
-						if(sub != 0){
-							rsize = 1;
-							frsize++;
-							System.out.println("rsize:"+rsize);
-						}
-						
-						
-					}
+					
+					System.out.println("cash_total:"+cash_total);
 					System.out.println("frsize:"+frsize);
 					
 					request.setAttribute("fgsize", fgsize);
@@ -163,7 +161,6 @@ public class Print extends HttpServlet {
 			}
 			else{
 				String val = request.getParameter("val");
-				String search = request.getParameter("search");
 				ArrayList<String> list = new ArrayList<String>();
 				//ArrayList<String> plist = new ArrayList<String>();
 				JSONObject obj = new JSONObject();

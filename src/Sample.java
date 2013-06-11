@@ -2,9 +2,7 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.sql.SQLException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.servlet.RequestDispatcher;
@@ -143,16 +141,30 @@ public class Sample extends HttpServlet {
 		                	System.out.println("sample is null.");
 		                    continue;
 		                }
-		                DPFPFeatureSet featureSet;
+		                
+		                DPFPFeatureSet featureSet = null;
+		                DPFPFeatureSet featureSet1;
 		                try {
+		                	BaseDAO daoForFM = new BaseDAO();
 		                    featureSet = featureExtractor.createFeatureSet(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
+		                    String household_id = request.getParameter("id");
+		                    int count = daoForFM.testIfExist(false, "select * from fingerprint_tbl_tempForFM where household_id = '"+household_id+"' ");
+		                    if(count==0){
+		                    	featureSet1 = featureExtractor.createFeatureSet(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
+		                    	daoForFM.add_fingerprintForFM(false, household_id , featureSet1.serialize());
+		                    }
 		                } catch (DPFPImageQualityException e) {
 		                    System.out.printf("Bad image quality: \"%s\". Try again. \n", e.getCaptureFeedback().toString());
 		                    badImageQuality = 1;
 		                    break;
-		                }
+		                } catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 		
 		                enrollment.addFeatures(featureSet);
+		                enrollment.getTemplate();
+		                
 		            } // END of while loop.
 		           
 		            if(badImageQuality==1){
@@ -173,12 +185,6 @@ public class Sample extends HttpServlet {
 		            	
 			            DPFPTemplate template = enrollment.getTemplate();
 			            byte[] fingerprint_byte = template.serialize();
-			            Calendar calendar= Calendar.getInstance();
-						DateFormat timeInstance = SimpleDateFormat.getTimeInstance();
-						SimpleDateFormat format= new SimpleDateFormat("MM/dd/yyyy");
-						
-						String date = format.format(calendar.getTime());
-						String time = timeInstance.format(Calendar.getInstance().getTime());
 			            try{
 			            	BaseDAO dao = new BaseDAO();  
 			                PrintWriter out1= response.getWriter();
@@ -196,16 +202,34 @@ public class Sample extends HttpServlet {
 			    			/*add fingerprint*/
 			    			String hh_id = request.getParameter("id");
 			    			
+			    			/*================ Geting date from the server ===================*/
+			    			String dateAndTime = dao.getDateAndTime();
+			    			String regex[] = dateAndTime.split(" ");
+			    			String curDate = regex[0];
+			    			String regex1[] = regex[1].split("\\."); // naa cjay duha ka slash kung mag split ka with only a dot.
+			    			String curTime = regex1[0];
+			    			
+			    			String regex3[] = curDate.split("-");
+			    			String curYear = regex3[0];
+			    			String curMonth = regex3[1];
+			    			String curDay = regex3[2];
+			    			String convertedDate = curMonth+"/"+curDay+"/"+curYear;
+			    			
+			    			
+			    			/*================================================================*/
+			    			
 			    			int ctr = dao.testIffingerprintExist(false, hh_id);
 			    			int mun_id = dao.getMunId2(hh_id);
 			    			String user_id = (String)session.getAttribute("user_id");
+			    			int team_id = dao.getTeamId();
+			    			int server_id = dao.getServerId();
 							if(ctr==0){
-								dao.add_fingerprint(false, hh_id, fingerprint_byte, date, time,user_id,mun_id);
+								dao.add_fingerprint(false, hh_id, fingerprint_byte, convertedDate, curTime,server_id,team_id,user_id,mun_id);
 							}
 							else{
-								dao.update_fingerprint(false, hh_id, fingerprint_byte, date, time);
+								dao.update_fingerprint(false, hh_id, fingerprint_byte, convertedDate, curTime,server_id,team_id,user_id,mun_id);
 								String mun_name = dao.getName_ofmunUser(request.getParameter("user"), request.getParameter("pass"));
-								dao.add_logs(false, date, time, "Household ID "+hh_id +" fingerprint changed by Municipal Link "+mun_name);
+								dao.add_logs(false, convertedDate, curTime, "Household ID "+hh_id +" fingerprint changed by Municipal Link "+mun_name);
 							}
 			            	
 			            }catch(Exception e){

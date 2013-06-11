@@ -413,6 +413,7 @@ public class ExcelParseMag extends HttpServlet {
 													System.out
 															.println("munID:"+mun_id);
 													hhlist.setMun_id(mun_id);
+													hhlist.setMun_name(municipality);
 													in = 1;
 												}
 												else if(c == startCol+1){
@@ -575,7 +576,9 @@ public class ExcelParseMag extends HttpServlet {
 													
 													}
 													hhlist.setBrgy_id(brgy_id);
-													System.out.println(r+"--"+brgy_id+"--"+barangay);
+													hhlist.setBrgy_name(barangay);
+													System.out.println(r+"--"+brgy_id+"--"+barangay); 
+													
 												}
 												else if(c == startCol+2){
 													//household_id = cellValue;
@@ -779,7 +782,7 @@ public class ExcelParseMag extends HttpServlet {
 									hhlist.setStreet("");
 									hhlist.setPurok("");
 									hhlist.setAge(age);
-								
+									hhlist.setGstatus("1");
 									addedH = dao.searchHousehold( hhlist.getHousehold_id());
 									if(addedH){
 										System.out.println("household_id exists.");
@@ -802,7 +805,8 @@ public class ExcelParseMag extends HttpServlet {
 								}
 								else{
 										//hhlist.setStatus(Integer.parseInt(ff_position));
-										rowData.add(hhlist);
+									hhlist.setGstatus("0");	
+									rowData.add(hhlist);
 									}
 									
 								}
@@ -829,7 +833,7 @@ public class ExcelParseMag extends HttpServlet {
 												if(wife_exists == false){
 													//myrow++;
 													//System.out.println(myrow+"in sa add spouse:"+l.getHousehold_id());
-													dao.addSpouse(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+													dao.addSpouse(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 												}
 												/*else{
 													b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id(),l.getF_position());
@@ -843,7 +847,7 @@ public class ExcelParseMag extends HttpServlet {
 												if(child_exists == false){
 													//myrow++;
 													//System.out.println(myrow+"in sa add sa children"+l.getHousehold_id());
-													dao.addChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+													dao.addChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 												}/*else{
 													b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id(),l.getF_position());
 													catchList.add(b);
@@ -855,7 +859,7 @@ public class ExcelParseMag extends HttpServlet {
 												if(grandchild_exists == false){
 													//myrow++;
 													//System.out.println(myrow+"in sa add sa gchildren"+l.getHousehold_id());
-													dao.addGrandChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getStatus());
+													dao.addGrandChildren(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getStatus(),l.getGender());
 												}/*else{
 													b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id());
 													catchList.add(b);
@@ -869,7 +873,7 @@ public class ExcelParseMag extends HttpServlet {
 													if(other_relatives_exists == false){
 														//myrow++;
 														//System.out.println(myrow+"in sa add sa children"+l.getHousehold_id());
-														dao.addOtherRealtives(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus());
+														dao.addOtherRealtives(false,l.getHousehold_id(),l.getName(),l.getHmember_id(),l.getAge(),l.getBday(),l.getPregnant(),l.getAttending_school(),l.getF_position(),l.getStatus(),l.getGender());
 													}/*else{
 														b = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id(),l.getF_position());
 														catchList.add(b);
@@ -879,10 +883,8 @@ public class ExcelParseMag extends HttpServlet {
 											}
 										}
 									else{
-										reportBean b1 = null;
-										b1 = new reportBean(l.getStatus(),l.getHousehold_id(),l.getPhilhealth_id(),l.getHmember_id(),l.getName(),l.getAge(),l.getBday(),l.getGender(),l.getPregnant(),l.getAttending_school(),l.getStreet(),l.getPurok(),l.getBrgy_id(),l.getMun_id());
 										System.out.println("household Id of this grand child is not yet save:"+l.getHousehold_id()+" name:"+l.getName());
-										DataNotSave.add(b1);
+										DataNotSave.add(l);
 									}
 										
 								//changeID = false;

@@ -10,11 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-import beans.BeansAdd;
-
-import transaction_DAO.Transaction_DAO;
-
 /**
  * Servlet implementation class EditTransaction
  */
@@ -27,14 +22,12 @@ public class EditTransaction extends HttpServlet {
      */
     public EditTransaction() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String month=request.getParameter("month");
 		String id=request.getParameter("household_id");
 		int year=Integer.parseInt(request.getParameter("year"));
@@ -54,7 +47,6 @@ public class EditTransaction extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	/*	try{
 			Transaction_DAO dao=new Transaction_DAO();
 			String household_id=request.getParameter("household_id");
@@ -134,7 +126,6 @@ public class EditTransaction extends HttpServlet {
 				}
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}*/
 	}

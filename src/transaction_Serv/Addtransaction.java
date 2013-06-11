@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import DAO.BaseDAO;
 import bean.transactionBean;
 import beans.BeansAdd;
-import beans.Beanslistson;
 import beans.Municpality;
 
 import transaction_DAO.Transaction_DAO;
@@ -34,14 +33,12 @@ public class Addtransaction extends HttpServlet {
      */
     public Addtransaction() {
         super(); 
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		ArrayList<BeansAdd>transaction_list=new ArrayList<BeansAdd>();
 //		ArrayList<Beanslistson>reason_list=new ArrayList<Beanslistson>();
 		HttpSession session = request.getSession(false);
@@ -139,7 +136,6 @@ public class Addtransaction extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		if(session==null){
 			System.out.println("session is null servlet");
@@ -186,11 +182,6 @@ public class Addtransaction extends HttpServlet {
 			}else if(mon.equals("DECEMBER")){
 				month=12;
 			}*/
-			int year=Integer.parseInt(request.getParameter("years"));
-			int bool=Integer.parseInt(request.getParameter("bol"));
-			int amount=Integer.parseInt(request.getParameter("amount"));
-			String time=request.getParameter("time");
-			String day=request.getParameter("day");
 			
 			//int reason_id=Integer.parseInt(request.getParameter("reason_id"));
 			//System.out.println(reason_id+" reason_id");
@@ -236,7 +227,6 @@ public class Addtransaction extends HttpServlet {
 							//}
 					}
 			}catch (Exception e) {
-				// TODO: handle exception
 				e.printStackTrace();
 			}
 			request.setAttribute("head_name", request.getParameter("head_name"));
@@ -246,7 +236,6 @@ public class Addtransaction extends HttpServlet {
 			/*response.sendRedirect("TransactionView");
 			return;*/
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 			}

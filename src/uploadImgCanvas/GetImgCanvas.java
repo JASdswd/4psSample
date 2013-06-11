@@ -4,9 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
@@ -36,7 +33,6 @@ public class GetImgCanvas extends HttpServlet {
      */
     public GetImgCanvas() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -57,8 +53,8 @@ public class GetImgCanvas extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		
 		BASE64Decoder decoder = new BASE64Decoder(); //1st step of decoding base64 string
-		String regex[] = request.getParameter("capture_image").split("base64,");
-		String imageInString = regex[1];
+		String regex52494[] = request.getParameter("capture_image").split("base64,");
+		String imageInString = regex52494[1];
 		byte[] imageInByte = decoder.decodeBuffer(imageInString); //2nd step and end of decoding base64 string
 		ByteArrayInputStream in = new ByteArrayInputStream(imageInByte);
 		BufferedImage img = ImageIO.read(in);
@@ -75,13 +71,21 @@ public class GetImgCanvas extends HttpServlet {
 			UploadPhotoDAO uploadPhoto = new UploadPhotoDAO();		
 			BaseDAO dao = new BaseDAO();
 			
-			Calendar calendar= Calendar.getInstance();
-			DateFormat timeInstance = SimpleDateFormat.getTimeInstance();
-			SimpleDateFormat format= new SimpleDateFormat("MM/dd/yyyy");
+			/*================ Geting date from the server ===================*/
+			String dateAndTime = dao.getDateAndTime();
+			String regex[] = dateAndTime.split(" ");
+			String curDate = regex[0];
+			String regex1[] = regex[1].split("\\."); // naa cjay duha ka slash kung mag split ka with only a dot.
+			String curTime = regex1[0];
 			
-			String date = format.format(calendar.getTime());
+			String regex3[] = curDate.split("-");
+			String curYear = regex3[0];
+			String curMonth = regex3[1];
+			String curDay = regex3[2];
+			String convertedDate = curMonth+"/"+curDay+"/"+curYear;
 			
-			String time = timeInstance.format(Calendar.getInstance().getTime());
+			
+			/*================================================================*/
 			
 			int ctr = uploadPhoto.testIfPhotoExist(false, household_id);
 			int server_id = dao.getServerId();
@@ -91,11 +95,11 @@ public class GetImgCanvas extends HttpServlet {
 			int team_id = dao.getTeamId();
 			if(ctr==0){
 				
-				uploadPhoto.uploadBeneficiaryPhoto(household_id, finalImageInByte,date,time,server_id,team_id,user_idInt,mun_id, false,1);
+				uploadPhoto.uploadBeneficiaryPhoto(household_id, finalImageInByte,convertedDate,curTime,server_id,team_id,user_idInt,mun_id, false,1);
 			}
 			else{
-				uploadPhoto.uploadBeneficiaryPhoto(household_id, finalImageInByte,date,time,server_id,team_id,user_idInt,mun_id, false, 2);
-				dao.add_logs(false, date, time, "Household ID "+household_id +" change its profile picture by "+session.getAttribute("username"));
+				uploadPhoto.uploadBeneficiaryPhoto(household_id, finalImageInByte,convertedDate,curTime,server_id,team_id,user_idInt,mun_id, false, 2);
+				dao.add_logs(false, convertedDate, curTime, "Household ID "+household_id +" change its profile picture by "+session.getAttribute("username"));
 			}
 			
  

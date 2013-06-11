@@ -25,6 +25,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.json.JSONObject;
 
@@ -45,7 +46,6 @@ public class DailyReports extends HttpServlet {
      */
     public DailyReports() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -1024,25 +1024,79 @@ public class DailyReports extends HttpServlet {
 						out.flush();
 						out.close();
 					}
-					else if(op == "3"){
+					else if(op.equals("3")){
 						String path = "C:/"+cPath+"/";
 						boolean success = (new File(path)).mkdir();
 						String fpath = null;
 						ArrayList<reportBean> mlist = new ArrayList<reportBean>();
 						ArrayList<reportBean> blist = new ArrayList<reportBean>();
 						ArrayList <reportBean> grsgrouplist = new ArrayList<reportBean>();
+						ArrayList <reportBean> fplist = new ArrayList<reportBean>();
 						ArrayList <reportBean> grslist = new ArrayList<reportBean>();
+						ArrayList <reportBean> sysOlist = new ArrayList<reportBean>();
+						ArrayList <reportBean> MRDCaselist = new ArrayList<reportBean>();
+						ArrayList <reportBean> groupMRDCaselist = new ArrayList<reportBean>();
+						ArrayList <reportBean> coalist = new ArrayList<reportBean>();
+						ArrayList <reportBean> groupcoalist = new ArrayList<reportBean>();
+						ArrayList <String> grscaseslist = new ArrayList<String>();
+						ArrayList <String> grscaseslist2 = new ArrayList<String>();
 						reportBean grsbean = null;
+						reportBean coabean = null;
+						reportBean mrdbean = null;
+						boolean notemp = false;
+						int grssize = 0;
+						int grssize2 = 0;
 						mlist = dao.getAllMun();
 						blist = dao.getAllBrgy();
+						grscaseslist = dao.getAllGRS("grscases_tbl_temp");
+						grscaseslist2 = dao.getAllGRS("grscases2_tbl_temp");
+						System.out.println(mlist.size());
+						
+						grssize = grscaseslist.size();
+						grssize2 = grscaseslist2.size();
+						
 						
 						for(reportBean m:mlist){
 							grsgrouplist = dao.getGSRGrouped(m.getMun_id());
-							grsbean = new reportBean(m.getMun_id(),m.getGrscasetype(),m.getTotal_mun());
-							grslist.add(grsbean);
+							for(reportBean g:grsgrouplist){
+								grsbean = new reportBean(g.getMun_id(),g.getGrscasetype(),g.getTotal_mun());
+								grslist.add(grsbean);
+								notemp = true;
+							}
+							System.out.println("in sa list for loop");
 						}
 						
-						if(grslist.size() != 0){
+						for(reportBean m:mlist){
+							groupcoalist = dao.getAllCoalist(m.getMun_id());
+							for(reportBean c:groupcoalist){
+								coabean = new reportBean(c.getMun_id(),c.getBrgy_id());
+								coalist.add(coabean);
+								notemp = true;
+							}
+							System.out.println("in sa list for loop");
+						}
+						for(reportBean m:mlist){
+							groupMRDCaselist = dao.getAllMRDCase(m.getMun_id());
+							for(reportBean g:groupMRDCaselist){
+								mrdbean = new reportBean(g.getMun_id(),g.getGrscasetype(),g.getTotal_mun());
+								MRDCaselist.add(mrdbean);
+								notemp = true;
+							}
+							System.out.println("in sa list for loop");
+						}
+						
+						fplist = dao.getAllRegistered();
+						sysOlist = dao.getAllSysO();
+						//MRDCaselist = dao.getAllMRDCase();
+						
+						if(fplist.size() != 0){
+							notemp = true;
+						}
+						if(sysOlist.size() != 0){
+							notemp = true;
+						}
+						notemp = true;
+						if(notemp == true){
 
 							if(success){
 								fpath = path;
@@ -1080,7 +1134,7 @@ public class DailyReports extends HttpServlet {
 							Date date = new Date();
 							
 							//mun_name = dao1.getmunName(mun_id);
-							String filename = fpath+"Registration_Summary_Report_"+sdf.format(date)+".xls";
+							String filename = fpath+"Summary_Report_"+sdf.format(date)+".xls";
 							
 							//System.out.println(sdate);
 							
@@ -1101,105 +1155,54 @@ public class DailyReports extends HttpServlet {
 									HSSFSheet sheet =  hwb.createSheet("Summary Totals per Municipality");
 									//HSSFCell cell;
 									HSSFRow row=   sheet.createRow((short)0);
+									HSSFRow row1=   sheet.createRow((short)1);
 									String head_cell = "";
+									sheet.addMergedRegion((new CellRangeAddress(
+								            0, //first row (0-based)
+								            0, //last row  (0-based)
+								            3, //first column (0-based)
+								            (grssize+3)-1  //last column  (0-based));));
+								            )));
 									
-									for(int c=0;c<2;c++){
-										if(c==0){
-											head_cell = "GRS Cases";
-											sheet.addMergedRegion((new CellRangeAddress(
-										            1, //first row (0-based)
-										            1, //last row  (0-based)
-										            1, //first column (0-based)
-										            2  //last column  (0-based));));
-										            )));
-										}
-										else if(c==1){
-											head_cell = "Count Total";
-											sheet.setColumnWidth(c, 2000);
-										}
-										
-										
-										HSSFCell hc2;
-										HSSFCellStyle hcell = hwb.createCellStyle();
-										HSSFFont hf = hwb.createFont();
-										hf.setBoldweight(Font.BOLDWEIGHT_BOLD);
-										hcell.setFont(hf);
-										hc2 = row.createCell((short) c);
-										hc2.setCellValue(head_cell);
-										hc2.setCellStyle(hcell);
-										
-									}
-									String body_cell = "";
-									int rw=1;
-									int grand_total = 0;
-									for(reportBean dlist:mlist){
-										
-										HSSFRow body_row =   sheet.createRow((short) rw);
-										
-										for(int j=0;j<2;j++){
-											
-											if(j==0){
-												body_cell = dlist.getMunicipality();
-												HSSFCell hc;
-												HSSFCellStyle cell = hwb.createCellStyle();
-												HSSFFont h = hwb.createFont();
-												h.setFontName("Calibri");
-												cell.setFont(h);
-												hc = body_row.createCell((short) j);
-												hc.setCellValue(body_cell);
-												hc.setCellStyle(cell);
-											}
-											else if(j==1){
-												grand_total = grand_total + dlist.getTotal_mun();
-												HSSFCell hc;
-												HSSFCellStyle cell = hwb.createCellStyle();
-												HSSFFont h = hwb.createFont();
-												h.setFontName("Calibri");
-												cell.setFont(h);
-												hc = body_row.createCell((short) j);
-												hc.setCellValue(dlist.getTotal_mun());
-												hc.setCellStyle(cell);
-											}
-										
-										}
-										rw++;
-										
-									}
 									
-									HSSFRow total_row =   sheet.createRow((short) rw+1);
-									HSSFCell hc2;
-									HSSFCellStyle hcell = hwb.createCellStyle();
-									HSSFFont hf = hwb.createFont();
-									hf.setFontName("Calibri");
-									hcell.setFont(hf);
-									hc2 = total_row.createCell((short) 0);
-									hc2.setCellValue("Grand Total:");
-									hc2.setCellStyle(hcell);
-									hf.setFontName("Calibri");
-									hcell.setFont(hf);
-									hc2 = total_row.createCell((short) 1);
-									hc2.setCellValue(grand_total);
-									hc2.setCellStyle(hcell);
-								}
-								
-								if(blist.size() != 0){
-									HSSFSheet sheet =  hwb.createSheet("Total Reg Per Barangay");
-									//HSSFCell cell;
-									HSSFRow row=   sheet.createRow((short)0);
-									String head_cell = "";
+									int col = (grssize+3)-1;
+									int col2 = col+2;
+									int finalcol = (grssize2+col2);
 									
-									for(int c=0;c<3;c++){
+									sheet.addMergedRegion((new CellRangeAddress(
+								            0, //first row (0-based)
+								            0, //last row  (0-based)
+								            col2, //first column (0-based)
+								            (grssize2+col2)-1  //last column  (0-based));));
+								            )));
+									
+									for(int c=0;c<8;c++){
 										if(c==0){
 											head_cell = "Municipality";
 											sheet.setColumnWidth(c, 2000);
 										}
 										else if(c==1){
-											head_cell = "Barangay";
+											head_cell = "Total Registered";
 											sheet.setColumnWidth(c, 2000);
 										}
 										else if(c==2){
-											head_cell = "Count Total";
+											head_cell = "System Onhold";
 											sheet.setColumnWidth(c, 2000);
+										}
+										else if(c==3){
+											head_cell = "MRD Cases";
+											sheet.setColumnWidth(c, 2000);
+										}
+										else if(c==col+1){
+											head_cell = "COA List";
+											sheet.setColumnWidth(c, 2000);
+										}
+										else if(c==col+2){
+											head_cell = "GRS Cases";
+											sheet.setColumnWidth(c, 2000);
+										}
+										else{
+											head_cell = "";
 										}
 										
 										HSSFCell hc2;
@@ -1211,69 +1214,179 @@ public class DailyReports extends HttpServlet {
 										hc2.setCellValue(head_cell);
 										hc2.setCellStyle(hcell);
 										
+										if(c == 3){
+											for(String g1: grscaseslist){
+												HSSFCell hc3;
+												HSSFCellStyle hcell3 = hwb.createCellStyle();
+												HSSFFont hf3 = hwb.createFont();
+												hf3.setBoldweight(Font.BOLDWEIGHT_BOLD);
+												hcell3.setFont(hf3);
+												hcell3.setAlignment(CellStyle.ALIGN_CENTER);
+												hc3 = row1.createCell((short) c);
+												hc3.setCellValue(g1);
+												hc3.setCellStyle(hcell);
+											}
+										}
+										if(c == col2){
+											int cc = c;
+											for(String g2: grscaseslist2){
+												HSSFCell hc3;
+												HSSFCellStyle hcell3 = hwb.createCellStyle();
+												HSSFFont hf3 = hwb.createFont();
+												hf3.setBoldweight(Font.BOLDWEIGHT_BOLD);
+												hcell3.setFont(hf3);
+												hcell3.setAlignment(CellStyle.ALIGN_CENTER);
+												hc3 = row1.createCell((short) cc);
+												hc3.setCellValue(g2);
+												hc3.setCellStyle(hcell);
+												cc++;
+											}
+										}
 									}
-									
 									String body_cell = "";
-									int rw = 1;
+									int rw=2;
 									int grand_total = 0;
-									/*for(reportBean2 h: blist){
+									for(reportBean dlist:mlist){
+										
 										HSSFRow body_row =   sheet.createRow((short) rw);
-										for(int k=0;k<10;k++){
-											if(k==0){
-												body_cell = h.getMun_name();
-												HSSFCell hc2;
-												HSSFCellStyle hcell = hwb.createCellStyle();
-												HSSFFont hf = hwb.createFont();
-												hf.setFontName("Calibri");
-												hcell.setFont(hf);
-												hc2 = body_row.createCell((short) k);
-												hc2.setCellValue(body_cell);
-												hc2.setCellStyle(hcell);
+										
+										for(int j=0;j<finalcol;j++){
+											
+											if(j==0){
+												HSSFCell hc;
+												HSSFCellStyle cell = hwb.createCellStyle();
+												HSSFFont h = hwb.createFont();
+												h.setFontName("Calibri");
+												cell.setFont(h);
+												hc = body_row.createCell((short) j);
+												hc.setCellValue(dlist.getMun_name());
+												hc.setCellStyle(cell);
 											}
-											else if(k==1){
-												body_cell = h.getBrgy_name();
-												HSSFCell hc2;
-												HSSFCellStyle hcell = hwb.createCellStyle();
-												HSSFFont hf = hwb.createFont();
-												hf.setFontName("Calibri");
-												hcell.setFont(hf);
-												hc2 = body_row.createCell((short) k);
-												hc2.setCellValue(body_cell);
-												hc2.setCellStyle(hcell);
+											else if(j==1){
+												//grand_total = grand_total + dlist.getTotal_mun();
+												for(reportBean fp:fplist){
+													if(fp.getMun_id() == dlist.getMun_id()){
+														HSSFCell hc;
+														HSSFCellStyle cell = hwb.createCellStyle();
+														HSSFFont h = hwb.createFont();
+														h.setFontName("Calibri");
+														cell.setFont(h);
+														hc = body_row.createCell((short) j);
+														hc.setCellValue(fp.getBrgy_id());
+														hc.setCellStyle(cell);
+													}
+												}
 											}
-											else if(k==2){
-												//body_cell = h.getDate_coverage();
-												grand_total = grand_total + h.getTotal_brgy();
-												HSSFCell hc2;
-												HSSFCellStyle hcell = hwb.createCellStyle();
-												HSSFFont hf = hwb.createFont();
-												hf.setFontName("Calibri");
-												hcell.setFont(hf);
-												hc2 = body_row.createCell((short) k);
-												hc2.setCellValue(h.getTotal_brgy());
-												hc2.setCellStyle(hcell);
-												
+											else if(j==2){
+												//grand_total = grand_total + dlist.getTotal_mun();
+												for(reportBean so:sysOlist){
+													if(so.getMun_id() == dlist.getMun_id()){
+														HSSFCell hc;
+														HSSFCellStyle cell = hwb.createCellStyle();
+														HSSFFont h = hwb.createFont();
+														h.setFontName("Calibri");
+														cell.setFont(h);
+														hc = body_row.createCell((short) j);
+														hc.setCellValue(so.getBrgy_id());
+														hc.setCellStyle(cell);
+													}
+												}
+											}
+											else if(j==3){
+												//grand_total = grand_total + dlist.getTotal_mun();
+												for(reportBean mrd:MRDCaselist){
+													for(String g1: grscaseslist){
+														if((mrd.getMun_id() == dlist.getMun_id()) && (g1.equalsIgnoreCase(mrd.getGrscasetype()))){
+															HSSFCell hc;
+															HSSFCellStyle cell = hwb.createCellStyle();
+															HSSFFont h = hwb.createFont();
+															h.setFontName("Calibri");
+															cell.setFont(h);
+															hc = body_row.createCell((short) j);
+															hc.setCellValue(mrd.getTotal_mun());
+															hc.setCellStyle(cell);
+														}
+													}
+													
+												}
+											}
+											else if(j==col+1){
+												//grand_total = grand_total + dlist.getTotal_mun();
+												for(reportBean coa:coalist){
+													if(coa.getMun_id() == dlist.getMun_id()){
+														HSSFCell hc;
+														HSSFCellStyle cell = hwb.createCellStyle();
+														HSSFFont h = hwb.createFont();
+														h.setFontName("Calibri");
+														cell.setFont(h);
+														hc = body_row.createCell((short) j);
+														hc.setCellValue(coa.getBrgy_id());
+														hc.setCellStyle(cell);
+													}
+												}
+											}
+											else if(j==col2){
+												//grand_total = grand_total + dlist.getTotal_mun();
+												for(reportBean grs:grslist){
+													if(grs.getMun_id() == dlist.getMun_id()){
+														int column_count = col2;
+														boolean found = false;
+														for(String g2: grscaseslist2){
+															if(g2.equalsIgnoreCase(grs.getGrscasetype())){
+																found = true;
+																break;
+															}
+															column_count++;
+														}
+														
+														if(found){
+															HSSFCell hc;
+															HSSFCellStyle cell = hwb.createCellStyle();
+															HSSFFont h = hwb.createFont();
+															h.setFontName("Calibri");
+															cell.setFont(h);
+															hc = body_row.createCell((short) column_count);
+															hc.setCellValue(grs.getTotal_mun());
+															hc.setCellStyle(cell);
+														}
+														
+													}
+													/*for(String g2: grscaseslist2){
+														
+														if((grs.getMun_id() == dlist.getMun_id()) && (g2.equalsIgnoreCase(grs.getGrscasetype()))){
+															HSSFCell hc;
+															HSSFCellStyle cell = hwb.createCellStyle();
+															HSSFFont h = hwb.createFont();
+															h.setFontName("Calibri");
+															cell.setFont(h);
+															hc = body_row.createCell((short) j);
+															hc.setCellValue(grs.getTotal_mun());
+															hc.setCellStyle(cell);
+															j++;
+															break;
+														}
+														else if((grs.getMun_id() == dlist.getMun_id()) && (!g2.equalsIgnoreCase(grs.getGrscasetype()))){
+															HSSFCell hc;
+															HSSFCellStyle cell = hwb.createCellStyle();
+															HSSFFont h = hwb.createFont();
+															h.setFontName("Calibri");
+															cell.setFont(h);
+															hc = body_row.createCell((short) j);
+															hc.setCellValue("");
+															hc.setCellStyle(cell);
+															j++;
+														}
+													}*/
+													
+												}
 											}
 										}
 										rw++;
 										
-									}*/
-									HSSFRow total_row =   sheet.createRow((short) rw+1);
-									HSSFCell hc2;
-									HSSFCellStyle hcell = hwb.createCellStyle();
-									HSSFFont hf = hwb.createFont();
-									hf.setFontName("Calibri");
-									hcell.setFont(hf);
-									hc2 = total_row.createCell((short) 1);
-									hc2.setCellValue("Grand Total:");
-									hc2.setCellStyle(hcell);
-									hf.setFontName("Calibri");
-									hcell.setFont(hf);
-									hc2 = total_row.createCell((short) 2);
-									hc2.setCellValue(grand_total);
-									hc2.setCellStyle(hcell);
+									}
 									
 								}
+								
 								FileOutputStream fileOut =  new FileOutputStream(filename);
 								hwb.write(fileOut);
 								fileOut.close();	

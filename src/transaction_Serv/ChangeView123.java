@@ -43,7 +43,6 @@ import transaction_DAO.Transaction_DAO;
 import DAO.BaseDAO;
 import bean.transactionBean;
 import beans.BeansAdd;
-import beans.Beanslistson;
 
 /**
  * Servlet implementation class ChangeView123
@@ -57,21 +56,18 @@ public class ChangeView123 extends HttpServlet {
      */
     public ChangeView123() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		if(session==null){
 			System.out.println("session is null servlet");
@@ -89,20 +85,15 @@ public class ChangeView123 extends HttpServlet {
 			else{
 				
 				ArrayList<BeansAdd>list_house=new ArrayList<BeansAdd>();
-				ArrayList<Beanslistson>reason_list=new ArrayList<Beanslistson>();
 				try{
 					BaseDAO bDAO = new BaseDAO();
 					int count = bDAO.testIffingerprintExist(false, request.getParameter("household_id"));
 					if(count>0){
-					
-						int verifyCtrl = 0;
 						PrintWriter out= response.getWriter();
 						JSONArray array=new JSONArray();
 						//JSONArray array1=new JSONArray();
 						JSONObject objectall=new JSONObject();
-						Calendar calendar= Calendar.getInstance();
-						DateFormat timeInstance = SimpleDateFormat.getTimeInstance();
-						SimpleDateFormat format= new SimpleDateFormat("MM/dd/yyyy");
+						
 						//MainForm form = new MainForm(request.getParameter("household_id"), 2);
 						//int verifyCtrl = form.getVerifyCtrl();
 						//System.out.println("verifyCtrl = "+verifyCtrl);
@@ -164,9 +155,8 @@ public class ChangeView123 extends HttpServlet {
 			                    transactionBean bean = new transactionBean();
 			        			try {
 			        				BaseDAO dao = new BaseDAO();
-			        				bean = dao.getfingerprint(false, request.getParameter("household_id"));
+			        				bean = dao.getfingerprint(false, "select fingerprint from fingerprint_tbl_temp where household_id = '"+request.getParameter("household_id")+"'");
 			        			} catch (SQLException e) {
-			        				// TODO Auto-generated catch block
 			        				e.printStackTrace();
 			        			}
 			        			
@@ -190,21 +180,31 @@ public class ChangeView123 extends HttpServlet {
 			    					}
 			    				
 			        			if(controller>0){
-			        				System.out.println("fingerprint matched.");
-			        				String day=format.format(calendar.getTime());
-									System.out.println("date="+day);
-									String time=timeInstance.format(Calendar.getInstance().getTime());
-									System.out.println("time="+time);
+			        				
+									
+									/*================ Geting date from the server ===================*/
+					    			String dateAndTime = bDAO.getDateAndTime();
+					    			String regex[] = dateAndTime.split(" ");
+					    			String curDate = regex[0];
+					    			String regex1[] = regex[1].split("\\."); // naa cjay duha ka slash kung mag split ka with only a dot.
+					    			String curTime = regex1[0];
+					    			
+					    			/*================================================================*/
 									
 									String household_id=request.getParameter("household_id");
+									System.out.println("household_id ::: "+household_id);
 									String month=request.getParameter("month");
 									//int year=Integer.parseInt(request.getParameter("year"));
 									String id=request.getParameter("id");
 									System.out.println("id:"+id);
 									String comment=request.getParameter("comment");
 									Transaction_DAO dao = new Transaction_DAO();
-									dao.updaterecieve(household_id, month, day,time,1,comment);
 									
+									dao.updaterecieve(household_id, month, curDate,curTime,1,comment);
+									float current_amount = 0;
+									current_amount = dao.getLastAmount(household_id);
+									
+									System.out.println("current amount: "+current_amount);
 									/*JSONObject transaction_time=new JSONObject();
 									transaction_time.put("transaction_time", time);
 									out.print(transaction_time);*/
@@ -213,13 +213,14 @@ public class ChangeView123 extends HttpServlet {
 									//reason_list=dao.listreason();
 									for(BeansAdd i:list_house){
 										JSONObject obj=new JSONObject();
+										obj.put("current_amount", current_amount);
 										obj.put("household_id", i.getHousehold_id());
 										obj.put("month", i.getMonth());
 										/*obj.put("year", i.getYear());*/
 										obj.put("amount", i.getAmount());
 										obj.put("recieve", 1);
-										obj.put("date_receive", day);
-										obj.put("time", time);
+										obj.put("date_receive", curDate);
+										obj.put("time", curTime);
 										obj.put("comment", i.getComment());
 										obj.put("sub", i.getSub());
 										obj.put("munLink_name", i.getMunLink_name());
@@ -261,7 +262,6 @@ public class ChangeView123 extends HttpServlet {
 			        	        	try {
 			        					obj.put("fingerNotMatched", true);
 			        				} catch (JSONException e2) {
-			        					// TODO Auto-generated catch block
 			        					e2.printStackTrace();
 			        				}
 			        	            out1.print(obj);
@@ -276,7 +276,6 @@ public class ChangeView123 extends HttpServlet {
 			                	try {
 			        				obj.put("failedToVerify", "1");
 			        			} catch (JSONException e2) {
-			        				// TODO Auto-generated catch block
 			        				e2.printStackTrace();
 			        			}
 			                    out1.print(obj);
@@ -294,7 +293,6 @@ public class ChangeView123 extends HttpServlet {
 					}
 					
 				}catch (Exception e) {
-					// TODO: handle exception
 					e.printStackTrace();
 				}
 			}

@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import bean.ChartBean;
-import bean.LogsBean;
 
 import myconnection.ConnectionDAO;
 

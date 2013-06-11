@@ -150,6 +150,7 @@ $(document).ready(function(){
 function photoConfirm123(data){
 	if(data==1){
 		change_photo_head();
+		$("#confirm_prov2").dialog("close");
 	}
 	else{
 		accessDenied();
@@ -387,7 +388,7 @@ function confirm_saving(){
 
 function fingerprintConfirm(data){
 	if(data==1){
-		$( '#confirm_prov' ).dialog( "close" );
+		$("#confirm_prov3").dialog("close");
 		document.forms["pl_update"].submit();
 	}
 	else{
@@ -581,7 +582,7 @@ function fingerprintConfirm2(data){
 	//alert("data:"+x.data[0].username);
 	if(x.c==1){
 		//alert("password confirmed.!!");
-		$( '#confirm_prov' ).dialog( "close" );
+		$( '#confirm_prov4' ).dialog( "close" );
 		$("#u_name").val(x.data[0].username);
 		$("#u_pword").val(x.data[0].password);
 		update_account(); 
@@ -615,21 +616,21 @@ function OnEnterFPT(e){
 	if(e && e.keyCode == 13){
 		var password = document.getElementById("confirm_password").value;
 		xhrGo("POST","Password_Confirmation?confirmation_password="+password, fingerprintConfirm123, "plain");
-		$("#confirm_prov").dialog("close");
+		
 	}
 }
 function OnEnterPhoto(e){
 	if(e && e.keyCode == 13){
 		var password = document.getElementById("confirm_password2").value;
 		xhrGo("POST","Password_Confirmation?confirmation_password="+password, photoConfirm123, "plain");
-		$("#confirm_prov2").dialog("close");
+		
 	}	
 }
 function OnEnterSave(e){
 	if(e && e.keyCode == 13){
 		var password = document.getElementById("confirm_password3").value;
 		xhrGo("POST","Password_Confirmation?confirmation_password="+password, fingerprintConfirm, "plain");
-		$("#confirm_prov3").dialog("close");
+		
 	}	
 }
 function OnEnterManage(e){
@@ -642,7 +643,6 @@ function OnEnterManage(e){
 		var mname = $("#m_mun").val();
 		xhrGo("POST","GetPassUname?confirmation_password="+password+"&user_role="+user_role+"&id="+id+"&mun_id="+mname, fingerprintConfirm2, "plain");
 
-		$("#confirm_prov4").dialog("close");
 	}	
 }
 </script>
@@ -726,6 +726,9 @@ function OnEnterManage(e){
 	<c:when test="${user_role == 3 }">
 		<h3>Financial Analyst Profile</h3>	
 	</c:when>
+	<c:when test="${user_role == 10 }">
+		<h3>Administrator Profile</h3>	
+	</c:when>
 </c:choose>
 
 <input type="hidden" id="user_role" value='<c:out value="${user_role}"></c:out>'/>
@@ -759,7 +762,7 @@ function OnEnterManage(e){
 					</tr>
 					<tr >
 					<c:choose>
-						<c:when test="${provlink}">
+						<c:when test="${admin}">
 							<td align="center">
 								<div id="radio">
 									<input type="radio" id="radio1" name="radio" checked="checked" /><label for="radio1" id="btn_capture">Capture Photo</label>
@@ -793,9 +796,12 @@ function OnEnterManage(e){
 							<c:when test="${user_role == 3 }">
 								<h2>Financial Analyst Info</h2>
 							</c:when>
+							<c:when test="${user_role == 10 }">
+								<h2>Administrator Profile</h2>	
+							</c:when>
 						</c:choose>
 						<c:choose>
-						<c:when test="${provlink }">
+						<c:when test="${admin}">
 							<button id="pl_acc" type="button" onclick="confirm_saving2();">Manage Account</button> 
 							<button id="pl_edit" type="button" onclick="update_user2();">Edit</button> 
 							<button id="pl_save" type="button" onclick="save_financial();">Save</button> 
@@ -857,13 +863,13 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov" title="Confirmation" onkeypress="return OnEnterFPT(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 						
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password" id="confirm_password" class="input" type="password" value="" />
@@ -874,13 +880,13 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov2" title="Confirmation" onkeypress="return OnEnterPhoto(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 						
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password" id="confirm_password2" class="input" type="password" value="" />
@@ -891,13 +897,13 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov3" title="Confirmation" onkeypress="return OnEnterSave(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 						
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password3" id="confirm_password3" class="input" type="password" value="" />
@@ -907,13 +913,13 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov4" title="Confirmation" onkeypress="return OnEnterManage(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 						
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Adiministrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password4" id="confirm_password4" class="input" type="password" value="" />
@@ -923,12 +929,12 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov5" title="Confirmation" onkeypress="return OnEnterCapture(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password5" id="confirm_password5" class="input" type="password" value="" />

@@ -29,7 +29,6 @@ public class Add_user extends HttpServlet {
      */
     public Add_user() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -76,7 +75,6 @@ public class Add_user extends HttpServlet {
 						destination = "/redirectPage/redirect.jsp";
 					}
 					else{
-						String municipality = bean.get(0).getMunicipality();
 						String fname = bean.get(0).getPl_fname();
 						String lname = bean.get(0).getPl_lname();
 						for(transactionBean x: bean){

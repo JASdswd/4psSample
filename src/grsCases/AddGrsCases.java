@@ -2,8 +2,6 @@ package grsCases;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -15,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
+import DAO.BaseDAO;
 import DAO.GrsCasesDAO;
 
 /**
@@ -29,14 +28,12 @@ public class AddGrsCases extends HttpServlet {
      */
     public AddGrsCases() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		System.out.println("hello");
 	}
 
@@ -44,10 +41,7 @@ public class AddGrsCases extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 
-		// TODO Auto-generated method stub
-		System.out.println("dopost addGrsCases");
 		HttpSession session = request.getSession(false);
 		if(session==null){
 			System.out.println("session is null servlet");
@@ -63,11 +57,6 @@ public class AddGrsCases extends HttpServlet {
 				rd.forward(request, response);
 			}
 			else{
-				Calendar calendar= Calendar.getInstance();
-				SimpleDateFormat format= new SimpleDateFormat("MM/dd/yyyy");
-				
-				String date_recorded = format.format(calendar.getTime());
-				System.out.println("date_recorded:"+date_recorded);
 				PrintWriter out= response.getWriter();
 				int server_id = Integer.parseInt((String)request.getParameter("grsServer"));
 				String household_id = request.getParameter("household_id");
@@ -84,17 +73,32 @@ public class AddGrsCases extends HttpServlet {
 				
 				
 				try {
-					
+					BaseDAO bDAO = new BaseDAO();
+					/*================ Geting date from the server ===================*/
+	    			String dateAndTime = bDAO.getDateAndTime();
+	    			String regex[] = dateAndTime.split(" ");
+	    			String curDate = regex[0];
+	    			String regex1[] = regex[1].split("\\."); // naa cjay duha ka slash kung mag split ka with only a dot.
+	    			String curTime = regex1[0];
+	    			
+	    			String regex3[] = curDate.split("-");
+	    			String curYear = regex3[0];
+	    			String curMonth = regex3[1];
+	    			String curDay = regex3[2];
+	    			String convertedDate = curMonth+"/"+curDay+"/"+curYear;
+	    			
+	    			
+	    			/*================================================================*/
 					GrsCasesDAO dao = new GrsCasesDAO();
 					int grs = dao.testIfExist(false, "select * from grscases_tbl where household_id = '"+household_id+"'");
 					if(grs>0){
-						dao.updateGrsCases(false, date_recorded, server_id, household_id, user_id,grscase,idoc, remarks);
+						dao.updateGrsCases(false, convertedDate, server_id, household_id, user_id,grscase,idoc, remarks);
 					}
 					else{
-						dao.addGrsCases(false, date_recorded, server_id, household_id, user_id,grscase,idoc, remarks);
+						dao.addGrsCases(false, convertedDate, server_id, household_id, user_id,grscase,idoc, remarks);
 					}
 					
-					session.setAttribute("server", server_id);
+					//session.setAttribute("server", server_id);
 					out.print(1);
 					out.flush();
 					out.close();
@@ -102,7 +106,6 @@ public class AddGrsCases extends HttpServlet {
 					out.print(0);
 					out.flush();
 					out.close();
-					// TODO: handle exception
 				}
 				/*try {
 					Login_DAO dao = new Login_DAO();
@@ -130,7 +133,6 @@ public class AddGrsCases extends HttpServlet {
 								obj.put("pass_con", 1);
 								obj.put("transaction_time",simpDate.format(date));
 							} catch (JSONException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 							out.print(obj);
@@ -142,7 +144,6 @@ public class AddGrsCases extends HttpServlet {
 						try {
 							obj.put("pass_con", 0);
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						//obj.put("trys", false);
@@ -152,7 +153,6 @@ public class AddGrsCases extends HttpServlet {
 					}
 					
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}*/
 				

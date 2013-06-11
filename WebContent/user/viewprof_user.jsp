@@ -790,7 +790,7 @@ function OnEnterManage(e){
 		<h3  >Municipal Link Account</h3>
 	</c:when>
 		<c:when test="${user_role==4}">
-		<h3  >BookKeeper Accountt</h3>
+		<h3  >BookKeeper Account</h3>
 	</c:when>
 	<c:when test="${user_role==6}">
 		<h3  >Grievance Officer Account</h3>
@@ -960,13 +960,13 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov" title="Confirmation" onkeypress="return OnEnterFPT(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 						
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password" id="confirm_password" class="input" type="password" value="" />
@@ -977,13 +977,13 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov2" title="Confirmation" onkeypress="return OnEnterPhoto(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 						
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password" id="confirm_password2" class="input" type="password" value="" />
@@ -994,13 +994,13 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov3" title="Confirmation" onkeypress="return OnEnterSave(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 						
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password3" id="confirm_password3" class="input" type="password" value="" />
@@ -1011,13 +1011,13 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov4" title="Confirmation" onkeypress="return OnEnterManage(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 						
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password4" id="confirm_password4" class="input" type="password" value="" />
@@ -1028,12 +1028,12 @@ function OnEnterManage(e){
 </div>
 <div class="hidden" id="confirm_prov5" title="Confirmation" onkeypress="return OnEnterCapture(event);">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
-		Before you perform this action, please enter the password of Provincial Link for confirmation.
+		Before you perform this action, please enter the password of Administrator for confirmation.
 	</p>
 	<table>
 		<tr>
 			<td><label>User Role:&nbsp;&nbsp;&nbsp;&nbsp;</label></td>
-			<td><input type="text" class="input" readonly="readonly" value="Provincial link"/></tr>
+			<td><input type="text" class="input" readonly="readonly" value="Administrator"/></tr>
 		<tr>
 			<td><label>Password:</label></td>
 			<td><input name="password5" id="confirm_password5" class="input" type="password" value="" />

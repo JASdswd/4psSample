@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,8 +30,6 @@ import org.apache.tomcat.util.http.fileupload.FileItemFactory;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-
-import DAO.BaseDAO;
 import bean.transactionBean;
 
 import com.thebuzzmedia.imgscalr.Scalr;
@@ -49,7 +46,6 @@ public class GetPhotoUser extends HttpServlet {
      */
     public GetPhotoUser() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -84,7 +80,6 @@ public class GetPhotoUser extends HttpServlet {
 					bean= userdao.getUser_photo(false,id,user_role);
 					 
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				ByteArrayInputStream in = new ByteArrayInputStream(bean.getPhoto_head());
@@ -132,7 +127,6 @@ public class GetPhotoUser extends HttpServlet {
 				rd.forward(request, response);
 			}
 			else{
-				PrintWriter out = response.getWriter();
 				boolean isMultipart = ServletFileUpload.isMultipartContent(request);				
 				
 				if (!isMultipart) {

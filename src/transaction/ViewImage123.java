@@ -1,7 +1,6 @@
 package transaction;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -32,14 +31,12 @@ public class ViewImage123 extends HttpServlet {
      */
     public ViewImage123() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		transactionBean bean = new transactionBean();
 		
 		String view_id = request.getParameter("view_id");
@@ -47,7 +44,6 @@ public class ViewImage123 extends HttpServlet {
 			BaseDAO userdao = new BaseDAO();
 			bean= userdao.gethead_photo(true,view_id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -80,7 +76,6 @@ public class ViewImage123 extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

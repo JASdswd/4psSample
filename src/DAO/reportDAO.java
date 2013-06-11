@@ -102,12 +102,23 @@ public class reportDAO extends ConnectionDAO{
 		return list;
 	}
 
-	public float getTotalRelease(String sdate, String edate, String search, String col) {
+	
+	
+	public float getTotalRelease(String trans, String sdate, String edate, int op) {
 		
 		float total_release = 0;
-		String sql = "SELECT sum(amount) "+
-					"FROM received_tbl "+
-					"WHERE  receive = 1 and date_receive between '"+sdate+"' and '"+edate+"' and "+col+"='"+search+"' ";
+		String sql = "";
+		
+		if(op == 1){
+			sql = "SELECT sum(amount) "+
+			"FROM received_tbl "+
+			"WHERE  receive = 1 and date_receive between '"+sdate+"' and '"+edate+"' ";
+		}
+		else if(op == 2){
+			sql = "SELECT sum(amount) "+
+			" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+			" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and h.municipality ='"+trans+"' and r.date_receive between '"+sdate+"' and '"+edate+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+		}
 		
 		try{
 			
@@ -166,6 +177,8 @@ public class reportDAO extends ConnectionDAO{
 				if(pId == null){*/
 					pId = rs.getString(10)+rs.getString(11);
 				/*}*/
+				String date = rs.getString(7);
+				System.out.println("date reportDAO:"+date);
 				bean = new reportBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),NumberFormat.getNumberInstance(Locale.US).format(rs.getFloat(9)),pId,rs.getInt(12));
 				System.out.println(receive+"-------------------------------in while"+rs.getString(10));
 				list.add(bean);
@@ -173,7 +186,8 @@ public class reportDAO extends ConnectionDAO{
 			
 		}
 		catch(SQLException ex){
-			System.out.println(ex);
+			System.out.println("---"+ex);
+			ex.printStackTrace();
 		}
 		
 		return list;
@@ -407,7 +421,7 @@ public class reportDAO extends ConnectionDAO{
 	
 	public ArrayList<reportBean> getList2(String mun, String brgy, int receive, String trans) {
 		ArrayList<reportBean> list = new ArrayList<reportBean>();
-		String sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+		String sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,h.philhealth_id ,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
 						" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
 						" WHERE h.household_id = r.household_id and r.receive = "+receive+" and h.municipality = "+mun+" and h.barangay ="+brgy+" and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and r.month_and_year = '"+trans+"' order by brgy_name asc,mun_name asc,h.head_name asc";
 		reportBean bean = null;
@@ -1600,11 +1614,12 @@ public ArrayList<reportBean> getGSRGrouped(int mun_id) {
 	
 	ArrayList<reportBean> list = new ArrayList<reportBean>();
 	reportBean b = null;
-	String sql= "SELECT municipality,`captured_grscasetype`,count(*)" +
+	String sql= "SELECT municipality,captured_grscasetype,count(*)" +
 			" FROM `grscases2_tbl_temp` as g,household_tbl as h " +
-			"WHERE h.household_id = g.household_id and " +
-			"municipality= "+mun_id+ 
-			"group by municipality,`captured_grscasetype`";
+			" WHERE h.household_id = g.household_id and " +
+			" municipality= "+mun_id+ 
+			" group by municipality,captured_grscasetype " +
+			"order by municipality,captured_grscasetype";
 	
 	try{
 		
@@ -1612,6 +1627,7 @@ public ArrayList<reportBean> getGSRGrouped(int mun_id) {
 		while(rs.next()){
 			b = new reportBean(rs.getInt(1),rs.getString(2),rs.getInt(3));
 			list.add(b);
+			System.out.println("in sa getGRSGrouped sa DAO");
 		}
 		
 	}catch(Exception ex){
@@ -1621,7 +1637,638 @@ public ArrayList<reportBean> getGSRGrouped(int mun_id) {
 	return list;
 }
 
+public ArrayList<reportBean> getAllRegistered() {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	String sql = "SELECT mun_id,count(*) FROM `fingerprint_tbl_temp` group by mun_id";
+	reportBean b = null;
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			b = new reportBean(rs.getInt(1),rs.getInt(2));
+			list.add(b);
+		}
+		
+		
+	}
+	catch(Exception ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
 
+public ArrayList<reportBean> getAllSysO() {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	String sql = "SELECT municipality,count(*) FROM `system_onhold_tbl` as s,household_tbl as h where h.household_id = s.household_id";
+	reportBean b = null;
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			b = new reportBean(rs.getInt(1),rs.getInt(2));
+			list.add(b);
+		}
+		
+		
+	}
+	catch(Exception ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public ArrayList<reportBean> getAllCoalist(int mun_id) {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	String sql = "select municipality,count(*) from household_tbl as h,coacases2_tbl as c where h.household_id = c.household_id and municipality = "+mun_id+" group by municipality ";
+	reportBean b = null;
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			b = new reportBean(rs.getInt(1),rs.getInt(2));
+			list.add(b);
+		}
+		
+		
+	}
+	catch(Exception ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public ArrayList<reportBean> getAllMRDCase(int mun_id) {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	String sql= "SELECT municipality,captured_grscasetype,count(*)" +
+	" FROM `grscases_tbl_temp` as g,household_tbl as h " +
+	" WHERE h.household_id = g.household_id and " +
+	" municipality= "+mun_id+ 
+	" group by municipality,captured_grscasetype";
+	reportBean b = null;
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			b = new reportBean(rs.getInt(1),rs.getString(2),rs.getInt(3));
+			list.add(b);
+		}
+		
+		
+	}
+	catch(Exception ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public ArrayList<String> getAllGRS(String tbl) {
+	ArrayList<String> list = new ArrayList<String>();
+	String sql = "select distinct captured_grscasetype  from "+tbl+" order by captured_grscasetype";
+	try{
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			list.add(rs.getString("captured_grscasetype"));
+		}
+		
+	}
+	catch(Exception ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public float getTotalCash(String mun, String brgy, String trans,int op) {
+	float total_release = 0;
+	String sql = "";
+	
+	if(op == 1){
+		sql = "SELECT sum(amount) "+
+		"FROM received_tbl,household_tbl  "+
+		"WHERE received_tbl.household_id = household_tbl.household_id and household_tbl.municipality = '"+mun+"' and household_tbl.barangay = '"+brgy+"' and received_tbl.month_and_year = '"+trans+"' ";
+	}
+	else if(op == 2){
+		sql = "SELECT sum(amount) "+
+		"FROM received_tbl,household_tbl "+
+		"WHERE received_tbl.household_id = household_tbl.household_id and month_and_year='"+mun+"' and household_tbl."+trans+" = '"+brgy+"' ";
+	}
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total release");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+}
+
+public float getTotalCashDate(String trans, String sdate, String edate) {
+	float total_release = 0;
+	String sql = "SELECT sum(amount) "+
+				"FROM received_tbl,household_tbl  "+
+				"WHERE received_tbl.household_id = household_tbl.household_id and received_tbl.month_and_year = '"+trans+"' and received_tbl.date_receive between '"+sdate+"' and '"+edate+"' ";
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total release");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+}
+
+public float getTotalCash(String mun, String string, int op) {
+	float total_release = 0;
+	String sql = "";
+	if(op == 1){
+		 sql = "SELECT sum(amount) "+
+		"FROM received_tbl,household_tbl "+
+		"WHERE received_tbl.household_id = household_tbl.household_id and household_tbl.municipality="+Integer.parseInt(mun)+" and month_and_year = '"+string+"'";
+
+	}
+	else if(op == 2){
+		 sql = "SELECT sum(amount) "+
+		"FROM received_tbl,household_tbl  "+
+		"WHERE received_tbl.household_id = household_tbl.household_id and household_tbl.municipality = '"+mun+"' and household_tbl.barangay = '"+string+"' ";
+
+	}
+	
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total releasetotal per brgy");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+}
+
+public float getTotalCash(String string, int op) {
+	float total_release = 0;
+	String sql = "";
+	
+	if(op == 1){
+		sql = "SELECT sum(amount) "+
+		"FROM received_tbl,household_tbl "+
+		"WHERE received_tbl.household_id = household_tbl.household_id and received_tbl.month_and_year = '"+string+"'";
+
+	}
+	else if(op == 2){
+		sql = "SELECT sum(amount) "+
+		"FROM received_tbl,household_tbl "+
+		"WHERE received_tbl.household_id = household_tbl.household_id and household_tbl.municipality='"+string+"' ";
+	}
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total releases");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+}
+
+public ArrayList<reportBean> getReleaseList(String trans, String start_date, String end_date, int op) {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	String sql = "";
+	reportBean bean = null;
+	
+	if(op == 1){
+		sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+		" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+		" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and r.month_and_year = '"+trans+"' and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+	}
+	else if(op == 2){
+		sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+		" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+		" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and h.municipality ='"+trans+"' and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+	}
+	
+	try{
+		String pId;
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			pId = rs.getString(10)+rs.getString(11);
+			/*if(pId == null){
+				pId = "";
+			}*/
+			bean = new reportBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),NumberFormat.getNumberInstance(Locale.US).format(rs.getFloat(9)),pId,rs.getInt(12));
+			System.out.println("in while"+rs.getString(10));
+			list.add(bean);
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public ArrayList<reportBean> getReleaseList(String start_date, String end_date) {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	String sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+					" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+					" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+	reportBean bean = null;
+	
+	try{
+		String pId;
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			pId = rs.getString(10)+rs.getString(11);
+			/*if(pId == null){
+				pId = "";
+			}*/
+			bean = new reportBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),NumberFormat.getNumberInstance(Locale.US).format(rs.getFloat(9)),pId,rs.getInt(12));
+			System.out.println("in while"+rs.getString(10));
+			list.add(bean);
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+//---with op -------------//
+
+public ArrayList<reportBean> getReleaseList(String s1, String s2, String start_date, String end_date, int op) {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	reportBean bean = null;
+	String sql = "";
+	if(op == 1){
+		sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+		" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+		" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and h."+s1+" = '"+s2+"' and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+
+	}
+	else if (op == 2){
+		 sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+		" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+		" WHERE h.household_id = r.household_id and r.receive = 1 and h.municipality ='"+s1+"' and h.barangay='"+s2+"' and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+
+	}
+	
+	
+	try{
+		String pId;
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			pId = rs.getString(10)+rs.getString(11);
+			/*if(pId == null){
+				pId = "";
+			}*/
+			bean = new reportBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),NumberFormat.getNumberInstance(Locale.US).format(rs.getFloat(9)),pId,rs.getInt(12));
+			System.out.println("in while"+rs.getString(10));
+			list.add(bean);
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public float getTotalRelease( String col, String search,String sdate, String edate, int op) {
+	
+	float total_release = 0;
+	String sql = "";
+	
+	if(op == 1){
+		sql = "SELECT sum(amount) "+
+		"FROM received_tbl "+
+		"WHERE  receive = 1 and date_receive between '"+sdate+"' and '"+edate+"' and "+col+"='"+search+"' ";
+	}
+	else if(op == 2){
+		 sql = "SELECT sum(amount)"+
+			" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+			" WHERE h.household_id = r.household_id and r.receive = 1 and h.municipality ='"+col+"' and h.barangay='"+search+"' and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and r.date_receive between '"+sdate+"' and '"+edate+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+
+	}
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total release");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+	
+}
+
+public ArrayList<reportBean> getReleaseList(String mun_name, String brgy_name,
+		String trans, String start_date, String end_date, int op) {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	String sql = "";
+	reportBean bean = null;
+	
+	if(op == 1){
+		sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+		" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+		" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and h.municipality ='"+mun_name+"' and h.barangay='"+brgy_name+"' and r.month_and_year = '"+trans+"' and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+	}
+	else if(op == 2){
+		sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+		" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+		" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and h."+mun_name+" = '"+brgy_name+"' and r.month_and_year = '"+trans+"' and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+	}
+	
+	try{
+		String pId;
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			pId = rs.getString(10)+rs.getString(11);
+			/*if(pId == null){
+				pId = "";
+			}*/
+			bean = new reportBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),NumberFormat.getNumberInstance(Locale.US).format(rs.getFloat(9)),pId,rs.getInt(12));
+			System.out.println("in while"+rs.getString(10));
+			list.add(bean);
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public float getTotalRelease(String mun_name, String brgy_name, String trans,
+		String start_date, String end_date, int op) {
+
+	float total_release = 0;
+	String sql = "";
+	
+	if(op == 1){
+		sql = "SELECT sum(amount) "+
+		" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+		" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and h.municipality ='"+mun_name+"' and h.barangay='"+brgy_name+"' and r.month_and_year = '"+trans+"' and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+	}
+	else if(op == 2){
+		sql = "SELECT sum(amount) "+
+		" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+		" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and h."+mun_name+" = '"+brgy_name+"'  and r.month_and_year = '"+trans+"' and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+
+	}
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total release");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+}
+
+public ArrayList<reportBean> getReleaseList(String mun_name, String trans,
+		String start_date, String end_date) {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	String sql = "";
+	reportBean bean = null;
+	
+	sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+		" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+		" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and h.municipality ='"+mun_name+"' and r.month_and_year = '"+trans+"' and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+	
+	try{
+		String pId;
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			pId = rs.getString(10)+rs.getString(11);
+			/*if(pId == null){
+				pId = "";
+			}*/
+			bean = new reportBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),NumberFormat.getNumberInstance(Locale.US).format(rs.getFloat(9)),pId,rs.getInt(12));
+			System.out.println("in while"+rs.getString(10));
+			list.add(bean);
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public float getTotalRelease(String mun_name, String trans, String start_date,
+		String end_date) {
+	float total_release = 0;
+	String sql = "";
+	
+	sql = "SELECT sum(amount) "+
+	" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+	" WHERE h.household_id = r.household_id and r.receive = 1 and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id and h.municipality ='"+mun_name+"' and r.month_and_year = '"+trans+"' and r.date_receive between '"+start_date+"' and '"+end_date+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total release");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+}
+
+public float getTotalCash(String trans) {
+	float total_release = 0;
+	String sql = "SELECT sum(amount) "+
+				"FROM received_tbl,household_tbl "+
+				"WHERE received_tbl.household_id = household_tbl.household_id and received_tbl.month_and_year = '"+trans+"'";
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total releases");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+}
+
+public float getTotalCash(String search, String string) {
+	float total_release = 0;
+	String sql = "SELECT sum(amount) "+
+				"FROM received_tbl "+
+				"WHERE "+string+"='"+search+"' ";
+	
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total release");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+}
+
+public ArrayList<String> getHHSetList() {
+	
+	ArrayList<String> list = new ArrayList<String>();
+	String sql = "select distinct hh_set,set_group from household_tbl order by hh_set,set_group";
+	String set = "";
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			set = rs.getString(1)+" "+rs.getString(2);
+			list.add(set);
+		}
+	}
+	catch(Exception ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public ArrayList<reportBean> getList1(String sentsql, int i, String hh_set) {
+	ArrayList<reportBean> list = new ArrayList<reportBean>();
+	String hhset[] = hh_set.split(" ");
+	String sql = "SELECT h.household_id,h.head_name,h.birthday,brgy_name,mun_name,r.month_and_year,r.date_receive,r.time,r.amount,h.hh_set,h.set_group,r.sub"+
+					" FROM household_tbl as h,received_tbl as r,brgy_tbl as b,municipal_tbl as m "+
+					" WHERE h.household_id = r.household_id and r.receive = "+i+" and m.mun_id = municipality and brgy_id = barangay and m.mun_id = b.mun_id "+sentsql+" and hh_set = "+hhset[0]+" and set_group = '"+hhset[1]+"' order by brgy_name asc,mun_name asc,h.head_name asc";
+	reportBean bean = null;
+	
+	try{
+		String pId;
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			pId = rs.getString(10)+rs.getString(11);
+			/*if(pId == null){
+				pId = "";
+			}*/
+			bean = new reportBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),NumberFormat.getNumberInstance(Locale.US).format(rs.getFloat(9)),pId,rs.getInt(12));
+			System.out.println("in while"+rs.getString(10));
+			list.add(bean);
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return list;
+}
+
+public float getTotalRelease2(String sqlsent, int i, String hh_set) {
+	String hhset[] = hh_set.split(" ");
+	float total_release = 0;
+	String sql = "SELECT sum(amount) "+
+				" FROM received_tbl as r,household_tbl as h"+
+				" WHERE r.household_id = h.household_id and  receive = "+i+sqlsent+" and hh_set = "+hhset[0]+" and set_group = '"+hhset[1]+"' ";
+	System.out.println(sql);
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total releases");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+
+}
+public float getTotalCash(String sqlsent, int i,String hh_set) {
+	String hhset[] = hh_set.split(" ");
+	float total_release = 0;
+	String sql = "SELECT sum(amount) "+
+	" FROM received_tbl as r,household_tbl as h"+
+	" WHERE r.household_id = h.household_id "+sqlsent+" and hh_set = "+hhset[0]+" and set_group = '"+hhset[1]+"' ";
+
+	try{
+		
+		rs = con.createStatement().executeQuery(sql);
+		while(rs.next()){
+			total_release = rs.getFloat(1);
+			System.out.println("in while total release");
+		}
+		
+	}
+	catch(SQLException ex){
+		System.out.println(ex);
+	}
+	
+	return total_release;
+}
 
 }
 

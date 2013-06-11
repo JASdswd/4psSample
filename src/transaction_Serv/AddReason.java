@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import beans.BeansAdd;
 import beans.Beanstransaction;
 
 import transaction_DAO.Transaction_DAO;
@@ -30,14 +29,12 @@ public class AddReason extends HttpServlet {
      */
     public AddReason() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		try{
 			ArrayList<Beanstransaction>lists= new ArrayList<Beanstransaction>();
 			Calendar calendar= Calendar.getInstance();
@@ -57,7 +54,7 @@ public class AddReason extends HttpServlet {
 			RequestDispatcher rd=sc.getRequestDispatcher("/transaction/addtransaction.jsp");
 			rd.forward(request, response);
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 
@@ -65,7 +62,6 @@ public class AddReason extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		/*try{
 			Transaction_DAO dao = new Transaction_DAO();
 			BeansAdd beans =new BeansAdd(Integer.parseInt(request.getParameter("household_id"), request.getParameter("reason"),
@@ -75,7 +71,6 @@ public class AddReason extends HttpServlet {
 			RequestDispatcher rd=sc.getRequestDispatcher("/transaction/addtransaction.jsp");
 			rd.forward(request, response);
 		}catch (Exception e) {
-			// TODO: handle exception
 		}*/
 	}
 

@@ -12,7 +12,6 @@ public class SummaryDAO extends ConnectionDAO{
 	
 public SummaryDAO() throws SQLException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 public ArrayList<reportBean2> getAllGRSCases(String tbl,String mun) {

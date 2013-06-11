@@ -40,19 +40,18 @@ public class View_transactions2 extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session  = request.getSession(false);
 		if(session==null){
-			System.out.println("session is null add municipality servelet");
 			ServletContext sc = this.getServletContext();
 			RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
 			rd.forward(request, response);
 		}
 		else{
 			if(session.getAttribute("username")==null){
-				System.out.println("username is null View_transactions2 servlet");
 				ServletContext sc = this.getServletContext();
 				RequestDispatcher rd = sc.getRequestDispatcher("/index.jsp");
 				rd.forward(request, response);
 			}
 			else{
+				System.out.println("View_transactions2 doPost");
 				System.out.println("hh_id+"+request.getParameter("hh_id"));
 				session.setAttribute("household_id", request.getParameter("hh_id"));
 				ServletContext sc = this.getServletContext();

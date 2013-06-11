@@ -37,7 +37,6 @@ public class UserManageAccount extends HttpServlet {
      */
     public UserManageAccount() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -65,7 +64,7 @@ public class UserManageAccount extends HttpServlet {
 			int user_role = Integer.parseInt(request.getParameter("user_role"));
 			try{
 				
-				if(user_role == 1 || user_role == 3){
+				if(user_role == 1 || user_role == 3 || user_role == 10){
 					if(pword.length() >= 2 && pword.length() <= 18){
 						upSuccess=dao.Manage_Acc2(false,uname,hashpword,user_role);
 					}
@@ -79,6 +78,9 @@ public class UserManageAccount extends HttpServlet {
 							dao.add_logs(false, date, time, logs_fname+" "+logs_lname+" updated the username and password of Provincial Link account named "+rlname.toUpperCase()+", "+rfname.toUpperCase()+".");
 						}else if(user_role==3){
 							dao.add_logs(false, date, time, logs_fname+" "+logs_lname+" updated the username and password of Financial Analyst account named "+rlname.toUpperCase()+", "+rfname.toUpperCase()+".");
+						}
+						else if(user_role==10){
+							dao.add_logs(false, date, time, logs_fname+" "+logs_lname+" updated the username and password of Administrator account named "+rlname.toUpperCase()+", "+rfname.toUpperCase()+".");
 						}
 					}
 				}
@@ -177,7 +179,6 @@ public class UserManageAccount extends HttpServlet {
 							obj.put("data", acclist);
 							obj.put("c", 1);
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						out.print(obj);
@@ -188,7 +189,6 @@ public class UserManageAccount extends HttpServlet {
 						try {
 							obj.put("c", 0);
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						out.print(obj);
@@ -197,7 +197,6 @@ public class UserManageAccount extends HttpServlet {
 					}
 					
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				

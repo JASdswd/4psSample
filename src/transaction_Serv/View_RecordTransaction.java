@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.connector.Request;
 
 import transaction_DAO.Transaction_DAO;
 
@@ -33,14 +32,12 @@ public class View_RecordTransaction extends HttpServlet {
      */
     public View_RecordTransaction() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		if(session==null){
 			System.out.println("session is null servlet");
@@ -72,8 +69,7 @@ public class View_RecordTransaction extends HttpServlet {
 					RequestDispatcher rd=sc.getRequestDispatcher("/transaction/view_recordtransaction.jsp");
 					rd.forward(request, response);
 				}catch (Exception e) {
-					// TODO: handle exception
-				}
+					e.printStackTrace();				}
 			}
 		}
 	}
@@ -82,7 +78,6 @@ public class View_RecordTransaction extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
 		if(session==null){
 			System.out.println("session is null servlet");
@@ -112,7 +107,6 @@ public class View_RecordTransaction extends HttpServlet {
 					/*int year=Integer.parseInt(request.getParameter("year"));*/
 					municipal_list=dao.municipal_list();
 					
-					TransactionSearch tran_search = new TransactionSearch();
 					//municipal = tran_search.getmun(municipal);
 					
 					System.out.println("municipal:"+municipal);
@@ -139,7 +133,6 @@ public class View_RecordTransaction extends HttpServlet {
 					RequestDispatcher rd=sc.getRequestDispatcher("/transaction/view_recordtransaction.jsp");
 					rd.forward(request, response);
 				}catch (Exception e) {
-					// TODO: handle exception
 					e.printStackTrace();
 				}
 			}

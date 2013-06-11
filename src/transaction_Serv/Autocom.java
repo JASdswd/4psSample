@@ -16,7 +16,6 @@ import org.json.JSONObject;
 import transaction_DAO.Transaction_DAO;
 
 import bean.reportBean;
-import beans.Beanstransaction;
 
 /**
  * Servlet implementation class Autocom
@@ -30,14 +29,12 @@ public class Autocom extends HttpServlet {
      */
     public Autocom() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		
 		ArrayList<String>list_id=new ArrayList<String>();
 		ArrayList<String>list_head_name=new ArrayList<String>();
@@ -45,7 +42,6 @@ public class Autocom extends HttpServlet {
 		ArrayList<String>list_student=new ArrayList<String>();
 		ArrayList<String>list_municipal=new ArrayList<String>();
 		ArrayList<String>list_municipal1=new ArrayList<String>();
-		ArrayList<String>list_brgy=new ArrayList<String>();
 		ArrayList<String>list_phil=new ArrayList<String>();
 		ArrayList<reportBean>list_brgy2=new ArrayList<reportBean>();
 		JSONArray array=new JSONArray();
@@ -136,7 +132,7 @@ public class Autocom extends HttpServlet {
 				out.close();
 			}
 		}catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 
@@ -144,7 +140,6 @@ public class Autocom extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

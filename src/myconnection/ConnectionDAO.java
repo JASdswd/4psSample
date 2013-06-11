@@ -9,11 +9,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import java.sql.Statement;
+
 
 public class ConnectionDAO {
 	
 	protected Connection con = null;
 	protected PreparedStatement stmt = null;
+	protected Statement stmtZ = null;
 	protected ResultSet rs = null;
 	protected ArrayList list = null;
 	

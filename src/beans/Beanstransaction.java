@@ -12,8 +12,12 @@ public class Beanstransaction {
 	private String date_recorded = null;
 	private String time_recorded = null;
 	
+	private int grsidoctypes_id = 0;
+	private String grsidoctypes_casetypes= "";
+	private String  grsidoctypes_description= "";
+	
 	public Beanstransaction(String household_id, int householdmember_id,
-			String name,String barangay,String municipal) {
+			String name,String barangay,String municipal) { 
 		super();
 		this.household_id = household_id;
 		this.householdmember_id = householdmember_id;
@@ -38,6 +42,13 @@ public class Beanstransaction {
 	
 	
 	
+	public Beanstransaction(int grsidoctypes_id, String grsidoctypes_casetypes,
+			String grsidoctypes_description) {
+		super();
+		this.grsidoctypes_id = grsidoctypes_id;
+		this.grsidoctypes_casetypes = grsidoctypes_casetypes;
+		this.grsidoctypes_description = grsidoctypes_description;
+	}
 	public Beanstransaction(String household_id, String name,
 			String date_recorded, String time_recorded) {
 		super();
@@ -94,6 +105,24 @@ public class Beanstransaction {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getGrsidoctypes_id() {
+		return grsidoctypes_id;
+	}
+	public void setGrsidoctypes_id(int grsidoctypes_id) {
+		this.grsidoctypes_id = grsidoctypes_id;
+	}
+	public String getGrsidoctypes_casetypes() {
+		return grsidoctypes_casetypes;
+	}
+	public void setGrsidoctypes_casetypes(String grsidoctypes_casetypes) {
+		this.grsidoctypes_casetypes = grsidoctypes_casetypes;
+	}
+	public String getGrsidoctypes_description() {
+		return grsidoctypes_description;
+	}
+	public void setGrsidoctypes_description(String grsidoctypes_description) {
+		this.grsidoctypes_description = grsidoctypes_description;
 	}
 	
 }

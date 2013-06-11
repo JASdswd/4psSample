@@ -52,8 +52,6 @@ $(document).ready(function(){
 	
 });
 	$(document).ready(function (){
-		$("#regReport").hide();
-		$("#daily_RP").hide();
 		$("#br2").hide();
 		$("#div").hide();
 		$("#overlay").hide();
@@ -540,132 +538,6 @@ $(document).ready(function(){
 	}
 	
 	
-	function pop_up_box(){
-		document.getElementById("messerr").innerHTML = "";	
-		$( "#daily_RP" ).dialog({
-			show: "drop",
-			hide: "drop",
-			resizable: false,
-			height:250,
-			width:410,
-			modal: true,
-			buttons: {
-				"OK": function() {
-					
-					var sdate = document.getElementById("sdate").value;
-					var team_num = document.getElementById("team_no").value;
-					
-					if(sdate != "" && team_num != ""){
-						$("#saving1").html("<p style='color:red;text-decoration:blink;font-size:12px;' >Please wait for a while. Processing Report..</p><img src='<%= cPath%>/images/276.gif' />");
-						xhrGo("GET","<%=cPath%>/DailyReports?date="+sdate+"&team_num="+team_num,prompt, "plain");
-					}
-					else{
-						document.getElementById("messerr").innerHTML = "Please complete your input.";	
-					}
-				}
-			}
-		});
-	}
-
-
-
-	function pop_up_box2(){
-		document.getElementById("messerr2").innerHTML = "";	
-		$( "#regReport" ).dialog({
-			show: "drop",
-			hide: "blind",
-			resizable: false,
-			height:230,
-			width:410,
-			modal: true,
-			buttons: {
-				"OK": function() {
-					
-					var m = document.getElementById("munc2").value;
-					//var b = document.getElementById("brgay2").value;
-					var op;
-					//alert(sdate);
-					if(m != ""){
-						
-						op = 1;//only municipality
-						//alert("only municipality");
-						$("#saving").html("<p style='color:red;text-decoration:blink;font-size:12px;' >Please wait for a while. Processing Report..</p><img src='<%= cPath%>/images/276.gif' />");
-						xhrGo("POST","<%=cPath%>/DailyReports?op="+op+"&m="+m,prompt, "plain");
-							
-					}
-					else{
-						document.getElementById("messerr2").innerHTML = "Please complete your input.";	
-					}
-				}
-			}
-		});
-	}
-	
-	function pop_up_box3(){
-		$( "#confirm-process" ).dialog({
-			show: "drop",
-			hide: "blind",
-			resizable: false,
-			height:200,
-			width:500,
-			modal: true,
-			buttons: {
-				"OK": function() {
-					var op;
-					op = 2;//only municipality
-					//alert("only municipality");
-					$("#saving2").html("<p style='color:red;text-decoration:blink;font-size:12px;' >Please wait for a while. Processing Report..</p><img src='<%= cPath%>/images/276.gif' />");
-					xhrGo("POST","<%=cPath%>/DailyReports?op="+op,prompt, "plain");
-				}
-			}
-		});	
-	}
-	
-	function prompt(data){
-		var x = eval('('+data+')');
-		$("#saving").html("");
-		$( "#regReport" ).dialog( "close" );
-		$("#saving1").html("");
-		$( "#daily_RP" ).dialog( "close" );
-		$("#saving2").html("");
-		$( "#confirm-process" ).dialog( "close" );
-		if(x.status == "not"){
-			document.getElementById("path").innerHTML = "<u>"+x.path+"</u>";	
-			document.getElementById("messageb").innerHTML = "Your file is saved at ";	
-		}
-		else if(x.status == "empty"){
-			document.getElementById("path").innerHTML = "No data Found.</p>";
-			document.getElementById("messageb").innerHTML = "File cannot be save.";	
-		}
-		else if(x.status == "emptylist"){
-			document.getElementById("path").innerHTML = "<p>Your file is saved at <u>"+x.path+"</u></p>";
-			document.getElementById("messageb").innerHTML = "Note:No registered Found with this date.Only GRS";	
-		}
-		else if(x.status == "emptygrs"){
-			document.getElementById("path").innerHTML = "<p>Your file is saved at <u>"+x.path+"</u></p>";
-			document.getElementById("messageb").innerHTML = "Note:No grs Found with this date.Registration list only.";	
-		}
-		else{
-			document.getElementById("path").innerHTML = "<p style='color:red;font-size:11px;' >"+x.path+":File Name already exists.</p>";
-			document.getElementById("messageb").innerHTML = "File cannot be save at ";	
-		}
-		$( "#note" ).dialog({
-			show: "drop",
-			hide: "blind",
-			resizable: false,
-			height:200,
-			width:500,
-			modal: true,
-			buttons: {
-				"OK": function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});	
-	}
-	
-
-	
 </script>
 <style type="text/css"><!--
 #munc,#munc2,#brgay2,#brgay{
@@ -869,31 +741,6 @@ $(document).ready(function(){
 	font-size: 13px;
 }
 	
-#daily_div,#daily_div2,#daily_div3{
-	background:#f9edbe;
-	border-radius:2px;
-	border:1px solid #f0c36d;
-	box-shadow:0 2px 4px rgba(0,0,0,0.2);
-	color:#666;
-	display:block;
-	padding:16px;
-	position:fixed;
-	right:10px;
-	width:236px;
-	z-index:11;
-	-moz-border-radius:2px;
-	-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);
-	cursor:pointer;
-}
-#daily_div{
-	bottom:30px;
-}		
-#daily_div2{
-	bottom:120px;
-}
-#daily_div3{
-	bottom:210px;
-}	
 #sdate{
 		margin-bottom: 5px;
     	padding: 5px 3px 5px 10px;
@@ -931,9 +778,6 @@ $(document).ready(function(){
 	String Dw = dw.format(today);
 %>
 <body onload="updateClock(); setInterval('updateClock()', 1000 )">
-<div id="daily_div" > <div onclick="pop_up_box();" style="color:#222;margin-top:0;font-weight:bold"> Download Daily Registered w/ GRS..?</div> </div>
-<div id="daily_div2" > <div onclick="pop_up_box2();" style="color:#222;margin-top:0;font-weight:bold"> Download Registration Per Municipality w/ GRS..?</div> </div>
-<div id="daily_div3" > <div onclick="pop_up_box3();" style="color:#222;margin-top:0;font-weight:bold"> Registration Summary Totals Per Municipality and Barangays..?</div> </div>
 <div id="page-wrap">
 <div id="header" >
 <div id="logo" >
@@ -1070,52 +914,5 @@ $(document).ready(function(){
 			
 </div>
 
-<div title="Generate Daily Registration Report" id="daily_RP" style = "text-align: left;font-size:15px;" class="hidden" >
-<br/>
-	<form action="DailyReports" method="GET" name="drform" id="drform" >
-	<div style="margin-bottom:10px;">
-	<label for="team_no" >Server #:</label>
-	<select id = "team_no" name = "team_no" >
-		<c:forEach items="${tm}" var = "t" >
-			<option value="${t}">
-				<c:out value="${t}"></c:out>
-			</option>
-		</c:forEach>
-	
-	</select>
-	</div>
-	<div>
-	<label for="sdate" >Date:</label>
-	<input class="text-style" type="text" maxlength="10" id="sdate" name="sdate" />
-	</div>
-	<span style="font-size:10px;color:red;" id="messerr"></span>
-	<div id="saving1" ></div>
-	</form>
-</div>
-<div title="Generate Registration Report" id="regReport" class="hidden" style = "text-align: left;font-size:15px;"  >
-<br/>
-	<form action="DailyReports" method="POST" name="drform2" id="drform2" >
-	<div style="margin-bottom:10px;">
-	<label for="team_no" >Municipality:</label>
-						<select name="municipal2" id="munc2" class="input">
-							<option value="" >----------</option>
-							<c:forEach items="${municipal_list}" var="list">
-								<option value="${list.mun_id}" ><c:out value="${list.municipal}"></c:out></option>
-							</c:forEach>
-						</select>
-	</div>
-	<div id="saving" ></div>
-	
-	<span style="font-size:10px;color:red;" id="messerr2"></span>
-	</form>
-</div>
-
-<div id="note" title="Note:" class="hidden">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="messageb"></span><span id="path" ></span> </p>
-</div>
-<div id="confirm-process" title="Message:" class="hidden">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span>Continue to generate this report..?</span></p>
-	<div id="saving2" ></div>
-</div>
 </body>
 </html>

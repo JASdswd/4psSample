@@ -33,7 +33,6 @@ public class ChangePassword extends HttpServlet {
      */
     public ChangePassword() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -131,7 +130,6 @@ public class ChangePassword extends HttpServlet {
 					BaseDAO dao = new BaseDAO();
 					System.out.println("Username:"+user);
 					System.out.println("Password:"+npword);
-					//dao.UpdateUsername(nuser,user,pword);
 
 					edited = dao.UpdatePassword(user,npword);
 					plpword = dao.getPassword("Provincial link");
@@ -167,8 +165,6 @@ public class ChangePassword extends HttpServlet {
 				catch(Exception ex){
 					System.out.println(ex);
 				}
-				
-				
 			}
 		}
 	}

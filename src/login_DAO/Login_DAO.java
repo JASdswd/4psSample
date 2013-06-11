@@ -18,7 +18,7 @@ public class Login_DAO extends ConnectionDAO{
 	public boolean check_password(String username,String password){
 		boolean check=false;
 		try{
-			rs=con.createStatement().executeQuery("select * from user_tbl where user_id = 1 and p_word='"+password+"'");
+			rs=con.createStatement().executeQuery("select * from user_tbl where user_id = 10 and p_word='"+password+"'");
 			while(rs.next()){
 				check=true;
 			}
@@ -405,4 +405,5 @@ public String byteArrayToHexString(byte[] b){
    }
    return sb.toString().toUpperCase();
 }
+
 }

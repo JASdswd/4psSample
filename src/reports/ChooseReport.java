@@ -1,6 +1,8 @@
 package reports;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -10,6 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
+
+import DAO.reportDAO;
 
 /**
  * Servlet implementation class ChooseReport
@@ -23,7 +29,6 @@ public class ChooseReport extends HttpServlet {
      */
     public ChooseReport() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -77,8 +82,44 @@ public class ChooseReport extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	
+HttpSession session  = request.getSession(false);
+		
+		if(session==null){
+			System.out.println("session is null add user mun servlet");
+			ServletContext sc=this.getServletContext();
+			RequestDispatcher rd=sc.getRequestDispatcher("/index.jsp");
+			rd.forward(request, response);
+		}
+		else{
+			if(session.getAttribute("username")==null){
+				System.out.println("username is null add user mun servlet");
+				ServletContext sc=this.getServletContext();
+				RequestDispatcher rd=sc.getRequestDispatcher("/index.jsp");
+				rd.forward(request, response);
+			}
+			else{
+				ArrayList<String> hhsetgroupList = new ArrayList<String>();
+				PrintWriter out = response.getWriter();
+				JSONObject obj = new JSONObject();
+				
+				try{
+					reportDAO dao = new reportDAO();
+					
+					hhsetgroupList = dao.getHHSetList();
+						
+						obj.put("data", hhsetgroupList);
+						out.print(obj);
+						out.flush();
+						out.close();
+					
+					
+				}
+				catch(Exception e){
+					System.out.println(e);
+				}
+			}
+		}
+
 	}
 
 }

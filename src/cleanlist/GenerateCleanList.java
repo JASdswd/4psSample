@@ -27,8 +27,6 @@ import org.apache.poi.ss.usermodel.Font;
 import org.json.JSONObject;
 
 import bean.reportBean;
-import bean.reportBean2;
-import bean.transactionBean;
 
 import DAO.BaseDAO;
 
@@ -44,14 +42,12 @@ public class GenerateCleanList extends HttpServlet {
      */
     public GenerateCleanList() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 	/**

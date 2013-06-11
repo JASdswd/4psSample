@@ -28,14 +28,12 @@ public class Update_user2 extends HttpServlet {
      */
     public Update_user2() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String destination = "";
 		HttpSession session = request.getSession(false);
 		if(session==null){
@@ -99,13 +97,17 @@ public class Update_user2 extends HttpServlet {
 						dao.add_logs(false, date, time, "Financial Analyst user change its name from "+rfname+" "+rlname+" to "+fname+" "+lname+" by "+logs_fname+" "+logs_lname);
 						
 					}
+					else if(user_role == 10){
+						dao.add_logs(false, date, time, "Administrator user change its name from "+rfname+" "+rlname+" to "+fname+" "+lname+" by "+logs_fname+" "+logs_lname);
+						
+					}
 					String dfname = dao2.getFname2(user_role);
 					int Login_UserRole = (Integer) session.getAttribute("Luser_role");
 					if(Login_UserRole==user_role){
 						session.setAttribute("dfname", dfname);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();// TODO: handle exception
+					e.printStackTrace();
 				}
 				destination = "/ViewAllUser2?id="+user_role;
 				//session.setAttribute("id", user_role);

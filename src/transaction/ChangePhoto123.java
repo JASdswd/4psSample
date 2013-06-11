@@ -1,10 +1,7 @@
 package transaction;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.sql.*;
 import java.util.*;
-import java.text.*;
-import java.util.regex.*;
 
 
 import javax.imageio.ImageIO;
@@ -40,7 +37,6 @@ public class ChangePhoto123 extends HttpServlet {
      */
     public ChangePhoto123() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -56,11 +52,9 @@ public class ChangePhoto123 extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@SuppressWarnings("deprecation")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession(false);
-		PrintWriter out = response.getWriter();
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		System.out.println("request: "+request);
 		if (!isMultipart) {
@@ -101,18 +95,7 @@ public class ChangePhoto123 extends HttpServlet {
 					System.out.println("savefile:"+savefile);
 					
 					File f = new File(savefile);
-					Calendar calendar= Calendar.getInstance();
-					DateFormat timeInstance = SimpleDateFormat.getTimeInstance();
-					SimpleDateFormat format= new SimpleDateFormat("MM/dd/yyyy");
 					
-					String date = format.format(calendar.getTime());
-					//System.out.println("date:"+day);
-					String time = timeInstance.format(Calendar.getInstance().getTime());
-					//System.out.println("time:"+time);
-					
-					/*Connection connection = null;
-					String connectionURL = "jdbc:mysql://localhost:3306/4psedit";
-					PreparedStatement psmnt = null;*/
 					FileInputStream fis;
 					
 					session.setAttribute("household_id", household_id);
@@ -123,8 +106,23 @@ public class ChangePhoto123 extends HttpServlet {
 						connection = DriverManager.getConnection(connectionURL, "root", "");*/
 						
 						BaseDAO dao = new BaseDAO();
-						System.out.println("change_photo -> household_id : "+household_id);
 						int ctr = dao.testIfPhotoExist(false, household_id);
+						
+						/*================ Geting date from the server ===================*/
+		    			String dateAndTime = dao.getDateAndTime();
+		    			String regex[] = dateAndTime.split(" ");
+		    			String curDate = regex[0];
+		    			String regex1[] = regex[1].split("\\."); // naa cjay duha ka slash kung mag split ka with only a dot.
+		    			String curTime = regex1[0];
+		    			
+		    			String regex3[] = curDate.split("-");
+		    			String curYear = regex3[0];
+		    			String curMonth = regex3[1];
+		    			String curDay = regex3[2];
+		    			String convertedDate = curMonth+"/"+curDay+"/"+curYear;
+		    			
+		    			
+		    			/*================================================================*/
 						
 						/* Scale the image uploaded */
 						
@@ -142,21 +140,15 @@ public class ChangePhoto123 extends HttpServlet {
 						String user_id = (String)session.getAttribute("user_id");
 						int user_idInt = Integer.parseInt(user_id);
 						int mun_id = dao.getMunId2(household_id);
+						int team_id = dao.getTeamId();
 						if(ctr==0){
-							/*psmnt = connection.prepareStatement("insert into photo_tbl(household_id,photo_head) values(?,?)");	
-							psmnt.setString(1, household_id);
-							psmnt.setBytes(2, imageInByte);*/
-							
-							uploadPhoto.uploadBeneficiaryPhoto(household_id, imageInByte,date,time,server_id,0,user_idInt,mun_id, false,1);
+							uploadPhoto.uploadBeneficiaryPhoto(household_id, imageInByte,convertedDate,curTime,server_id,team_id,user_idInt,mun_id, false,1);
 						}
 						else{
-							/*psmnt = connection.prepareStatement("update photo_tbl set photo_head = ? where household_id = '"+household_id+"'");		
-							psmnt.setBytes(1, imageInByte);*/
-							uploadPhoto.uploadBeneficiaryPhoto(household_id, imageInByte,date,time,server_id,0,user_idInt,mun_id, false, 2);
-							dao.add_logs(false, date, time, "Household ID "+household_id +" change its profile picture by "+session.getAttribute("username"));
+							uploadPhoto.uploadBeneficiaryPhoto(household_id, imageInByte,convertedDate,curTime,server_id,team_id,user_idInt,mun_id, false, 2);
+							dao.add_logs(false, convertedDate, curTime, "Household ID "+household_id +" change its profile picture by "+session.getAttribute("username"));
 						}
 						
-						System.out.println("going to View_transaction servlet");
 						ServletContext sc = this.getServletContext();
 						RequestDispatcher rd = sc.getRequestDispatcher("/View_transactions");
 						rd.forward(request, response);

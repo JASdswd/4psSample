@@ -194,28 +194,46 @@ public class PrintData extends HttpServlet {
 											c = 1;
 										HSSFRow hrow=   sheet.createRow((short) 8);
 										String th = "";
-										for(short hcol = 2;hcol<7;hcol++){
+										for(short hcol = 1;hcol<10;hcol++){
 											
 											
-											if(hcol == 2){
-												th = "Household ID No.";
-												 sheet.setColumnWidth(hcol, 6000);
+											String cellValue = "";
+											
+											if(hcol == 1){
+												cellValue = "Municipality";
+												sheet.setColumnWidth(hcol, 6000);
+											}
+											else if(hcol == 2){
+												cellValue = "Barangay";
+												sheet.setColumnWidth(hcol, 6000);
 											}
 											else if(hcol == 3){
-												th = "HouseholdMember ID No.";
-												 sheet.setColumnWidth(hcol, 5000);
+												cellValue = "Household ID";
+												sheet.setColumnWidth(hcol, 6000);
 											}
 											else if(hcol == 4){
-												th = "Name of Head";
-												 sheet.setColumnWidth(hcol, 6500);
+												cellValue = "Household Member ID";
+												sheet.setColumnWidth(hcol, 5000);
 											}
 											else if(hcol == 5){
-												th = "Barangay";
-												 sheet.setColumnWidth(hcol, 6000);
+												cellValue = "Name";
+												sheet.setColumnWidth(hcol, 6500);
 											}
 											else if(hcol == 6){
-												th = "Municipality";
-												 sheet.setColumnWidth(hcol, 6000);
+												cellValue = "Grantee";
+												sheet.setColumnWidth(hcol, 4000);
+											}
+											else if(hcol == 7){
+												cellValue = "Gender";
+												sheet.setColumnWidth(hcol, 4000);
+											}
+											else if(hcol == 8){
+												cellValue = "Birthday";
+												sheet.setColumnWidth(hcol, 4000);
+											}
+											else if(hcol == 9){
+												cellValue = "Relationship to HH Head";
+												sheet.setColumnWidth(hcol, 6000);
 											}
 											HSSFCell hc2;
 											HSSFCellStyle hcell = hwb.createCellStyle();
@@ -228,26 +246,93 @@ public class PrintData extends HttpServlet {
 										}
 									}
 									
-									for(short col = 2;col<7;col++){
-										if(col == 2){
-											val = l.getHousehold_id();
+									for(short i = 1;i<10;i++){
+										
+										
+										String cellValue = "";
+										
+										if(i == 1){
+											cellValue = l.getMun_name();
 										}
-										else if(col == 3){
-											val = l.getHmember_id();
+										else if(i == 2){
+											cellValue = l.getBrgy_name();
 										}
-										else if(col == 4){
-											val = l.getName();			
+										else if(i == 3){
+											cellValue = l.getHousehold_id();
 										}
-										else if(col == 5){
+										else if(i == 4){
+											cellValue = l.getHmember_id();
+										}
+										else if(i == 5){
+											cellValue = l.getName();
+										}
+										else if(i == 6){
+											if(l.getGstatus().equals("1")){
+												cellValue = "Yes";
+											}
+											else{
+												cellValue = "";
+											}
 											
-											val = 	dao.getbrgy_name(l.getBrgy_id());	
-											System.out.println("Brgy:"+val+"--"+l.getBrgy_id());
 										}
-										else if(col == 6){
-											val = dao.getmun_name(l.getMun_id());		
-											System.out.println("Brgy:"+val+"--"+l.getMun_id());
+										else if(i == 7){
+											cellValue = l.getGender();
 										}
-										 row.createCell((short) col).setCellValue(val);
+										else if(i == 8){
+											cellValue = l.getBday();
+										}
+										else if(i == 9){
+											System.out
+													.println("status:"+l.getStatus());
+											if(l.getF_position().equals("1")){
+												cellValue = "1 - Head";
+											}
+											else if(l.getF_position().equals("2")){
+												cellValue = "2 - Wife Spouse";
+											}
+											else if(l.getF_position().equals("3")){
+												cellValue = "3 - Son Daughter";
+											}
+											else if(l.getF_position().equals("4")){
+												cellValue = "4 - Brother / Sister";
+											}
+											else if(l.getF_position().equals("5")){
+												cellValue = "5 - Son-in-law / Daughter-in-law";
+											}
+											else if(l.getF_position().equals("6")){
+												cellValue = "6 - GrandSon / GrandDaughter";
+											}
+											else if(l.getF_position().equals("7")){
+												cellValue = "7 - Father / Mother";
+											}
+											else if(l.getF_position().equals("8")){
+												cellValue = "8 - Other Relatives";
+											}
+											else if(l.getF_position().equals("9")){
+												cellValue = "9 - Boarders";
+											}
+											else if(l.getF_position().equals("10")){
+												cellValue = "10 - Domestic Helper";
+											}
+											else if(l.getF_position().equals("11")){
+												cellValue = "11 - Non-relative";
+											}
+											else if(l.getF_position().equals("12")){
+												cellValue = "12 - Grandfather / GrandMother";
+											}
+											else if(l.getF_position().equals("13")){
+												cellValue = "13 - Uncle / Auntie";
+											}
+											else if(l.getF_position().equals("14")){
+												cellValue = "14 - Nephew / Niece";
+											}
+										}
+										if(i==4){
+											row.createCell((short) i).setCellValue(Integer.parseInt(cellValue));
+										}
+										else{
+											row.createCell((short) i).setCellValue(cellValue);
+										}
 									}
 									row_num++;
 								}
@@ -550,61 +635,147 @@ public class PrintData extends HttpServlet {
 										row_num++;
 										HSSFRow hrow=   sheet.createRow((short) row_num);
 										String th = "";
-										for(short hcol = 2;hcol<7;hcol++){
+										for(int i=1;i<10;i++){
+											
+											String cellValue = "";
+											
+											if(i == 1){
+												cellValue = "Municipality";
+												sheet.setColumnWidth(i, 6000);
+											}
+											else if(i == 2){
+												cellValue = "Barangay";
+												sheet.setColumnWidth(i, 6000);
+											}
+											else if(i == 3){
+												cellValue = "Household ID";
+												sheet.setColumnWidth(i, 6000);
+											}
+											else if(i == 4){
+												cellValue = "Household Member ID";
+												sheet.setColumnWidth(i, 5000);
+											}
+											else if(i == 5){
+												cellValue = "Name";
+												sheet.setColumnWidth(i, 6500);
+											}
+											else if(i == 6){
+												cellValue = "Grantee";
+												sheet.setColumnWidth(i, 4000);
+											}
+											else if(i == 7){
+												cellValue = "Gender";
+												sheet.setColumnWidth(i, 4000);
+											}
+											else if(i == 8){
+												cellValue = "Birthday";
+												sheet.setColumnWidth(i, 4000);
+											}
+											else if(i == 9){
+												cellValue = "Relationship to HH Head";
+												sheet.setColumnWidth(i, 6000);
+											}
 											
 											
-											if(hcol == 2){
-												th = "Household ID No.";
-												 sheet.setColumnWidth(hcol, 6000);
-											}
-											else if(hcol == 3){
-												th = "HouseholdMember ID No.";
-												 sheet.setColumnWidth(hcol, 5000);
-											}
-											else if(hcol == 4){
-												th = "Name";
-												 sheet.setColumnWidth(hcol, 6500);
-											}
-											else if(hcol == 5){
-												th = "Barangay";
-												 sheet.setColumnWidth(hcol, 6000);
-											}
-											else if(hcol == 6){
-												th = "Municipality";
-												 sheet.setColumnWidth(hcol, 6000);
-											}
 											HSSFCell hc2;
 											HSSFCellStyle hcell = hwb.createCellStyle();
 											HSSFFont hf = hwb.createFont();
 											hf.setBoldweight(Font.BOLDWEIGHT_BOLD);
 											hcell.setFont(hf);
-											hc2 = hrow.createCell((short) hcol);
-											hc2.setCellValue(th);
-											hc2.setCellStyle(hcell);
+											hc2 = hrow.createCell((short) i);
+											hc2.setCellValue(cellValue);
+											hc2.setCellStyle(cell6);
 										}
 										row_num++;
 								}
 								HSSFRow row=   sheet.createRow((short) row_num);
-								for(short col = 2;col<7;col++){
-									if(col == 2){
-										val = l.getHousehold_id();
+								for(short i = 1;i<10;i++){
+									
+									
+									String cellValue = "";
+									
+									if(i == 1){
+										cellValue = l.getMun_name();
 									}
-									else if(col == 3){
-										val = l.getHmember_id();
+									else if(i == 2){
+										cellValue = l.getBrgy_name();
 									}
-									else if(col == 4){
-										val = l.getName();			
+									else if(i == 3){
+										cellValue = l.getHousehold_id();
 									}
-									else if(col == 5){
+									else if(i == 4){
+										cellValue = l.getHmember_id();
+									}
+									else if(i == 5){
+										cellValue = l.getName();
+									}
+									else if(i == 6){
+										if(l.getGstatus().equals("1")){
+											cellValue = "Yes";
+										}
+										else{
+											cellValue = "";
+										}
 										
-										val = 	dao.getbrgy_name(l.getBrgy_id());	
-										System.out.println("Brgy:"+val+"--"+l.getBrgy_id());
 									}
-									else if(col == 6){
-										val = dao.getmun_name(l.getMun_id());		
-										System.out.println("Brgy:"+val+"--"+l.getMun_id());
+									else if(i == 7){
+										cellValue = l.getGender();
 									}
-									 row.createCell((short) col).setCellValue(val);
+									else if(i == 8){
+										cellValue = l.getBday();
+									}
+									else if(i == 9){
+										System.out
+												.println("status:"+l.getStatus());
+										if(l.getF_position().equals("1")){
+											cellValue = "1 - Head";
+										}
+										else if(l.getF_position().equals("2")){
+											cellValue = "2 - Wife Spouse";
+										}
+										else if(l.getF_position().equals("3")){
+											cellValue = "3 - Son Daughter";
+										}
+										else if(l.getF_position().equals("4")){
+											cellValue = "4 - Brother / Sister";
+										}
+										else if(l.getF_position().equals("5")){
+											cellValue = "5 - Son-in-law / Daughter-in-law";
+										}
+										else if(l.getF_position().equals("6")){
+											cellValue = "6 - GrandSon / GrandDaughter";
+										}
+										else if(l.getF_position().equals("7")){
+											cellValue = "7 - Father / Mother";
+										}
+										else if(l.getF_position().equals("8")){
+											cellValue = "8 - Other Relatives";
+										}
+										else if(l.getF_position().equals("9")){
+											cellValue = "9 - Boarders";
+										}
+										else if(l.getF_position().equals("10")){
+											cellValue = "10 - Domestic Helper";
+										}
+										else if(l.getF_position().equals("11")){
+											cellValue = "11 - Non-relative";
+										}
+										else if(l.getF_position().equals("12")){
+											cellValue = "12 - Grandfather / GrandMother";
+										}
+										else if(l.getF_position().equals("13")){
+											cellValue = "13 - Uncle / Auntie";
+										}
+										else if(l.getF_position().equals("14")){
+											cellValue = "14 - Nephew / Niece";
+										}
+									}
+									if(i==4){
+										row.createCell((short) i).setCellValue(Integer.parseInt(cellValue));
+									}
+									else{
+										row.createCell((short) i).setCellValue(cellValue);
+									}
 								}
 								row_num++;
 							}

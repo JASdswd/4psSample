@@ -37,7 +37,6 @@ public class GetPassUname extends HttpServlet {
      */
     public GetPassUname() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -130,12 +129,14 @@ public class GetPassUname extends HttpServlet {
 					UserDAO dao = new UserDAO();
 					Login_DAO dao1 = new Login_DAO();
 					String hashpword = dao1.byteArrayToHexString(dao1.computeHash(pword));
-					boolean check_password = dao.check_password2("Provincial link", hashpword,1);
+					boolean check_password = dao.check_password2("JAS", hashpword,10);
+					System.out.println("check_password:"+check_password);
 					int user_role = Integer.parseInt(request.getParameter("user_role"));
+					System.out.println("user_role:"+user_role);
 					ArrayList<Login_beans> acclist = new ArrayList<Login_beans>(); 
 					if(check_password){
 						
-						if(user_role == 1 || user_role == 3){ //for provincial and financial account [jm]
+						if(user_role == 1 || user_role == 3|| user_role == 10){ //for provincial and financial account [jm]
 							acclist = dao.getAccInfo2(user_role);
 						}
 						else if(user_role == 2 || user_role == 4 || user_role == 6 || user_role == 7 || user_role == 5){ //for municipal,social,bookkeeper and grievance account [jm]
