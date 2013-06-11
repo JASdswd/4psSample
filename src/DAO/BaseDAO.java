@@ -1,5 +1,9 @@
 package DAO;
 
+<<<<<<< HEAD
+=======
+import java.sql.ResultSet;
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -713,6 +717,45 @@ public ArrayList<transactionBean> getallfingerprint(boolean flag, String municip
 		}
 		return allFingerPrint;
 	}
+<<<<<<< HEAD
+=======
+public ArrayList<transactionBean> getallfingerprintByBatch(boolean flag, int limit) throws SQLException {
+	
+	transactionBean fingerprint = null;
+	ArrayList<transactionBean> allFingerPrint = new ArrayList<transactionBean>();
+	String sql = "";
+	try {
+		/*	sql = "SELECT distinct f.household_id, f.fingerprint FROM `fingerprint_tbl_temp` as f , household_tbl as h, received_tbl as r" +
+			"  where h.household_id = f.household_id and r.household_id = f.household_id and receive = 0 and h.municipality like '%"+municipal+"%' and barangay like '%"+brgy_id+"%'  order by head_name ";
+			sql = "SELECT distinct f.household_id, f.fingerprint FROM `fingerprint_tbl_temp` as f , household_tbl as h" +
+			"  where h.household_id = f.household_id and h.municipality like '%"+municipal+"%' and barangay like '%"+brgy_id+"%'  order by head_name ";
+		*/
+		int range = limit - 10000;
+		sql = "select household_id, fingerprint from fingerprint_tbl_temp limit "+range+","+10000;
+		System.out.println(sql);
+		/*stmtZ = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+		//rs.setFetchSize(1);
+		rs = stmtZ.executeQuery(sql);*/
+		rs = con.createStatement().executeQuery(sql);
+		int count = 1;
+		while (rs.next()) {
+			fingerprint = new transactionBean(rs.getBytes("fingerprint"), rs.getString("household_id"));
+			allFingerPrint.add(fingerprint);
+		}
+
+	} catch (SQLException ex) {
+		if(flag)
+			rollback();
+		throw new SQLException(ex.getMessage());
+	} catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		if(flag)
+		close();
+	}
+	return allFingerPrint;
+}
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 	
 public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throws SQLException {
 		
@@ -1501,6 +1544,52 @@ public ArrayList<fingerprintBean> getallfingerprint(boolean flag, int mun) throw
 			}
 		}
 	}
+<<<<<<< HEAD
+=======
+	public void addGrsCase(boolean flag, String household_id, String grsCase,
+			String syscode, String fullName, String municipal, String barangay , String idocp,
+			String remarks,String date, String time, int server_id , int team_id,String user_id) throws SQLException {
+		try{
+			stmt = con.prepareStatement("INSERT INTO grscases2_tbl_temp(date_recorded,time_recorded,household_id," +
+					"captured_province,captured_citymunicipality,captured_barangay,captured_fullname,grievance_officer,captured_grscasetype," +
+					"captured_grsidoctype,status,remarks,team_id,server_id,user_id,grscasetype_id,grsidoctype_id) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+			// stmt.setBytes(1, bean.getFingerprint());
+			stmt.setString(1,date);
+			stmt.setString(2,time);
+			stmt.setString(3,household_id);
+			stmt.setString(4,"captured_province here!");
+			stmt.setString(5,municipal);
+			stmt.setString(6,barangay);
+			stmt.setString(7,fullName);
+			stmt.setString(8,"");
+			stmt.setString(9,grsCase);
+			stmt.setString(10,"");
+			stmt.setString(11,syscode);
+			stmt.setString(12,remarks);
+			stmt.setInt(13,team_id);
+			stmt.setInt(14,server_id);
+			stmt.setString(15,user_id);
+			stmt.setInt(16,0);
+			stmt.setString(17, idocp);
+			
+			
+			int ret = stmt.executeUpdate();
+			// When Insert not completed
+			if (ret != 1)
+				throw new SQLException("Failed to add.");
+			if (flag) {
+				commit();
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (flag) {
+				close();
+			}
+		}
+	}
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 	
 	public String getbrgyName(int brgy_id) {
 		String brgyName = null;

@@ -2,7 +2,14 @@ package searchByFingerprint123;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.servlet.RequestDispatcher;
@@ -142,25 +149,81 @@ public class SearchByFingerprint123 extends HttpServlet {
 		    				BaseDAO dao = new BaseDAO();
 		    				int pabalik = 0;
 		    				String brgy_id = (String)session.getAttribute("brgy_id");
+<<<<<<< HEAD
 		                    while(true){
 		                    	 ArrayList<transactionBean> bean = new ArrayList<transactionBean>();
 		        				int ctrl = 0;
 		        				int countAllFPT = dao.getCountAllFPT(false);
 		        				
 		        				 if(session.getAttribute("brgy_id")==null || pabalik == 1){
+=======
+		    				int countAllFPT = dao.getCountAllFPT(false);
+		    				int batch = countAllFPT/10000;
+	        				batch = batch + 1;
+		                    //while(true){
+		                    	 ArrayList<transactionBean> bean = new ArrayList<transactionBean>();
+		        				int ctrl = 0;
+		        				
+		        				
+		        				
+		        				int count1 = 1;
+		        				int limit = 1;
+		        				Calendar calendar= Calendar.getInstance();
+								DateFormat timeInstance = SimpleDateFormat.getTimeInstance();
+								System.out.println("df:"+Calendar.getInstance().getTimeInMillis());
+								long time1 = Calendar.getInstance().getTimeInMillis();
+								System.out.println("time1:"+time1);
+								
+								int counter = 0;
+		        				while(batch>=0){
+		        					
+		        						
+		        					
+			        					limit = count1 * 10000;
+			        					bean = dao.getallfingerprintByBatch(false, limit);
+			        					/*session.setAttribute("bean", bean);
+			        					beanSample = (ArrayList<transactionBean>) session.getAttribute("bean");
+			        					for(transactionBean l: beanSample){
+			        						System.out.println("household_id:"+l.getHousehold_id());
+			        					}*/
+			        					count1++;
+			        					long time2 = Calendar.getInstance().getTimeInMillis();
+			        					System.out.println("time1:"+time1);
+										System.out.println("time2:"+time2);
+										System.out.println("Time elapsed in millisecond:"+(time2-time1));
+										System.out.println("bean size:"+ bean.size());
+										
+										counter+=bean.size();
+										System.out.println("counter:"+counter);
+		        					
+									batch--;
+		        					
+		        				}
+		        				
+		        				/* if(session.getAttribute("brgy_id")==null || pabalik == 1){
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 				                    	bean = dao.getallfingerprint(false,request.getParameter("mun"),"");
 				                    	ctrl = 1;
 				                }
 		        				 else{
 		        					 bean = dao.getallfingerprint(false,request.getParameter("mun"),brgy_id);
 		        					 pabalik = 1;
+<<<<<<< HEAD
 		        				 }
 		        				 System.out.println("bean size:"+ bean.size());
+=======
+		        				 }*/
+		        				 
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 		        				 byte[] data = null;
 				    				DPFPTemplate t = DPFPGlobal.getTemplateFactory().createTemplate();
 				    				int count = 1;
 				    				
+<<<<<<< HEAD
 				    				for(transactionBean l: bean){
+=======
+				    				/*for(transactionBean l: bean){
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 				    					//System.out.println("Searching for matched fingerprint:"+count++ +" "+l.getHousehold_id());
 				    					data = l.getFingerprint();
 				    					
@@ -180,6 +243,7 @@ public class SearchByFingerprint123 extends HttpServlet {
 				    				}
 				    				if((controller > 0) || (ctrl > 0) ){
 				    					break;
+<<<<<<< HEAD
 				    				}
 		                    }/*    try search by fingerprint        */
 		        			/*try {
@@ -220,6 +284,10 @@ public class SearchByFingerprint123 extends HttpServlet {
 		    						
 		    					}
 		    				}*/
+=======
+				    				}*/
+		                    
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 		        			if(controller>0){
 		        				/*try {
 									BaseDAO d = new BaseDAO();
@@ -272,7 +340,11 @@ public class SearchByFingerprint123 extends HttpServlet {
 		                    }*/
 		                } catch (Exception e) {
 		                    System.out.printf("Failed to perform verification.");
+<<<<<<< HEAD
 		                    
+=======
+		                    e.printStackTrace();
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 		                    PrintWriter out1= response.getWriter();
 		                    JSONObject obj=new JSONObject();
 		                	try {

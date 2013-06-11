@@ -93,9 +93,13 @@ public class ChangeView123 extends HttpServlet {
 						JSONArray array=new JSONArray();
 						//JSONArray array1=new JSONArray();
 						JSONObject objectall=new JSONObject();
+<<<<<<< HEAD
 						Calendar calendar= Calendar.getInstance();
 						DateFormat timeInstance = SimpleDateFormat.getTimeInstance();
 						SimpleDateFormat format= new SimpleDateFormat("MM/dd/yyyy");
+=======
+						
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 						//MainForm form = new MainForm(request.getParameter("household_id"), 2);
 						//int verifyCtrl = form.getVerifyCtrl();
 						//System.out.println("verifyCtrl = "+verifyCtrl);
@@ -182,11 +186,24 @@ public class ChangeView123 extends HttpServlet {
 			    					}
 			    				
 			        			if(controller>0){
+<<<<<<< HEAD
 			        				System.out.println("fingerprint matched.");
 			        				String day=format.format(calendar.getTime());
 									System.out.println("date="+day);
 									String time=timeInstance.format(Calendar.getInstance().getTime());
 									System.out.println("time="+time);
+=======
+			        				
+									
+									/*================ Geting date from the server ===================*/
+					    			String dateAndTime = bDAO.getDateAndTime();
+					    			String regex[] = dateAndTime.split(" ");
+					    			String curDate = regex[0];
+					    			String regex1[] = regex[1].split("\\."); // naa cjay duha ka slash kung mag split ka with only a dot.
+					    			String curTime = regex1[0];
+					    			
+					    			/*================================================================*/
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 									
 									String household_id=request.getParameter("household_id");
 									System.out.println("household_id ::: "+household_id);
@@ -197,7 +214,11 @@ public class ChangeView123 extends HttpServlet {
 									String comment=request.getParameter("comment");
 									Transaction_DAO dao = new Transaction_DAO();
 									
+<<<<<<< HEAD
 									dao.updaterecieve(household_id, month, day,time,1,comment);
+=======
+									dao.updaterecieve(household_id, month, curDate,curTime,1,comment);
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 									float current_amount = 0;
 									current_amount = dao.getLastAmount(household_id);
 									
@@ -216,8 +237,13 @@ public class ChangeView123 extends HttpServlet {
 										/*obj.put("year", i.getYear());*/
 										obj.put("amount", i.getAmount());
 										obj.put("recieve", 1);
+<<<<<<< HEAD
 										obj.put("date_receive", day);
 										obj.put("time", time);
+=======
+										obj.put("date_receive", curDate);
+										obj.put("time", curTime);
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 										obj.put("comment", i.getComment());
 										obj.put("sub", i.getSub());
 										obj.put("munLink_name", i.getMunLink_name());

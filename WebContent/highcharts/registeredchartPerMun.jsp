@@ -70,11 +70,18 @@ if(session.getAttribute("username")==null){
 	        yAxis: {
 	            allowDecimals: false,
 	            title: {
+<<<<<<< HEAD
 	                text: 'Number of Beneficiariesssss'
 	            }
 	        },
 	        tooltip: {
 	        	
+=======
+	                text: 'Number of Beneficiaries'
+	            }
+	        },
+	        tooltip: {
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 	            formatter: function() {
 	                return '<b>'+ this.series.name +'</b><br/>'+
 	                    this.y +' '+ this.x.toLowerCase();

@@ -317,7 +317,10 @@ function prompt(data){
 				<ul>
 					<li><a class="long" href="<%=cPath %>/reports/reports_home.jsp">Released Report</a></li>		
 					<li><a class="long" href="<%=cPath %>/reports/notReleaseReport.jsp">Not Released</a></li>
+<<<<<<< HEAD
 					<li><a class="long" href="<%=cPath %>/VerifiersDailyReports">Verifiers Registration Report</a></li>	
+=======
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 				</ul> 
 			</li>
 			<li><a class="long" href="<%=cPath %>/TotalMembers">Total Members</a></li>
@@ -325,7 +328,11 @@ function prompt(data){
 				 <ul>
 					<li><a class="long" href="<%=cPath %>/NoFingerPrint">Members w/o Fingerprint</a></li>
 					<li><a class="long" href="<%=cPath %>/WithFingerprint">Members with Fingerprint</a></li>
+<<<<<<< HEAD
 					<li><a class="long" href="#">Daily Registration Report</a></li>
+=======
+					<li><a class="long" href="<%=cPath %>/VerifiersDailyReports">Verifiers Registration Report</a></li>	
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 				</ul> 
 			 </li> 
 			

@@ -57,6 +57,14 @@ public class TransactionView extends HttpServlet {
 				ArrayList<Beanstransaction>householdlist=new ArrayList<Beanstransaction>();
 				ArrayList<Beanstransaction> iDOCP = new ArrayList<Beanstransaction>();
 				try{
+<<<<<<< HEAD
+=======
+					
+					/*double countAllFPT = 113045;
+    				double batch = countAllFPT/20000;
+    				System.out.println(batch);
+					*/
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 					Transaction_DAO dao=new Transaction_DAO();
 					municipal_list=dao.municipal_list();
 					householdlist=dao.household_list("",1);

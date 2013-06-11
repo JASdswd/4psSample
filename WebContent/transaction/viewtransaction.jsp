@@ -673,9 +673,15 @@ var controller = 0;
 		alert(fullNameNR);
 		alert(municipalNR);
 		alert(barangayNR);
+<<<<<<< HEAD
 		alert(idocpNR);
 		alert(remarksNR);
 		xhrGo("POST","AddGrsCase?hh_id="+household_idNR+"&grsCase=NRF&syscode=O",addNRFresult, "plain");
+=======
+		alert("cf:"+idocpNR);
+		alert(remarksNR);
+		xhrGo("POST","AddGrsCase?hh_id="+household_idNR+"&grsCase=NRF&syscode=O&fullName="+fullNameNR+"&municipal="+municipalNR+"&barangay="+barangayNR+"&idocp="+idocpNR+"&remarks="+remarksNR,addNRFresult, "plain");
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 		/* brgy_select = getIDValue("brgy_select");
 		var transaction = getIDValue("transaction");
 		var val = getIDValue("search_field");
@@ -692,7 +698,54 @@ var controller = 0;
 	 */
 	}
 	function addNRFresult(data){
+<<<<<<< HEAD
 		alert("addNRFresult");
+=======
+		if(data==1){
+			//alert("password confirmed.!!");
+			$( '#grsCasesDialog' ).dialog( "close" );
+			$( "#addgrsOk" ).dialog({
+				show: "fade",
+				hide: "fade",
+				resizable: false,
+				height:140,
+				modal: true,
+				buttons: {
+					"OK": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		}
+		if(data==2){
+			$( "#addgrsRecordFound" ).dialog({
+				show: "fade",
+				hide: "fade",
+				resizable: false,
+				height:140,
+				modal: true,
+				buttons: {
+					"OK": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		}
+		else{
+			$( "#addgrsnotOk" ).dialog({
+				show: "fade",
+				hide: "fade",
+				resizable: false,
+				height:140,
+				modal: true,
+				buttons: {
+					"OK": function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
+		}
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 	}
 	function changeDivData(){
 		var transaction = getIDValue("transaction");
@@ -1293,7 +1346,11 @@ img{
 						<option value="OCP">OCP</option>
 					</select> -->
 					<select name="grsCasesCombo" class="input" id="idocpNR">
+<<<<<<< HEAD
 						<option value="">------</option>
+=======
+						<option value="0">------</option>
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 						<c:forEach items="${iDOCP}" var="list">
 								<option value="${list.grsidoctypes_id}" title="${list.grsidoctypes_description}" ><c:out value="${list.grsidoctypes_casetypes}"></c:out></option>
 						</c:forEach>
@@ -1321,6 +1378,18 @@ img{
 	</div>
 	</div>
 </div>
+<<<<<<< HEAD
+=======
+<div id="addgrsOk" title="4Ps Message" class="hidden">
+	<p>GRS Cases Successfully added.</p>
+</div>
+<div id="addgrsnotOk" title="4Ps Message" class="hidden">
+	<p>Failed to add GRS Cases.</p>
+</div>
+<div id="addgrsRecordFound" title="4Ps Message" class="hidden">
+	<p>Household ID is found in the database.</p>
+</div>
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 </div> <!-- end of page wrap -->
 </body>
 </html>

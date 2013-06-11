@@ -57,7 +57,11 @@ public class VerifiersDailyReports extends HttpServlet {
 				try {
 					UserDAO dao = new UserDAO();
 					bean = dao.getmunicipal(false);
+<<<<<<< HEAD
 					String sql = "select fname,lname,date_recorded,mun_name,count(*) from fingerprint_tbl_temp as f,municipal_tbl as m,user_tbl as u where u.user_id = 5 and f.mun_id = m.mun_id and f.user_id = u.id group by u.id,f.mun_id";
+=======
+					String sql = "select fname,lname,date_recorded,mun_name,count(*) from fingerprint_tbl_temp as f,municipal_tbl as m,user_tbl as u where f.mun_id = m.mun_id and f.user_id = u.id group by u.id,f.date_recorded,f.mun_id order by f.date_recorded desc";
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 					getData = dao.getVRR(1,sql);
 					getNameVerifier = dao.getNameofVerifier();
 					
@@ -105,7 +109,11 @@ public class VerifiersDailyReports extends HttpServlet {
 					
 					if(transaction.equals("Vname")){
 						String id = request.getParameter("VID");
+<<<<<<< HEAD
 						String sql = "select fname,lname,date_recorded,mun_name,count(*) from fingerprint_tbl_temp as f,municipal_tbl as m,user_tbl as u where f.mun_id = m.mun_id and f.user_id = u.id and u.id = "+id+" group by u.id,f.mun_id";
+=======
+						String sql = "select fname,lname,date_recorded,mun_name,count(*) from fingerprint_tbl_temp as f,municipal_tbl as m,user_tbl as u where f.mun_id = m.mun_id and f.user_id = u.id and u.id = "+id+" group by u.id,f.date_recorded,f.mun_id order by f.date_recorded desc";
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 						getVerifiersData = dao.getVRR(0, sql);
 						if(getVerifiersData.isEmpty()){
 							String mess="No Record Found";
@@ -116,7 +124,13 @@ public class VerifiersDailyReports extends HttpServlet {
 					}
 					else if(transaction.equals("date")){
 						String date = request.getParameter("date");
+<<<<<<< HEAD
 						String sql = "select fname,lname,date_recorded,mun_name,count(*) from fingerprint_tbl_temp as f,municipal_tbl as m,user_tbl as u where f.mun_id = m.mun_id and f.user_id = u.id and f.date_recorded = '"+date+"' group by u.id,f.mun_id";
+=======
+						System.out.println("date");
+						String sql = "select fname,lname,date_recorded,mun_name,count(*) from fingerprint_tbl_temp as f,municipal_tbl as m,user_tbl as u where f.mun_id = m.mun_id and f.user_id = u.id and f.date_recorded = '"+date+"' group by u.id,f.date_recorded,f.mun_id order by f.date_recorded desc";
+						System.out.println("sql:"+sql);
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 						getVerifiersData = dao.getVRR(0, sql);
 						if(getVerifiersData.isEmpty()){
 							String mess="No Record Found";
@@ -127,7 +141,11 @@ public class VerifiersDailyReports extends HttpServlet {
 					}
 					else if(transaction.equals("municipal")){
 						int mun_id = Integer.parseInt(request.getParameter("mun_id"));
+<<<<<<< HEAD
 						String sql = "select fname,lname,date_recorded,mun_name,count(*) from fingerprint_tbl_temp as f,municipal_tbl as m,user_tbl as u where f.mun_id = m.mun_id and f.user_id = u.id and m.mun_id = "+mun_id+" group by u.id,f.mun_id order by f.date_recorded desc";
+=======
+						String sql = "select fname,lname,date_recorded,mun_name,count(*) from fingerprint_tbl_temp as f,municipal_tbl as m,user_tbl as u where f.mun_id = m.mun_id and f.user_id = u.id and m.mun_id = "+mun_id+" group by u.id,f.date_recorded, order by f.date_recorded desc";
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 						getVerifiersData = dao.getVRR(0, sql);
 						if(getVerifiersData.isEmpty()){
 							String mess="No Record Found";

@@ -46,7 +46,10 @@ public class View_transactions extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session  = request.getSession(false);
+<<<<<<< HEAD
 	
+=======
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 		if(session==null){
 			System.out.println("session is null add municipality servelet");
 			ServletContext sc=this.getServletContext();
@@ -81,7 +84,10 @@ public class View_transactions extends HttpServlet {
 					municipal = dao.getmunicipal(false);
 					barangay = dao.getbrgy(mun);
 					hh_setgroup = dao.getHH_SetGroup(false,household_id);
+<<<<<<< HEAD
 					
+=======
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 					if(household.isEmpty()){
 						ServletContext sc = this.getServletContext();
 						RequestDispatcher rd = sc.getRequestDispatcher("/redirectPage/redirect.jsp");
@@ -104,8 +110,14 @@ public class View_transactions extends HttpServlet {
 						other_relatives = dao.getother_rel_info(false, household_id);
 						
 						grandchild = dao.getgrandchild_info(false, household_id);
+<<<<<<< HEAD
 						
 						int ctr = dao.testIfExist(false, "select * from photo_tbl_temp2 where household_id = '"+household_id+"'");
+=======
+						System.out.println("before cted");
+						int ctr = dao.testIfExist(false, "select household_id from photo_tbl_temp2 where household_id = '"+household_id+"'");
+						System.out.println("cterer");
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 						if(ctr>0){
 							request.setAttribute("photohead_exist", true);
 						}
@@ -118,7 +130,11 @@ public class View_transactions extends HttpServlet {
 						else{
 							request.setAttribute("user_Prov", false);
 						}
+<<<<<<< HEAD
 						int fingerprint_ctr = dao.testIfExist(false, "select * from fingerprint_tbl_temp where household_id = '"+household_id+"'");
+=======
+						int fingerprint_ctr = dao.testIfExist(false, "select household_id from fingerprint_tbl_temp where household_id = '"+household_id+"'");
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 						if(fingerprint_ctr>0){
 							request.setAttribute("fingerprint_exist", true);
 						}
@@ -136,7 +152,11 @@ public class View_transactions extends HttpServlet {
 						Transaction_DAO dao1 = new Transaction_DAO();
 						servers = dao1.getServers();
 						request.setAttribute("serv", session.getAttribute("server"));
+<<<<<<< HEAD
 						
+=======
+						System.out.println("pompom puyangaw bukhad ilawm");
+>>>>>>> c9b8fd23e02e6eadf94f92d3bee831babfaab912
 						request.setAttribute("other_relatives", other_relatives);
 						request.setAttribute("hh_setgroup", hh_setgroup);
 						request.setAttribute("mun", mun);
