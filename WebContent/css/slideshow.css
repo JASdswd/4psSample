@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+#slideshow {
+  position:relative;
+  
+}
+#slideshow img {
+  
+  display: none;
+}
+#slideshow img.active {
+  display:block;
+}

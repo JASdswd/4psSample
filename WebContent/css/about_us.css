@@ -1,0 +1,129 @@
+@CHARSET "UTF-8";
+
+html{	
+	background: #ffffff url(bg.gif) repeat-x;
+}
+
+body{
+
+	font-size: 11px;
+	
+}
+
+.doh{
+	width: 100px;
+	height: 100px;
+}
+
+.napc{
+	width: 105px;
+	height: 105px;
+}
+
+img{
+	border: none;
+}
+
+#page-wrap{
+	background-color: #ffffff;
+	width: 900px;
+	border: 1px solid #1E54DC;
+	box-shadow: 0px 0px 20px silver;
+	-moz-box-shadow: 0px 0px 20px silver;
+	-webkit-box-shadow: 0px 0px 20px silver;
+}
+
+#dept-seal{
+
+	text-align:center;
+	float: right;
+	padding-right: 60px;
+}
+
+.dept{
+	color:green;
+	font-family: Courier, monospace;
+	font-style: oblique;
+	font-size: 15px;
+}
+
+#p1{
+	color:green;
+	text-shadow:lime;
+	font-size: medium;
+}
+
+a:LINK{
+	text-decoration: none;
+	color:blue;
+}
+a:active{
+	text-decoration: none;
+	color:blue;
+}
+a:hover{
+	text-decoration: none;
+	color:red;
+}
+a:VISITED{
+	text-decoration: none;
+	color:blue;
+}
+
+.floatingleft {
+	width:200px;
+	height: 150px;
+	float:left;
+	margin-right:10px;
+	margin-bottom:10px;
+}
+
+#page1{
+	width: 500px;	
+	margin-left: 20px;
+}
+
+
+#page-wrap{
+	background-color: #ffffff;
+	width: 900px;
+	margin: 0px auto 10px;
+	border: 1px solid #8FA9BC;
+}
+#logo{
+	background-color: #336633;
+}
+
+#main{
+	
+	height: 1200px;
+}
+
+.img1{
+	width:94px;
+	height: 94px;
+	margin-top: 3px;
+}
+#imgDiv{
+	background-color: #336633;
+	height: 100px;
+	width: 120px;
+	text-align: center;
+	
+}
+#dswd-image{
+	height: 94px;
+	width: 95px;
+}
+
+hr{
+	color:green;
+	background-color:green;
+	border-color:green;
+	height: 3px;
+	width: 850px;
+}
+
+
+
+

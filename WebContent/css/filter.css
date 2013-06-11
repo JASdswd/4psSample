@@ -1,0 +1,50 @@
+@CHARSET "UTF-8";
+
+.ui-button { margin-left: -1px; }
+.ui-button-icon-only .ui-button-text { padding: 0.35em; } 
+.ui-autocomplete-input { margin: 0; padding: 0.48em 0 0.47em 0.45em; }
+
+#searchDiv{
+	/* text-align: center; */
+	margin-top: 5%;
+	
+}
+
+#midTBL{
+	margin-top: 5%;
+}
+
+#filter{
+	background-color:#CEF0FF;
+	border:0px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	width: 150px;
+	cursor: pointer;
+}
+#main{
+	width: 900px;
+	height: 1500px;
+	overflow: auto;
+}
+#sample{
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	background-color:#CEF0FF;
+		
+}
+
+#delDialog{
+	text-align: center;
+	text-shadow: aqua;
+	margin-top: 6%;
+}
+
+.pdiv{
+		
+		position: relative;
+		height: 30px;
+		margin-top: 3%;
+		text-align: right;
+		padding-right: 10px;
+}

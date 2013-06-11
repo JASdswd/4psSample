@@ -1,0 +1,50 @@
+@CHARSET "ISO-8859-1";
+*{margin:0;
+padding: 0;
+}
+html{
+	background: #C9D0DF;
+}
+#page-wrap{
+	background-color: white;
+	width: 900px;
+	margin: 3px auto 10px;
+	border: 1px solid #8FA9BC;
+}
+#logo{
+	background-color: #336633;
+}
+#aside{
+	position: relative;
+	background-color: #282828;
+}
+
+.img{
+	width: 40px;
+	height: 20px;
+}
+#image-logo{
+	position: relative;
+}
+
+#main-content{
+	
+	background-color: #3a93d2;
+	width:900px;
+
+}
+
+#mainbody{
+	
+	margin-top:10%;
+	background-color: white;
+	height: 500px;
+	
+	
+}
+#menu{
+	display: block;
+}
+
+
+

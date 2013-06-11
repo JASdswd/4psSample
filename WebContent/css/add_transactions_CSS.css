@@ -1,0 +1,155 @@
+
+@CHARSET "UTF-8";
+
+#main{
+	padding: 20px 50px;
+}
+#main h3{
+	text-transform: capitalize;
+	font-size: 18px;
+	letter-spacing: 4px;
+	font-family: helvetica, sans-serif;
+	text-shadow: 2px 2px 2px #999;
+}
+
+#main form{
+	margin-top: 20px;
+}
+/* #main div{
+	width: 800px;
+} */
+
+.photolabel{
+	margin-left: 50px;
+}
+#main .photos{
+	height: 128px;
+	width: 120px;
+	border: 1px solid #000;
+}
+
+label{
+	font-size: 13px;
+	font-family: helvitica, sans-serif;
+}
+input {
+	margin-left: 10px;
+}
+.indent{
+	margin-left: 50px;
+	margin-top: 10px;
+}
+.radio{
+	margin-left: 10px;
+}
+.attending{
+	margin-left: 65px;
+}
+.input,#rel{
+	margin-bottom: 5px;
+	border: 1px solid #8FA9BC;
+	padding: 5px 3px 5px 10px;
+	color:#000000;
+	outline: none;
+}
+
+.input:FOCUS,#rel:FOCUS{
+	border: 1px solid #000045;
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.input:HOVER,#rel:HOVER{
+	border: 1px solid #000886;
+}
+.birthday_input{
+	margin-bottom: 5px;
+	border: 1px solid #8FA9BC;
+	padding: 5px 3px 5px 10px;
+	color:#000000;
+	outline: none;
+}
+.birthday_input:FOCUS{
+	border: 1px solid #000886;
+}
+#sonDaugther{
+	position: relative;
+}
+#sd_Addmore{
+	position: absolute;
+	top : 0;
+	right: 0;
+	margin-right: 20px;
+}
+#grandsonGrandaugther{
+	position: relative;
+}
+#gg_Addmore{
+	position: absolute;
+	top : 0;
+	right: 0;
+	margin-right: 20px;
+}
+	#dialog-confirm{
+		display: none;
+		
+	}
+	.button-dialog{
+		font-size: 16px;
+	}
+	#change-photo{
+		margin-left: 50px;
+		display: none;
+		
+	}
+	#success{
+		display: none;
+		
+	}
+	.buttons{ font: 110% "Trebuchet MS", sans-serif;}
+	.sd_remove{
+		margin-left: 30px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	.gg_remove{
+		margin-left: 30px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+	#monthFingerprint{
+		position: relative;
+		margin-top: 8px;
+	}
+	#month2{
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin-left: 200px;
+	}
+	#month3{
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin-left: 400px;
+	}
+	.mar-top{
+		margin-top: 8px;
+	}
+	#reasons{
+		margin-top: 10px;
+	}
+	table{
+		margin-top: 10px;
+	}
+	#action{
+		margin-left: auto;
+		margin-right: auto;
+	}
+	#photo_head{
+		margin-left: 25px;
+	}
+	select{
+		margin-left: 5px;
+		padding: 5px;
+	}
